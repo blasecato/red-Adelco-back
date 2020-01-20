@@ -13,5 +13,12 @@ export class IndicadoresService {
          return await this.indicadoresRepository.find();
        }
 
+       getById() {
+        return this.indicadoresRepository.createQueryBuilder()
+        .select('indicadores.id')
+        .from(Indicadores, "indicadores")
+        .innerJoin('indicadores.id_objetivo' , 'objetivo.id')
+        .execute();
+      }
   
 }
