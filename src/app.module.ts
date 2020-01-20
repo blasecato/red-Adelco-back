@@ -2,19 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { IndicadoresModule } from "./indicadores/indicadores.module";
+import  ConfigService  from "./common/config/config.service";
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'root',
-    database: 'redadelco',
-    entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: true,
-  })],
+  imports: [
+    TypeOrmModule.forRoot(ConfigService.orm_config),
+  IndicadoresModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
