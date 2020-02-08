@@ -6,14 +6,14 @@ export class Acepta {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre" })
-  nombre: string;
+  @Column("longtext", { name: "nombre", nullable: true })
+  nombre: string | null;
 
-  @Column("longtext", { name: "image" })
-  image: string;
+  @Column("longtext", { name: "image", nullable: true })
+  image: string | null;
 
-  @Column("date", { name: "fecha_acepta" })
-  fechaAcepta: string;
+  @Column("date", { name: "fecha_acepta", nullable: true })
+  fechaAcepta: string | null;
 
   @OneToMany(
     () => Cultivo,

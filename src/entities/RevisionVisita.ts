@@ -14,32 +14,32 @@ export class RevisionVisita {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre" })
-  nombre: string;
+  @Column("longtext", { name: "nombre", nullable: true })
+  nombre: string | null;
 
-  @Column("date", { name: "fecha_visita" })
-  fechaVisita: string;
+  @Column("date", { name: "fecha_visita", nullable: true })
+  fechaVisita: string | null;
 
-  @Column("time", { name: "hora_inicio" })
-  horaInicio: string;
+  @Column("time", { name: "hora_inicio", nullable: true })
+  horaInicio: string | null;
 
-  @Column("time", { name: "hora_fin" })
-  horaFin: string;
+  @Column("time", { name: "hora_fin", nullable: true })
+  horaFin: string | null;
 
-  @Column("longtext", { name: "situcacion_encontrada" })
-  situcacionEncontrada: string;
+  @Column("longtext", { name: "situcacion_encontrada", nullable: true })
+  situcacionEncontrada: string | null;
 
-  @Column("longtext", { name: "recomendaciones" })
-  recomendaciones: string;
+  @Column("longtext", { name: "recomendaciones", nullable: true })
+  recomendaciones: string | null;
 
-  @Column("longtext", { name: "observacion" })
-  observacion: string;
+  @Column("longtext", { name: "observacion", nullable: true })
+  observacion: string | null;
 
-  @Column("longtext", { name: "anexos" })
-  anexos: string;
+  @Column("longtext", { name: "anexos", nullable: true })
+  anexos: string | null;
 
-  @Column("longtext", { name: "imagen" })
-  imagen: string;
+  @Column("longtext", { name: "imagen", nullable: true })
+  imagen: string | null;
 
   @Column("int", { name: "id_cultivo" })
   idCultivo: number;

@@ -17,20 +17,20 @@ export class Diagnostico {
   @Column("longtext", { name: "nombre", nullable: true })
   nombre: string | null;
 
-  @Column("date", { name: "fecha" })
-  fecha: string;
+  @Column("date", { name: "fecha", nullable: true })
+  fecha: string | null;
 
-  @Column("time", { name: "hora_inicio" })
-  horaInicio: string;
+  @Column("time", { name: "hora_inicio", nullable: true })
+  horaInicio: string | null;
 
-  @Column("time", { name: "hora_fin" })
-  horaFin: string;
+  @Column("time", { name: "hora_fin", nullable: true })
+  horaFin: string | null;
 
-  @Column("longtext", { name: "imagen" })
-  imagen: string;
+  @Column("longtext", { name: "imagen", nullable: true })
+  imagen: string | null;
 
-  @Column("int", { name: "id_finca" })
-  idFinca: number;
+  @Column("int", { name: "id_finca", nullable: true })
+  idFinca: number | null;
 
   @ManyToOne(
     () => Finca,

@@ -6,8 +6,8 @@ export class TipoBeneficio {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre" })
-  nombre: string;
+  @Column("longtext", { name: "nombre", nullable: true })
+  nombre: string | null;
 
   @OneToMany(
     () => Beneficio,

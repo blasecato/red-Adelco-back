@@ -1,17 +1,17 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Productores } from "./Productores";
 
-@Entity("genero", { schema: "redadelco" })
-export class Genero {
+@Entity("discapacidad", { schema: "redadelco" })
+export class Discapacidad {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre", nullable: true })
+  @Column("varchar", { name: "nombre", nullable: true, length: 45 })
   nombre: string | null;
 
   @OneToMany(
     () => Productores,
-    productores => productores.idGenero2
+    productores => productores.idDiscapacitado2
   )
   productores: Productores[];
 }
