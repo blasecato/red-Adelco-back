@@ -16,11 +16,11 @@ export class KitUser {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("int", { name: "id_kit_herramienta" })
-  idKitHerramienta: number;
+  @Column("int", { name: "id_kit_herramienta", nullable: true })
+  idKitHerramienta: number | null;
 
-  @Column("int", { name: "id_productor" })
-  idProductor: number;
+  @Column("varchar", { name: "id_productor", nullable: true, length: 45 })
+  idProductor: string | null;
 
   @ManyToOne(
     () => KitHerramienta,

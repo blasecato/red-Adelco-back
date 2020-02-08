@@ -9,13 +9,13 @@ export class IndicadoresController {
     constructor(private readonly indicadoresService: IndicadoresService){}
 
     
-     @Get()
-     findAll(): Promise<Indicadores[]>{
-          return this.indicadoresService.findAll();
-     }
-
      // @Get()
-     // findOne(@Param('id') id):Promise<Indicadores>{
-     //     return this.indicadoresService.getById();
+     // findAll(): Promise<Indicadores[]>{
+     //      return this.indicadoresService.findAll();
      // }
+
+      @Get()
+      findOne(): Promise<Indicadores[]>{
+          return this.indicadoresService.getById();
+      }
 }

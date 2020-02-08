@@ -9,8 +9,8 @@ import {
 import { Infraestructura } from "./Infraestructura";
 import { EnteConvenio } from "./EnteConvenio";
 
-@Index("id_infraestructura", ["idInfraestructura"], {})
 @Index("id_ente_convenio", ["idEnteConvenio"], {})
+@Index("id_infraestructura", ["idInfraestructura"], {})
 @Entity("convenio", { schema: "redadelco" })
 export class Convenio {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })

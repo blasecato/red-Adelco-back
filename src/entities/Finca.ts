@@ -20,14 +20,14 @@ export class Finca {
   @Column("longtext", { name: "nombre", nullable: true })
   nombre: string | null;
 
-  @Column("float", { name: "cant_hectareas", precision: 12 })
-  cantHectareas: number;
+  @Column("float", { name: "cant_hectareas", nullable: true, precision: 12 })
+  cantHectareas: number | null;
 
-  @Column("longtext", { name: "direccion" })
-  direccion: string;
+  @Column("longtext", { name: "direccion", nullable: true })
+  direccion: string | null;
 
-  @Column("int", { name: "id_vereda" })
-  idVereda: number;
+  @Column("int", { name: "id_vereda", nullable: true })
+  idVereda: number | null;
 
   @OneToMany(
     () => Diagnostico,

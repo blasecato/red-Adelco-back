@@ -16,14 +16,14 @@ export class Beneficio {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre" })
-  nombre: string;
+  @Column("longtext", { name: "nombre", nullable: true })
+  nombre: string | null;
 
-  @Column("int", { name: "intencidad" })
-  intencidad: number;
+  @Column("int", { name: "intencidad", nullable: true })
+  intencidad: number | null;
 
-  @Column("int", { name: "id_tipo_beneficio" })
-  idTipoBeneficio: number;
+  @Column("int", { name: "id_tipo_beneficio", nullable: true })
+  idTipoBeneficio: number | null;
 
   @ManyToOne(
     () => TipoBeneficio,

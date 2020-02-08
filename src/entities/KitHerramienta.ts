@@ -11,18 +11,18 @@ import { Kit } from "./Kit";
 import { Herramienta } from "./Herramienta";
 import { KitUser } from "./KitUser";
 
-@Index("id_kit", ["idKit"], {})
 @Index("id_herramienta", ["idHerramienta"], {})
+@Index("id_kit", ["idKit"], {})
 @Entity("kit_herramienta", { schema: "redadelco" })
 export class KitHerramienta {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("int", { name: "id_kit" })
-  idKit: number;
+  @Column("int", { name: "id_kit", nullable: true })
+  idKit: number | null;
 
-  @Column("int", { name: "id_herramienta" })
-  idHerramienta: number;
+  @Column("int", { name: "id_herramienta", nullable: true })
+  idHerramienta: number | null;
 
   @ManyToOne(
     () => Kit,

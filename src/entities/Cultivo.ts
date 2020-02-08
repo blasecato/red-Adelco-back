@@ -12,31 +12,31 @@ import { Productores } from "./Productores";
 import { Acepta } from "./Acepta";
 import { RevisionVisita } from "./RevisionVisita";
 
+@Index("id_acepta", ["idAcepta"], {})
 @Index("id_linea_productiva", ["idLineaProductiva"], {})
 @Index("id_productor", ["idProductor"], {})
-@Index("id_acepta", ["idAcepta"], {})
 @Entity("cultivo", { schema: "redadelco" })
 export class Cultivo {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre" })
-  nombre: string;
+  @Column("longtext", { name: "nombre", nullable: true })
+  nombre: string | null;
 
-  @Column("float", { name: "hectareas", precision: 12 })
-  hectareas: number;
+  @Column("float", { name: "hectareas", nullable: true, precision: 12 })
+  hectareas: number | null;
 
-  @Column("date", { name: "fecha_inicio" })
-  fechaInicio: string;
+  @Column("date", { name: "fecha_inicio", nullable: true })
+  fechaInicio: string | null;
 
-  @Column("int", { name: "id_linea_productiva" })
-  idLineaProductiva: number;
+  @Column("int", { name: "id_linea_productiva", nullable: true })
+  idLineaProductiva: number | null;
 
-  @Column("int", { name: "id_productor" })
-  idProductor: number;
+  @Column("varchar", { name: "id_productor", nullable: true, length: 45 })
+  idProductor: string | null;
 
-  @Column("int", { name: "id_acepta" })
-  idAcepta: number;
+  @Column("int", { name: "id_acepta", nullable: true })
+  idAcepta: number | null;
 
   @ManyToOne(
     () => LineaProductiva,

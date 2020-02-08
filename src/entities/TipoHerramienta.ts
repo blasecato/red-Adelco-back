@@ -6,14 +6,14 @@ export class TipoHerramienta {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre" })
-  nombre: string;
+  @Column("longtext", { name: "nombre", nullable: true })
+  nombre: string | null;
 
-  @Column("float", { name: "precio", precision: 12 })
-  precio: number;
+  @Column("float", { name: "precio", nullable: true, precision: 12 })
+  precio: number | null;
 
-  @Column("longtext", { name: "marca" })
-  marca: string;
+  @Column("longtext", { name: "marca", nullable: true })
+  marca: string | null;
 
   @OneToMany(
     () => Herramienta,

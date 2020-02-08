@@ -7,10 +7,12 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Vereda } from "./Vereda";
 import { Productores } from "./Productores";
+import { Vereda } from "./Vereda";
 
+@Index("id_representante", ["representante"], {})
 @Index("id_vereda", ["idVereda"], {})
+@Index("socio", ["socio"], {})
 @Entity("organizacion", { schema: "redadelco" })
 export class Organizacion {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
@@ -34,8 +36,19 @@ export class Organizacion {
   @Column("int", { name: "id_vereda", nullable: true })
   idVereda: number | null;
 
-  @Column("longtext", { name: "representante", nullable: true })
-  representante: string | null;
+  @Column("int", { name: "representante", nullable: true })
+  representante: number | null;
+
+  @Column("int", { name: "socio", nullable: true })
+  socio: number | null;
+
+  @ManyToOne(
+    () => Productores,
+    productores => productores.organizacions,
+    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "representante", referencedColumnName: "dni" }])
+  representante2: Productores;
 
   @ManyToOne(
     () => Vereda,
@@ -50,4 +63,12 @@ export class Organizacion {
     productores => productores.idOrganizacion2
   )
   productores: Productores[];
+
+  @ManyToOne(
+    () => Productores,
+    productores => productores.organizacions2,
+    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "socio", referencedColumnName: "dni" }])
+  socio2: Productores;
 }

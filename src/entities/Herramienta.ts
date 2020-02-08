@@ -16,11 +16,11 @@ export class Herramienta {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("varchar", { name: "descripcion", length: 100 })
-  descripcion: string;
+  @Column("varchar", { name: "descripcion", nullable: true, length: 100 })
+  descripcion: string | null;
 
-  @Column("int", { name: "id_tipo_herramienta" })
-  idTipoHerramienta: number;
+  @Column("int", { name: "id_tipo_herramienta", nullable: true })
+  idTipoHerramienta: number | null;
 
   @ManyToOne(
     () => TipoHerramienta,

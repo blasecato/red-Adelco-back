@@ -6,11 +6,11 @@ export class Kit {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "nombre" })
-  nombre: string;
+  @Column("longtext", { name: "nombre", nullable: true })
+  nombre: string | null;
 
-  @Column("longtext", { name: "image_acta" })
-  imageActa: string;
+  @Column("longtext", { name: "image_acta", nullable: true })
+  imageActa: string | null;
 
   @OneToMany(
     () => KitHerramienta,

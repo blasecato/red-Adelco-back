@@ -9,24 +9,24 @@ import {
 import { Productores } from "./Productores";
 import { Beneficio } from "./Beneficio";
 
-@Index("id_productor", ["idProductor"], {})
 @Index("id_beneficio", ["idBeneficio"], {})
+@Index("id_productor", ["idProductor"], {})
 @Entity("productores_beneficio", { schema: "redadelco" })
 export class ProductoresBeneficio {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("datetime", { name: "fecha_inicio" })
-  fechaInicio: Date;
+  @Column("datetime", { name: "fecha_inicio", nullable: true })
+  fechaInicio: Date | null;
 
-  @Column("datetime", { name: "fecha_fin" })
-  fechaFin: Date;
+  @Column("datetime", { name: "fecha_fin", nullable: true })
+  fechaFin: Date | null;
 
-  @Column("int", { name: "id_productor" })
-  idProductor: number;
+  @Column("varchar", { name: "id_productor", nullable: true, length: 45 })
+  idProductor: string | null;
 
-  @Column("int", { name: "id_beneficio" })
-  idBeneficio: number;
+  @Column("int", { name: "id_beneficio", nullable: true })
+  idBeneficio: number | null;
 
   @ManyToOne(
     () => Productores,
