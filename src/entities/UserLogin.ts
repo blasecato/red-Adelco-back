@@ -1,7 +1,7 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, BaseEntity } from "typeorm";
 
 @Entity("user_login", { schema: "redadelco" })
-export class UserLogin {
+export class UserLogin extends BaseEntity {
   @Column("int", { primary: true, name: "dni" })
   dni: number;
 
