@@ -7,8 +7,8 @@ export class ConfigService {
 
   constructor() { }
 
-  get jwt(): any {
-    return { JWT_SECRET: "mega_password" }
+  get jwt(): string {
+    return "mega_password"
   }
 
   get orm_config(): any {

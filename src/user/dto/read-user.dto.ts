@@ -1,6 +1,5 @@
 import { IsString, IsNumber } from 'class-validator';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ReadRoleDto } from '../../role/dto/read-role.dto';
 
 @Exclude()
 export class ReadUserDto {
@@ -16,7 +15,4 @@ export class ReadUserDto {
   @IsString()
   readonly email: string;
 
-  @Expose()
-  @Type(type => ReadRoleDto)
-  readonly roles: ReadRoleDto[];
 }
