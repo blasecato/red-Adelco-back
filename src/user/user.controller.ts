@@ -9,7 +9,7 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/getId/:id')
-  async getUser(@Param('id', ParseIntPipe) id: number) {
+  async getUser(@Param('id') id: number) {
     const user = await this._userService.get(id);
     return user;
   }

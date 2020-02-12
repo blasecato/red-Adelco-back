@@ -6,6 +6,9 @@ import { IndicadoresModule } from "./indicadores/indicadores.module";
 import ConfigService from "./common/config/config.service";
 import { UserModule } from "./user/userLogin.module";
 import { AuthModule } from './auth/auth.module';
+import { ProducersModule } from './producers/producers.module';
+import { GenderModule } from './gender/gender.module';
+import { RelationshipModule } from './relationship/relationship.module';
 
 @Module({
   imports: [
@@ -13,6 +16,9 @@ import { AuthModule } from './auth/auth.module';
     IndicadoresModule,
     UserModule,
     AuthModule,
+    ProducersModule,
+    GenderModule,
+    RelationshipModule,
   ],
   controllers: [AppController],
   providers: [AppService],

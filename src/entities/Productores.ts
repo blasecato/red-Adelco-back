@@ -4,7 +4,8 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany
+  OneToMany,
+  BaseEntity
 } from "typeorm";
 import { Cultivo } from "./Cultivo";
 import { Organizacion } from "./Organizacion";
@@ -30,7 +31,8 @@ import { CargoOrg } from "./CargoOrg";
 @Index("id_parentesco", ["idParentesco"], {})
 @Index("id_productor", ["idProductor"], {})
 @Entity("productores", { schema: "redadelco" })
-export class Productores {
+export class Productores extends BaseEntity {
+
   @Column("varchar", { name: "id", length: 145 })
   id: string;
 
