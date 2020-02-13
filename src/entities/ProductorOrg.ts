@@ -30,20 +30,4 @@ export class ProductorOrg {
   )
   @JoinColumn([{ name: "id_productor", referencedColumnName: "dni" }])
   idProductor2: Productores;
-
-  @ManyToOne(
-    () => Productores,
-    productores => productores.productorOrgs2,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_productor", referencedColumnName: "dni" }])
-  idProductor3: Productores;
-
-  @ManyToOne(
-    () => Productores,
-    productores => productores.productorOrgs3,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_productor", referencedColumnName: "dni" }])
-  idProductor4: Productores;
 }

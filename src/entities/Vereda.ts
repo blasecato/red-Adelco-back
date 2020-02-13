@@ -7,9 +7,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
+import { Cultivo } from "./Cultivo";
 import { Finca } from "./Finca";
-import { Infraestructura } from "./Infraestructura";
 import { Organizacion } from "./Organizacion";
+import { Infraestructura } from "./Infraestructura";
 import { Municipio } from "./Municipio";
 
 @Index("id_municipio", ["idMunicipio"], {})
@@ -25,22 +26,28 @@ export class Vereda {
   idMunicipio: number;
 
   @OneToMany(
+    () => Cultivo,
+    cultivo => cultivo.idVereda2
+  )
+  cultivos: Cultivo[];
+
+  @OneToMany(
     () => Finca,
     finca => finca.idVereda2
   )
   fincas: Finca[];
 
   @OneToMany(
-    () => Infraestructura,
-    infraestructura => infraestructura.idVereda2
-  )
-  infraestructuras: Infraestructura[];
-
-  @OneToMany(
     () => Organizacion,
     organizacion => organizacion.idVereda2
   )
   organizacions: Organizacion[];
+
+  @OneToMany(
+    () => Infraestructura,
+    infraestructura => infraestructura.idVereda2
+  )
+  infraestructuras: Infraestructura[];
 
   @ManyToOne(
     () => Municipio,

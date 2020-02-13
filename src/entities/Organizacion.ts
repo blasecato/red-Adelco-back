@@ -47,8 +47,8 @@ export class Organizacion {
     productores => productores.organizacions,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
-  @JoinColumn([{ name: "representante", referencedColumnName: "dni" }])
-  representante2: Productores;
+  @JoinColumn([{ name: "socio", referencedColumnName: "dni" }])
+  socio2: Productores;
 
   @ManyToOne(
     () => Vereda,
@@ -58,17 +58,17 @@ export class Organizacion {
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
   idVereda2: Vereda;
 
-  @OneToMany(
-    () => Productores,
-    productores => productores.idOrganizacion2
-  )
-  productores: Productores[];
-
   @ManyToOne(
     () => Productores,
     productores => productores.organizacions2,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
   )
-  @JoinColumn([{ name: "socio", referencedColumnName: "dni" }])
-  socio2: Productores;
+  @JoinColumn([{ name: "representante", referencedColumnName: "dni" }])
+  representante2: Productores;
+
+  @OneToMany(
+    () => Productores,
+    productores => productores.idOrganizacion2
+  )
+  productores: Productores[];
 }

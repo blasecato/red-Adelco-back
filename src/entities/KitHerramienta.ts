@@ -7,8 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Kit } from "./Kit";
 import { Herramienta } from "./Herramienta";
+import { Kit } from "./Kit";
 import { KitUser } from "./KitUser";
 
 @Index("id_herramienta", ["idHerramienta"], {})
@@ -25,20 +25,20 @@ export class KitHerramienta {
   idHerramienta: number | null;
 
   @ManyToOne(
-    () => Kit,
-    kit => kit.kitHerramientas,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_kit", referencedColumnName: "id" }])
-  idKit2: Kit;
-
-  @ManyToOne(
     () => Herramienta,
     herramienta => herramienta.kitHerramientas,
     { onDelete: "CASCADE", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "id_herramienta", referencedColumnName: "id" }])
   idHerramienta2: Herramienta;
+
+  @ManyToOne(
+    () => Kit,
+    kit => kit.kitHerramientas,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_kit", referencedColumnName: "id" }])
+  idKit2: Kit;
 
   @OneToMany(
     () => KitUser,

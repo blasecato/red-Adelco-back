@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { EnteConvenio } from "./EnteConvenio";
+import { Cultivo } from "./Cultivo";
 import { Vereda } from "./Vereda";
+import { EnteConvenio } from "./EnteConvenio";
 
 @Entity("municipio", { schema: "redadelco" })
 export class Municipio {
@@ -11,14 +12,20 @@ export class Municipio {
   nombre: string | null;
 
   @OneToMany(
-    () => EnteConvenio,
-    enteConvenio => enteConvenio.idMunicipio2
+    () => Cultivo,
+    cultivo => cultivo.idMunicipio2
   )
-  enteConvenios: EnteConvenio[];
+  cultivos: Cultivo[];
 
   @OneToMany(
     () => Vereda,
     vereda => vereda.idMunicipio2
   )
   veredas: Vereda[];
+
+  @OneToMany(
+    () => EnteConvenio,
+    enteConvenio => enteConvenio.idMunicipio2
+  )
+  enteConvenios: EnteConvenio[];
 }

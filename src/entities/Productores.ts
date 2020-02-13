@@ -4,21 +4,20 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany,
-  BaseEntity
+  OneToMany
 } from "typeorm";
 import { Cultivo } from "./Cultivo";
-import { Organizacion } from "./Organizacion";
-import { KitUser } from "./KitUser";
-import { ProductorOrg } from "./ProductorOrg";
-import { ProductoresBeneficio } from "./ProductoresBeneficio";
-import { Conflicto } from "./Conflicto";
-import { Parentesco } from "./Parentesco";
-import { Discapacidad } from "./Discapacidad";
 import { Genero } from "./Genero";
-import { Finca } from "./Finca";
+import { Organizacion } from "./Organizacion";
+import { Conflicto } from "./Conflicto";
+import { Discapacidad } from "./Discapacidad";
+import { ProductoresBeneficio } from "./ProductoresBeneficio";
+import { KitUser } from "./KitUser";
 import { GrupoEtnico } from "./GrupoEtnico";
+import { ProductorOrg } from "./ProductorOrg";
 import { CargoOrg } from "./CargoOrg";
+import { Parentesco } from "./Parentesco";
+import { Finca } from "./Finca";
 
 @Index("id", ["id"], {})
 @Index("id_cargo_org", ["idCargoOrg"], {})
@@ -31,8 +30,7 @@ import { CargoOrg } from "./CargoOrg";
 @Index("id_parentesco", ["idParentesco"], {})
 @Index("id_productor", ["idProductor"], {})
 @Entity("productores", { schema: "redadelco" })
-export class Productores extends BaseEntity {
-
+export class Productores {
   @Column("varchar", { name: "id", length: 145 })
   id: string;
 
@@ -83,45 +81,23 @@ export class Productores extends BaseEntity {
 
   @OneToMany(
     () => Cultivo,
-    cultivo => cultivo.idProductor2
+    cultivo => cultivo.dniProductor2
   )
   cultivos: Cultivo[];
 
+  @ManyToOne(
+    () => Genero,
+    genero => genero.productores,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_genero", referencedColumnName: "id" }])
+  idGenero2: Genero;
+
   @OneToMany(
     () => Organizacion,
-    organizacion => organizacion.representante2
+    organizacion => organizacion.socio2
   )
   organizacions: Organizacion[];
-
-  @OneToMany(
-    () => KitUser,
-    kitUser => kitUser.idProductor2
-  )
-  kitUsers: KitUser[];
-
-  @OneToMany(
-    () => ProductorOrg,
-    productorOrg => productorOrg.idProductor2
-  )
-  productorOrgs: ProductorOrg[];
-
-  @OneToMany(
-    () => ProductorOrg,
-    productorOrg => productorOrg.idProductor3
-  )
-  productorOrgs2: ProductorOrg[];
-
-  @OneToMany(
-    () => ProductorOrg,
-    productorOrg => productorOrg.idProductor4
-  )
-  productorOrgs3: ProductorOrg[];
-
-  @OneToMany(
-    () => ProductoresBeneficio,
-    productoresBeneficio => productoresBeneficio.idProductor2
-  )
-  productoresBeneficios: ProductoresBeneficio[];
 
   @ManyToOne(
     () => Conflicto,
@@ -132,14 +108,6 @@ export class Productores extends BaseEntity {
   idConflicto2: Conflicto;
 
   @ManyToOne(
-    () => Parentesco,
-    parentesco => parentesco.productores,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_parentesco", referencedColumnName: "id" }])
-  idParentesco2: Parentesco;
-
-  @ManyToOne(
     () => Discapacidad,
     discapacidad => discapacidad.productores,
     { onDelete: "CASCADE", onUpdate: "NO ACTION" }
@@ -147,37 +115,29 @@ export class Productores extends BaseEntity {
   @JoinColumn([{ name: "id_discapacitado", referencedColumnName: "id" }])
   idDiscapacitado2: Discapacidad;
 
-  @ManyToOne(
-    () => Genero,
-    genero => genero.productores,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  @OneToMany(
+    () => ProductoresBeneficio,
+    productoresBeneficio => productoresBeneficio.idProductor2
   )
-  @JoinColumn([{ name: "id_genero", referencedColumnName: "id" }])
-  idGenero2: Genero;
+  productoresBeneficios: ProductoresBeneficio[];
 
-  @ManyToOne(
+  @OneToMany(
+    () => KitUser,
+    kitUser => kitUser.idProductor2
+  )
+  kitUsers: KitUser[];
+
+  @OneToMany(
+    () => Cultivo,
+    cultivo => cultivo.codigoProductor2
+  )
+  cultivos2: Cultivo[];
+
+  @OneToMany(
     () => Organizacion,
-    organizacion => organizacion.productores,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    organizacion => organizacion.representante2
   )
-  @JoinColumn([{ name: "id_organizacion", referencedColumnName: "id" }])
-  idOrganizacion2: Organizacion;
-
-  @ManyToOne(
-    () => Finca,
-    finca => finca.productores,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_finca", referencedColumnName: "id" }])
-  idFinca2: Finca;
-
-  @ManyToOne(
-    () => GrupoEtnico,
-    grupoEtnico => grupoEtnico.productores,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_etnia", referencedColumnName: "id" }])
-  idEtnia2: GrupoEtnico;
+  organizacions2: Organizacion[];
 
   @ManyToOne(
     () => Productores,
@@ -194,6 +154,28 @@ export class Productores extends BaseEntity {
   productores: Productores[];
 
   @ManyToOne(
+    () => GrupoEtnico,
+    grupoEtnico => grupoEtnico.productores,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_etnia", referencedColumnName: "id" }])
+  idEtnia2: GrupoEtnico;
+
+  @ManyToOne(
+    () => Organizacion,
+    organizacion => organizacion.productores,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_organizacion", referencedColumnName: "id" }])
+  idOrganizacion2: Organizacion;
+
+  @OneToMany(
+    () => ProductorOrg,
+    productorOrg => productorOrg.idProductor2
+  )
+  productorOrgs: ProductorOrg[];
+
+  @ManyToOne(
     () => CargoOrg,
     cargoOrg => cargoOrg.productores,
     { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
@@ -201,9 +183,19 @@ export class Productores extends BaseEntity {
   @JoinColumn([{ name: "id_cargo_org", referencedColumnName: "id" }])
   idCargoOrg2: CargoOrg;
 
-  @OneToMany(
-    () => Organizacion,
-    organizacion => organizacion.socio2
+  @ManyToOne(
+    () => Parentesco,
+    parentesco => parentesco.productores,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
   )
-  organizacions2: Organizacion[];
+  @JoinColumn([{ name: "id_parentesco", referencedColumnName: "id" }])
+  idParentesco2: Parentesco;
+
+  @ManyToOne(
+    () => Finca,
+    finca => finca.productores,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_finca", referencedColumnName: "id" }])
+  idFinca2: Finca;
 }

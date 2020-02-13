@@ -7,8 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Diagnostico } from "./Diagnostico";
 import { Vereda } from "./Vereda";
+import { Diagnostico } from "./Diagnostico";
 import { Productores } from "./Productores";
 
 @Index("id_vereda", ["idVereda"], {})
@@ -29,12 +29,6 @@ export class Finca {
   @Column("int", { name: "id_vereda", nullable: true })
   idVereda: number | null;
 
-  @OneToMany(
-    () => Diagnostico,
-    diagnostico => diagnostico.idFinca2
-  )
-  diagnosticos: Diagnostico[];
-
   @ManyToOne(
     () => Vereda,
     vereda => vereda.fincas,
@@ -42,6 +36,12 @@ export class Finca {
   )
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
   idVereda2: Vereda;
+
+  @OneToMany(
+    () => Diagnostico,
+    diagnostico => diagnostico.idFinca2
+  )
+  diagnosticos: Diagnostico[];
 
   @OneToMany(
     () => Productores,

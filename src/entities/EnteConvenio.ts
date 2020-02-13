@@ -7,8 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Convenio } from "./Convenio";
 import { Municipio } from "./Municipio";
+import { Convenio } from "./Convenio";
 
 @Index("id_municipio", ["idMunicipio"], {})
 @Entity("ente_convenio", { schema: "redadelco" })
@@ -28,12 +28,6 @@ export class EnteConvenio {
   @Column("int", { name: "id_municipio", nullable: true })
   idMunicipio: number | null;
 
-  @OneToMany(
-    () => Convenio,
-    convenio => convenio.idEnteConvenio2
-  )
-  convenios: Convenio[];
-
   @ManyToOne(
     () => Municipio,
     municipio => municipio.enteConvenios,
@@ -41,4 +35,10 @@ export class EnteConvenio {
   )
   @JoinColumn([{ name: "id_municipio", referencedColumnName: "id" }])
   idMunicipio2: Municipio;
+
+  @OneToMany(
+    () => Convenio,
+    convenio => convenio.idEnteConvenio2
+  )
+  convenios: Convenio[];
 }
