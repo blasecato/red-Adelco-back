@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProducersModule } from './producers/producers.module';
 import { GenderModule } from './gender/gender.module';
 import { RelationshipModule } from './relationship/relationship.module';
+import { CropsModule } from './crops/crops.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { RelationshipModule } from './relationship/relationship.module';
     ProducersModule,
     GenderModule,
     RelationshipModule,
+    CropsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
