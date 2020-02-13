@@ -28,11 +28,18 @@ export class ProducersController {
     return genderCount;
   }
 
-  //@UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Get('relationship')
   async getRelationship() {
     const relationship = await this._ProducersService.getRelationship();
     return relationship;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('producer-date')
+  async getProducerDate() {
+    const producerDate = await this._ProducersService.getProducerDate();
+    return producerDate;
   }
 
   @UseGuards(AuthGuard('jwt'))
