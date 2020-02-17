@@ -48,7 +48,7 @@ export class AuthService {
       where: [{ user }, { dni }],
     });
 
-    if (userExists) throw new ConflictException('email already exists');
+    if (userExists) throw new ConflictException('email or dni already exists');
 
     const userselect = await this._authRepository.signup(signupUser);
 

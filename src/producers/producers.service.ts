@@ -114,7 +114,7 @@ export class ProducersService {
 
   async getProducerDate() {
     const producerDate = await this._ProducersRepository.createQueryBuilder("producer")
-      .select(["producer.id", "producer.nombres", "producer.dni", "producer.dni", "producer.edad", "producer.telefono"])
+      .select(["producer.id", "producer.nombres", "producer.apellidos", "producer.dni", "producer.edad", "producer.telefono"])
       .addSelect(["etnia.nombre", "gender.nombre", "organizacion.nombre", "conflicto.nombre", "discapacitado.nombre", "parentesco.nombre"])
       .innerJoin("producer.idGenero2", "gender")
       .innerJoin("producer.idEtnia2", "etnia")
