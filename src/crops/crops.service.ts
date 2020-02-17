@@ -10,7 +10,6 @@ export class CropsService {
     private readonly _CropsRepository: CropsRepository,
   ) { }
 
-
   async getCropsProducer() {
     const cropsProducer = await this._CropsRepository.createQueryBuilder("crops")
       .select(["crops.id", "crops.dniProductor", "crops.hectareas"])
