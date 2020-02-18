@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Get } from '@nestjs/common';
 import { organizationService } from './organization.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -10,8 +10,15 @@ export class organizationController {
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
   async createOrganization(@Body() signupOrganization) {
-    const producer = await this._organizationService.createOrganization(signupOrganization);
-    return producer;
+    const organization = await this._organizationService.createOrganization(signupOrganization);
+    return organization;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('getMunicipios')
+  async getMunicipios() {
+    const municipios = await this._organizationService.getMunicipio();
+    return municipios;
   }
 
 }
