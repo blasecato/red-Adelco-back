@@ -14,11 +14,11 @@ export class ConfigService {
   get orm_config(): any {
     return {
       type: 'mysql',
-      host: 'localhost',
+      host: '25.84.87.106',
       port: 3306,
-      username: 'root',
-      password: 'password',
-      database: 'redadelco',
+      username: 'tcsp_user',
+      password: 'WdDdQlrc1oU2ebYV',
+      database: 'tcsp_database',
       entities: ['dist/entities/*.js'],
       synchronize: true
     }
