@@ -4,6 +4,14 @@ import { ProducersRepository } from './producers.repository';
 import { Productores } from 'src/entities/Productores';
 import { GeneroRepository } from 'src/gender/gender.repository';
 import { RelationshipRepository } from 'src/relationship/relationship.repository';
+import { GrupoEtnico } from 'src/entities/GrupoEtnico';
+import { Repository } from 'typeorm';
+import { Cargo } from 'src/entities/Cargo';
+import { Parentesco } from 'src/entities/Parentesco';
+import { Discapacidad } from 'src/entities/Discapacidad';
+import { Conflicto } from 'src/entities/Conflicto';
+import { Organizacion } from 'src/entities/Organizacion';
+import { CargoOrg } from 'src/entities/CargoOrg';
 
 @Injectable()
 export class ProducersService {
@@ -15,6 +23,18 @@ export class ProducersService {
     private readonly _GeneroRepository: GeneroRepository,
     @InjectRepository(RelationshipRepository)
     private readonly _RelationshipRepository: RelationshipRepository,
+    @InjectRepository(GrupoEtnico)
+    private readonly GrupoEtnicoRepository: Repository<GrupoEtnico>,
+    @InjectRepository(CargoOrg)
+    private readonly CargoOrgRepository: Repository<CargoOrg>,
+    @InjectRepository(Parentesco)
+    private readonly ParentescoRepository: Repository<Parentesco>,
+    @InjectRepository(Discapacidad)
+    private readonly DiscapacidadRepository: Repository<Discapacidad>,
+    @InjectRepository(Conflicto)
+    private readonly ConflictoRepository: Repository<Conflicto>,
+    @InjectRepository(Organizacion)
+    private readonly OrganizacionRepository: Repository<Organizacion>,
   ) { }
 
   async createProducers(signupProducer) {
@@ -51,14 +71,13 @@ export class ProducersService {
 
     if (!producerExists) throw new ConflictException('producer does not exist');
 
-    const producers = await this._ProducersRepository.update(body.dni, {
-      idOrganizacion: body.idOrganizacion,
-      idEtnia: body.idEtnia,
-      idCargoOrg: body.idCargoOrg,
-      idZona: body.idZona,
-      idConflicto: body.idConflicto,
-      idParentesco: body.idParentesco,
-    })
+    console.log(body)
+
+    const producers = await this._ProducersRepository
+      .createQueryBuilder()
+      .update(Productores)
+      .set(body)
+      .where("dni = :id", { id: body.dni }).execute()
 
     return producers
   }
@@ -115,16 +134,32 @@ export class ProducersService {
   async getProducerDate() {
     const producerDate = await this._ProducersRepository.createQueryBuilder("producer")
       .select(["producer.id", "producer.nombres", "producer.apellidos", "producer.dni", "producer.edad", "producer.telefono"])
-      .addSelect(["etnia.nombre", "gender.nombre", "organizacion.nombre", "conflicto.nombre", "discapacitado.nombre", "parentesco.nombre"])
-      .innerJoin("producer.idGenero2", "gender")
-      .innerJoin("producer.idEtnia2", "etnia")
-      .innerJoin("producer.idOrganizacion2", "organizacion")
-      .innerJoin("producer.idConflicto2", "conflicto")
-      .innerJoin("producer.idDiscapacitado2", "discapacitado")
+      .addSelect(["etnia.nombre", "gender.nombre", "organizacion.nombre", "conflicto.nombre", "discapacitado.nombre", "parentesco.nombre", "productor.nombres"])
+      .leftJoin("producer.idGenero2", "gender")
+      .leftJoin("producer.idEtnia2", "etnia")
+      .leftJoin("producer.idOrganizacion2", "organizacion")
+      .leftJoin("producer.idConflicto2", "conflicto")
+      .leftJoin("producer.idDiscapacitado2", "discapacitado")
+      .leftJoin("producer.idProductor2", "productor")
       .innerJoin("producer.idParentesco2", "parentesco")
+      .leftJoinAndSelect("producer.idCargoOrg2", "cargoOrg")
       .getMany()
 
     return producerDate
+  }
+
+  async getProducerUpdate() {
+    const etnia = await this.GrupoEtnicoRepository.find({})
+    const cargoOrg = await this.CargoOrgRepository.find({})
+    const parentesco = await this.ParentescoRepository.find({})
+    const discapacidad = await this.DiscapacidadRepository.find({})
+    const conflicto = await this.ConflictoRepository.find({})
+    const organizacion = await this.OrganizacionRepository.find({})
+    const jefeFamily = await this._ProducersRepository.find({
+      where: { idParentesco: 1 }
+    })
+
+    return { etnia, cargo: cargoOrg, parentesco, discapacidad, conflicto, organizacion, jefeFamily }
   }
 
 }

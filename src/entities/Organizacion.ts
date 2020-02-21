@@ -5,7 +5,8 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  BaseEntity
 } from "typeorm";
 import { Productores } from "./Productores";
 import { Vereda } from "./Vereda";
@@ -14,7 +15,7 @@ import { Vereda } from "./Vereda";
 @Index("id_vereda", ["idVereda"], {})
 @Index("socio", ["socio"], {})
 @Entity("organizacion", { schema: "redadelco" })
-export class Organizacion {
+export class Organizacion extends BaseEntity {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
