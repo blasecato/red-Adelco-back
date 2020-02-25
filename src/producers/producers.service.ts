@@ -71,13 +71,12 @@ export class ProducersService {
 
     if (!producerExists) throw new ConflictException('producer does not exist');
 
-    console.log(body)
+    const { dni, ...results } = body
+
+    console.log(results)
 
     const producers = await this._ProducersRepository
-      .createQueryBuilder()
-      .update(Productores)
-      .set(body)
-      .where("dni = :id", { id: body.dni }).execute()
+      .update(dni, results)
 
     return producers
   }

@@ -21,4 +21,10 @@ export class organizationController {
     return municipios;
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  async getOrganizacion() {
+    return await this._organizationService.getOrganizacion();
+  }
+
 }

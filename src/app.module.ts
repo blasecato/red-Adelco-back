@@ -11,6 +11,7 @@ import { GenderModule } from './gender/gender.module';
 import { RelationshipModule } from './relationship/relationship.module';
 import { CropsModule } from './crops/crops.module';
 import { OrganizationModule } from './organization/organization.module';
+import { CadenasProductivasModule } from './cadenas-productivas/cadenas-productivas.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { OrganizationModule } from './organization/organization.module';
     GenderModule,
     RelationshipModule,
     CropsModule,
-    OrganizationModule
+    OrganizationModule,
+    CadenasProductivasModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -42,7 +42,7 @@ export class ProducersController {
     return producerDate;
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
   @Put('update')
   async updateProducer(@Body() updateProducer) {
     const producerUpdate = await this._ProducersService.updateProducer(updateProducer)

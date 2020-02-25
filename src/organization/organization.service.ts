@@ -30,9 +30,17 @@ export class organizationService {
   }
 
   async getMunicipio() {
-    const municipios = await this._MunicipioRepository.find({
+    const municipios = await this._OrganizationRepository.find({
       relations: ['veredas']
     })
     return municipios
+  }
+
+  async getOrganizacion() {
+    return await this._OrganizationRepository.createQueryBuilder("organization")
+      .leftJoinAndSelect("organization.idVereda2", "vereda")
+      .leftJoinAndSelect("organization.representante2", "representante")
+      .leftJoinAndSelect("vereda.idMunicipio2", "municipio")
+      .getMany()
   }
 }
