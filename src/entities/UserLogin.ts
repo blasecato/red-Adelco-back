@@ -16,4 +16,7 @@ export class UserLogin extends BaseEntity {
 
   @Column("varchar", { name: "cargo", length: 145 })
   cargo: string;
+
+  @Column("character varying", { nullable: false, length: '50', default: 'active' })
+  state: string;
 }
