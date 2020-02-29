@@ -1,5 +1,5 @@
-import { Repository, EntityRepository } from "typeorm";
-import { Cultivo } from "src/entities/Cultivo";
+import { Repository, EntityRepository } from 'typeorm';
+import { Cultivo } from '../entities/Cultivo';
 
 @EntityRepository(Cultivo)
 export class CropsRepository extends Repository<Cultivo>{ }
