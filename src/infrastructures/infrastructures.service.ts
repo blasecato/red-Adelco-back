@@ -1,0 +1,43 @@
+import { Injectable, ConflictException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Infraestructura } from 'src/entities/Infraestructura';
+import { Repository } from 'typeorm';
+import { TipoInfraestructura } from 'src/entities/TipoInfraestructura';
+import { Vereda } from 'src/entities/Vereda';
+
+@Injectable()
+export class InfrastructuresService {
+
+  constructor(
+    @InjectRepository(Infraestructura)
+    private readonly infraestructuraRepository: Repository<Infraestructura>,
+    @InjectRepository(TipoInfraestructura)
+    private readonly TipoInfraestructuraRepository: Repository<TipoInfraestructura>,
+    @InjectRepository(Vereda)
+    private readonly VeredaRepository: Repository<Vereda>
+  ) { }
+
+  async createInfrastructure(infraestructura) {
+    const { covertura, descripcion, direccion, idTypeInfraestructura, idVereda, nombre, planos, responsable } = infraestructura
+
+    const typeInfraestructura = await this.TipoInfraestructuraRepository.findOne({
+      where: { id: idTypeInfraestructura }
+    })
+
+    const vereda = await this.VeredaRepository.findOne({
+      where: { id: idVereda }
+    })
+
+    const newInfraestructura = new Infraestructura();
+    newInfraestructura.covertura = covertura;
+    newInfraestructura.descripcion = descripcion;
+    newInfraestructura.direccion = direccion;
+    newInfraestructura.idTipoObra2 = typeInfraestructura;
+    newInfraestructura.idVereda2 = vereda;
+    newInfraestructura.nombre = nombre;
+    newInfraestructura.planos = planos;
+    newInfraestructura.responsable = responsable;
+
+    return await newInfraestructura.save()
+  }
+}
