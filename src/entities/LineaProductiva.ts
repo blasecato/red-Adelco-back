@@ -28,11 +28,7 @@ export class LineaProductiva {
   )
   cultivos: Cultivo[];
 
-  @ManyToOne(
-    () => CadenaProductiva,
-    cadenaProductiva => cadenaProductiva.lineaProductivas,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
+  @ManyToOne(() => CadenaProductiva,cadenaProductiva => cadenaProductiva.lineaProductivas,{ onDelete: "CASCADE", onUpdate: "NO ACTION" })
   @JoinColumn([{ name: "id_cadena_productiva", referencedColumnName: "id" }])
   idCadenaProductiva2: CadenaProductiva;
 }
