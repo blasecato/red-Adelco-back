@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Body } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UpdateCropDto } from './dto/updateCrop.dto';
 import { CropsRepository } from './crops.repository';
 import { Productores } from 'src/entities/Productores';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class CropsService {
@@ -33,5 +34,19 @@ export class CropsService {
 
   async createCrop(crop) {
     this._CropsRepository.save(crop)
+  }
+
+  async updateCrop(body: UpdateCropDto) {
+    const exist = this._CropsRepository.findOne({ where: { id: body.idCrop } })
+    if (!exist)
+      return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no existe' }
+
+    try {
+      await this._CropsRepository.update(body.idCrop, body)
+      return { success: 'OK' }
+    } catch (error) {
+      return error;
+    }
+
   }
 }

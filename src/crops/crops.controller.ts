@@ -1,6 +1,8 @@
-import { Controller, UseGuards, Get, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Get, Body, Post, Put } from '@nestjs/common';
 import { CropsService } from './crops.service';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateCropDto } from './dto/updateCrop.dto';
+import { CreateCropDto } from './dto/createCrop.dto';
 
 @Controller('crops')
 export class CropsController {
@@ -14,8 +16,8 @@ export class CropsController {
     return genderCount;
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('producer')
+  //@UseGuards(AuthGuard('jwt'))
+  @Get('date-crop')
   async geDateCrop() {
     return await this._CropsService.geDateCrop();
   }
@@ -25,4 +27,10 @@ export class CropsController {
   async createCrop(@Body() crop) {
     return await this._CropsService.createCrop(crop)
   }
+
+  @Put('update')
+  async updateCrop(@Body() body: UpdateCropDto) {
+    return await this._CropsService.updateCrop(body)
+  }
+
 }

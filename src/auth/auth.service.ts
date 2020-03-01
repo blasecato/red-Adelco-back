@@ -5,6 +5,7 @@ import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { AuthRepository } from './auth.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +41,18 @@ export class AuthService {
     return { token };
   }
 
+  async login2(body: LoginDto) {
+    const user = await this._userService.isExist(body)
+
+    if (!user)
+      return { error: "USER_NOT_EXIST", detail: "Tu correo electronico o contraseña no son válidos." }
+    else if (user.state === 'inactive')
+      return { error: "USER_INACTIVE", detail: "Usuario inactivo." }
+
+    delete user.state;
+    return user;
+  }
+
   async signup(signupUser) {
 
     const { user, dni } = signupUser;
@@ -61,4 +74,5 @@ export class AuthService {
     const token = this._jwtService.sign(payload);
     return { token };
   }
+
 }
