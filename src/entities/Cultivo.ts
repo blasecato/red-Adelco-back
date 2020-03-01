@@ -32,9 +32,9 @@ export class Cultivo {
   @Column("date", { name: "fecha_inicio", nullable: true })
   fechaInicio: string | null;
 
- /*  @Column("int", { name: "id_linea_productiva", nullable: true })
+  @Column("int", { name: "id_linea_productiva", nullable: true })
   idLineaProductiva: number | null;
- */
+
   @Column("varchar", { name: "codigo_productor", nullable: true, length: 45 })
   codigoProductor: string | null;
 
