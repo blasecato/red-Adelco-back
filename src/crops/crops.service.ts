@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CropsRepository } from './crops.repository';
+import { Productores } from 'src/entities/Productores';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CropsService {
@@ -8,6 +10,8 @@ export class CropsService {
   constructor(
     @InjectRepository(CropsRepository)
     private readonly _CropsRepository: CropsRepository,
+    @InjectRepository(Productores)
+    private readonly ProductoresRepository: Repository<Productores>,
   ) { }
 
   async getCropsProducer() {
@@ -21,5 +25,13 @@ export class CropsService {
       .getMany()
 
     return cropsProducer
+  }
+
+  async geDateCrop() {
+    return await this.ProductoresRepository.find({})
+  }
+
+  async createCrop(crop) {
+    this._CropsRepository.save(crop)
   }
 }
