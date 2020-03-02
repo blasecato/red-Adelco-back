@@ -4,6 +4,7 @@ import { Infraestructura } from 'src/entities/Infraestructura';
 import { Repository } from 'typeorm';
 import { TipoInfraestructura } from 'src/entities/TipoInfraestructura';
 import { Vereda } from 'src/entities/Vereda';
+import { Municipio } from 'src/entities/Municipio';
 
 @Injectable()
 export class InfrastructuresService {
@@ -14,7 +15,9 @@ export class InfrastructuresService {
     @InjectRepository(TipoInfraestructura)
     private readonly TipoInfraestructuraRepository: Repository<TipoInfraestructura>,
     @InjectRepository(Vereda)
-    private readonly VeredaRepository: Repository<Vereda>
+    private readonly VeredaRepository: Repository<Vereda>,
+    @InjectRepository(Municipio)
+    private readonly municipioRepository: Repository<Municipio>
   ) { }
 
   async createInfrastructure(infraestructura) {
@@ -39,5 +42,22 @@ export class InfrastructuresService {
     newInfraestructura.responsable = responsable;
 
     return await newInfraestructura.save()
+  }
+
+  async getInfraestructura() {
+    return await this.infraestructuraRepository.createQueryBuilder("infraestructura")
+      .leftJoinAndSelect("infraestructura.idVereda2", "vereda")
+      .leftJoinAndSelect("vereda.idMunicipio2", "municipio")
+      .getMany()
+  }
+
+  async getDateInfra() {
+    const municipio = await this.municipioRepository.find({
+      relations: ['veredas']
+    })
+
+    const typeInfraestructura = await this.TipoInfraestructuraRepository.find({})
+
+    return { municipio, typeInfraestructura }
   }
 }

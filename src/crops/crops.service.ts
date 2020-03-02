@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { UpdateCropDto } from './dto/updateCrop.dto';
 import { CropsRepository } from './crops.repository';
 import { Productores } from 'src/entities/Productores';
+import { LineaProductiva } from 'src/entities/LineaProductiva';
+import { Municipio } from 'src/entities/Municipio';
 
 @Injectable()
 export class CropsService {
@@ -13,6 +15,10 @@ export class CropsService {
     private readonly _CropsRepository: CropsRepository,
     @InjectRepository(Productores)
     private readonly ProductoresRepository: Repository<Productores>,
+    @InjectRepository(LineaProductiva)
+    private readonly lineaProductivaRepository: Repository<LineaProductiva>,
+    @InjectRepository(Municipio)
+    private readonly municipioRepository: Repository<Municipio>,
   ) { }
 
   async getCropsProducer() {
@@ -29,11 +35,17 @@ export class CropsService {
   }
 
   async geDateCrop() {
-    return await this.ProductoresRepository.find({})
+    const productores = await this.ProductoresRepository.find({})
+    const linea = await this.lineaProductivaRepository.find({})
+    const municipio = await this.municipioRepository.find({
+      relations: ['veredas']
+    })
+
+    return { productores, linea, municipio }
   }
 
   async createCrop(crop) {
-    this._CropsRepository.save(crop)
+    return this._CropsRepository.save(crop)
   }
 
   async updateCrop(body: UpdateCropDto) {

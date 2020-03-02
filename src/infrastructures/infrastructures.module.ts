@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Infraestructura } from 'src/entities/Infraestructura';
 import { TipoInfraestructura } from 'src/entities/TipoInfraestructura';
 import { Vereda } from 'src/entities/Vereda';
+import { Municipio } from 'src/entities/Municipio';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Infraestructura, TipoInfraestructura, Vereda]),
+    TypeOrmModule.forFeature([Infraestructura, TipoInfraestructura, Vereda, Municipio]),
   ],
   controllers: [InfrastructuresController],
   providers: [InfrastructuresService]
