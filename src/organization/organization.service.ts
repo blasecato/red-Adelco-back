@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Organizacion } from 'src/entities/Organizacion';
 import { Repository } from 'typeorm';
 import { Municipio } from 'src/entities/Municipio';
+import { UpdateOrganizationDto } from './dto/updateOrganization.dto';
 
 @Injectable()
 export class organizationService {
@@ -42,5 +43,15 @@ export class organizationService {
       .leftJoinAndSelect("organization.representante2", "representante")
       .leftJoinAndSelect("vereda.idMunicipio2", "municipio")
       .getMany()
+  }
+
+  async updateOrganization(body: UpdateOrganizationDto) {
+    const exist = await this._OrganizationRepository.findOne({ select: ["nombre"], where: { id: body.id } })
+    if (!exist)
+      return { error: 'ORGANIZATION_NOT_EXIST', detail: '¡La Organización no existe!' }
+
+    await this._OrganizationRepository.update(body.id, body)
+
+    return { success: 'OK' }
   }
 }
