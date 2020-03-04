@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { TipoInfraestructura } from 'src/entities/TipoInfraestructura';
 import { Vereda } from 'src/entities/Vereda';
 import { Municipio } from 'src/entities/Municipio';
+import { UpdateInfrastructureDto } from './dto/updateInfrastructure.dto';
 
 @Injectable()
 export class InfrastructuresService {
@@ -59,5 +60,27 @@ export class InfrastructuresService {
     const typeInfraestructura = await this.TipoInfraestructuraRepository.find({})
 
     return { municipio, typeInfraestructura }
+  }
+
+  async updateInfrastructure(body: UpdateInfrastructureDto) {
+    const exist = await this.infraestructuraRepository.findOne({ select: ["nombre"], where: { id: body.id } })
+    if (!exist)
+      return { error: 'INFRASTRUCTURE_NOT_EXIST', detail: '¡La Infrastructura no existe!' }
+
+    const response = await this.infraestructuraRepository.update(body.id, {
+      nombre: body.nombre,
+      descripcion: body.descripcion,
+      planos: body.planos,
+      direccion: body.direccion,
+      responsable: body.responsable,
+      covertura: body.covertura,
+      idTipoObra2: { id: body.idTipoObra },
+      idVereda2: { id: body.idVereda },
+    })
+
+    if (!response)
+      return { error: 'DATA_ENTERED_INCORRECTLY', detail: '¡Los datos se han ingresado incorrectamente!' }
+
+    return { success: 'OK' }
   }
 }
