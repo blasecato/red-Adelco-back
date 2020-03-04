@@ -25,9 +25,8 @@ export class UpdateCropDto {
   @IsOptional()
   idAcepta: number;
 
-  @IsNumber()
   @IsOptional()
-  dniProductor: number;
+  dniProductor: string;
 
   @IsNumber()
   @IsOptional()

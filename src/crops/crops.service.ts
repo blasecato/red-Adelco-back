@@ -54,7 +54,16 @@ export class CropsService {
       return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no existe' }
 
     try {
-      await this._CropsRepository.update(body.idCrop, body)
+      await this._CropsRepository.update(body.idCrop, {
+        hectareas: body.hectareas,
+        fechaInicio: body.fechaInicio,
+        idLineaProductiva2: { id: body.idLineaProductiva },
+        codigoProductor2: { id: body.codigoProductor },
+        idAcepta2: { id: body.idAcepta },
+        dniProductor2: { id: body.dniProductor },
+        idMunicipio2: { id: body.idMunicipio },
+        idVereda2: { id: body.idVereda },
+      })
       return { success: 'OK' }
     } catch (error) {
       return error;
