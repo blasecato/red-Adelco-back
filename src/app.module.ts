@@ -13,6 +13,7 @@ import { CropsModule } from './crops/crops.module';
 import { OrganizationModule } from './organization/organization.module';
 import { CadenasProductivasModule } from './cadenas-productivas/cadenas-productivas.module';
 import { InfrastructuresModule } from './infrastructures/infrastructures.module';
+import { MunicipalityModule } from './municipality/municipality.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { InfrastructuresModule } from './infrastructures/infrastructures.module'
     CropsModule,
     OrganizationModule,
     CadenasProductivasModule,
-    InfrastructuresModule
+    InfrastructuresModule,
+    MunicipalityModule
   ],
   controllers: [AppController],
   providers: [AppService],
