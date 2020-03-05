@@ -13,5 +13,5 @@ export class TipoInfraestructura {
     () => Infraestructura,
     infraestructura => infraestructura.idTipoObra2
   )
-  infraestructuras: Infraestructura[];
-}
+  infraestructuras: Infraestructura[]; 
+} 

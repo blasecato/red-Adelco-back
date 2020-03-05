@@ -70,7 +70,7 @@ export class Cultivo {
   @JoinColumn([{ name: "codigo_productor", referencedColumnName: "id" }])
   codigoProductor2: Productores;
 
-  @ManyToOne(type => LineaProductiva, lineaProductiva => lineaProductiva.cultivos, { onDelete: "CASCADE", onUpdate: "NO ACTION" })
+  @ManyToOne(type => LineaProductiva, lineaProductiva => lineaProductiva.cultivos, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_linea_productiva", referencedColumnName: "id" }])
   idLineaProductiva2: LineaProductiva;
 
