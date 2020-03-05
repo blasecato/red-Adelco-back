@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateCropDto {
 
@@ -9,20 +9,24 @@ export class CreateCropDto {
     fechaInicio: string;
 
     @IsNumber()
+    @IsOptional()
     idLineaProductiva: number;
 
-    @IsString()
+    @IsOptional()
     codigoProductor: string;
 
     @IsNumber()
+    @IsOptional()
     idAcepta: number;
 
-    @IsNumber()
+    @IsOptional()
     dniProductor: number;
 
     @IsNumber()
+    @IsOptional()
     idMunicipio: number;
 
     @IsNumber()
+    @IsOptional()
     idVereda: number;
 }

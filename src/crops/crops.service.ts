@@ -2,23 +2,20 @@ import { Injectable, Body } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateCropDto } from './dto/updateCrop.dto';
-import { CropsRepository } from './crops.repository';
-import { Productores } from 'src/entities/Productores';
-import { LineaProductiva } from 'src/entities/LineaProductiva';
-import { Municipio } from 'src/entities/Municipio';
+import { CreateCropDto } from './dto/createCrop.dto';
+import { Municipio } from '../entities/Municipio';
+import { Productores } from '../entities/Productores';
+import { Cultivo } from '../entities/Cultivo';
+import { LineaProductiva } from '../entities/LineaProductiva';
 
 @Injectable()
 export class CropsService {
 
   constructor(
-    @InjectRepository(CropsRepository)
-    private readonly _CropsRepository: CropsRepository,
-    @InjectRepository(Productores)
-    private readonly ProductoresRepository: Repository<Productores>,
-    @InjectRepository(LineaProductiva)
-    private readonly lineaProductivaRepository: Repository<LineaProductiva>,
-    @InjectRepository(Municipio)
-    private readonly municipioRepository: Repository<Municipio>,
+    @InjectRepository(Cultivo) private readonly _CropsRepository: Repository<Cultivo>,
+    @InjectRepository(Productores) private readonly ProductoresRepository: Repository<Productores>,
+    @InjectRepository(LineaProductiva) private readonly lineaProductivaRepository: Repository<LineaProductiva>,
+    @InjectRepository(Municipio) private readonly municipioRepository: Repository<Municipio>,
   ) { }
 
   async getCropsProducer() {
@@ -44,12 +41,18 @@ export class CropsService {
     return { productores, linea, municipio }
   }
 
-  async createCrop(crop) {
-    return this._CropsRepository.save(crop)
+  async createCrop(body: CreateCropDto) {
+    try {
+      await this._CropsRepository.save(body)
+       
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
   }
 
   async updateCrop(body: UpdateCropDto) {
-    const exist = this._CropsRepository.findOne({ where: { id: body.idCrop } })
+    const exist = await this._CropsRepository.findOne({ where: { id: body.idCrop } })
     if (!exist)
       return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no existe' }
 
