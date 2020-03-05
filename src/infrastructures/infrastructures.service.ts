@@ -67,16 +67,7 @@ export class InfrastructuresService {
     if (!exist)
       return { error: 'INFRASTRUCTURE_NOT_EXIST', detail: '¡La Infrastructura no existe!' }
 
-    const response = await this.infraestructuraRepository.update(body.id, {
-      nombre: body.nombre,
-      descripcion: body.descripcion,
-      planos: body.planos,
-      direccion: body.direccion,
-      responsable: body.responsable,
-      covertura: body.covertura,
-      idTipoObra2: { id: body.idTipoObra },
-      idVereda2: { id: body.idVereda },
-    })
+    const response = await this.infraestructuraRepository.update(body.id, body)
 
     if (!response)
       return { error: 'DATA_ENTERED_INCORRECTLY', detail: '¡Los datos se han ingresado incorrectamente!' }
