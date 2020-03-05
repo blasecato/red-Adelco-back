@@ -16,10 +16,7 @@ export class MunicipalityService {
 
   async createTown(body: CreateTownDto) {
     try {
-      await this.townRepository.save({
-        nombre: body.nombre,
-        idMunicipio2: { id: body.idMunicipio }
-      })
+      await this.townRepository.save(body)
       return { success: 'OK' }
     } catch (error) {
       return { error }
