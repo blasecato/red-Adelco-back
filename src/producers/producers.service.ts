@@ -1,40 +1,34 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProducersRepository } from './producers.repository';
-import { Productores } from 'src/entities/Productores';
-import { GeneroRepository } from 'src/gender/gender.repository';
-import { RelationshipRepository } from 'src/relationship/relationship.repository';
-import { GrupoEtnico } from 'src/entities/GrupoEtnico';
 import { Repository } from 'typeorm';
-import { Cargo } from 'src/entities/Cargo';
-import { Parentesco } from 'src/entities/Parentesco';
-import { Discapacidad } from 'src/entities/Discapacidad';
-import { Conflicto } from 'src/entities/Conflicto';
-import { Organizacion } from 'src/entities/Organizacion';
-import { CargoOrg } from 'src/entities/CargoOrg';
+import { ProducersRepository } from './producers.repository';
+import { GeneroRepository } from '../gender/gender.repository';
+import { Discapacidad } from '../entities/Discapacidad';
+import { Organizacion } from '../entities/Organizacion';
+import { CropsService } from '../crops/crops.service';
+import { Productores } from '../entities/Productores';
+import { GrupoEtnico } from '../entities/GrupoEtnico';
+import { Parentesco } from '../entities/Parentesco';
+import { Conflicto } from '../entities/Conflicto';
+import { CargoOrg } from '../entities/CargoOrg';
+import { RelationshipRepository } from '../relationship/relationship.repository';
+import { Cultivo } from 'src/entities/Cultivo';
+import { relative } from 'path';
 
 @Injectable()
 export class ProducersService {
 
   constructor(
-    @InjectRepository(ProducersRepository)
-    private readonly _ProducersRepository: ProducersRepository,
-    @InjectRepository(GeneroRepository)
-    private readonly _GeneroRepository: GeneroRepository,
-    @InjectRepository(RelationshipRepository)
-    private readonly _RelationshipRepository: RelationshipRepository,
-    @InjectRepository(GrupoEtnico)
-    private readonly GrupoEtnicoRepository: Repository<GrupoEtnico>,
-    @InjectRepository(CargoOrg)
-    private readonly CargoOrgRepository: Repository<CargoOrg>,
-    @InjectRepository(Parentesco)
-    private readonly ParentescoRepository: Repository<Parentesco>,
-    @InjectRepository(Discapacidad)
-    private readonly DiscapacidadRepository: Repository<Discapacidad>,
-    @InjectRepository(Conflicto)
-    private readonly ConflictoRepository: Repository<Conflicto>,
-    @InjectRepository(Organizacion)
-    private readonly OrganizacionRepository: Repository<Organizacion>,
+    @InjectRepository(ProducersRepository) private readonly _ProducersRepository: ProducersRepository,
+    @InjectRepository(GeneroRepository) private readonly _GeneroRepository: GeneroRepository,
+    @InjectRepository(RelationshipRepository) private readonly _RelationshipRepository: RelationshipRepository,
+    @InjectRepository(GrupoEtnico) private readonly GrupoEtnicoRepository: Repository<GrupoEtnico>,
+    @InjectRepository(CargoOrg) private readonly CargoOrgRepository: Repository<CargoOrg>,
+    @InjectRepository(Parentesco) private readonly ParentescoRepository: Repository<Parentesco>,
+    @InjectRepository(Discapacidad) private readonly DiscapacidadRepository: Repository<Discapacidad>,
+    @InjectRepository(Conflicto) private readonly ConflictoRepository: Repository<Conflicto>,
+    @InjectRepository(Organizacion) private readonly OrganizacionRepository: Repository<Organizacion>,
+    @InjectRepository(Cultivo) private readonly cropRepository: Repository<Cultivo>
   ) { }
 
   async createProducers(signupProducer) {
@@ -159,6 +153,70 @@ export class ProducersService {
     })
 
     return { etnia, cargo: cargoOrg, parentesco, discapacidad, conflicto, organizacion, jefeFamily }
+  }
+
+  async getCoutCropsProducer(dniproducer: number) {
+    return await this.cropRepository.createQueryBuilder()
+      .select('count(Cultivo.id)', 'countCrops')
+      .innerJoin('Cultivo.dniProductor2', 'Productor')
+      .where('Productor.dni = :dniproducer', { dniproducer })
+      .getRawOne();
+  }
+
+  async getCropsProducersProductiveLine(dniproducer: number) {
+    const countCrops = await this.getCoutCropsProducer(dniproducer)
+    const response = await this.cropRepository.createQueryBuilder()
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
+      .addSelect(['Genero.nombre'])
+      .addSelect(['Municipio.nombre'])
+      .addSelect(['Vereda.nombre'])
+      .addSelect(['LineaProductiva.nombre'])
+      .addSelect(['CadenaProductiva.nombre'])
+      .innerJoin('Cultivo.dniProductor2', 'Productor')
+      .innerJoin('Productor.idGenero2', 'Genero')
+      .innerJoin('Cultivo.idMunicipio2', 'Municipio')
+      .innerJoin('Cultivo.idVereda2', 'Vereda')
+      .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
+      .innerJoin('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
+      .where('Productor.dni =:dniproducer', { dniproducer })
+      .getMany();
+
+    return { countCrops, response }
+  }
+
+  async getProductorVictimsOrExcombatants() {
+    const victimsProducurs = await this._ProducersRepository.createQueryBuilder()
+      .select(['Productores.nombres', 'Productores.apellidos', 'Productores.dni', 'Productores.edad', 'Productores.telefono'])
+      .addSelect(['Genero.nombre'])
+      .addSelect(['Conflicto.nombre'])
+      .innerJoin('Productores.cultivos2', 'Cultivo')
+      .innerJoin('Productores.idGenero2', 'Genero')
+      .innerJoin('Productores.idConflicto2', 'Conflicto')
+      .where("Conflicto.nombre= 'Victima'")
+      .getMany()
+
+    const excombatantsProducurs = await this._ProducersRepository.createQueryBuilder()
+      .select(['Productores.nombres', 'Productores.apellidos', 'Productores.dni', 'Productores.edad', 'Productores.telefono'])
+      .addSelect(['Genero.nombre'])
+      .addSelect(['Conflicto.nombre'])
+      .innerJoin('Productores.cultivos2', 'Cultivo')
+      .innerJoin('Productores.idGenero2', 'Genero')
+      .innerJoin('Productores.idConflicto2', 'Conflicto')
+      .where("Conflicto.nombre = 'Excombatiente'")
+      .getMany()
+
+    const notApplyProducurs = await this._ProducersRepository.createQueryBuilder()
+      .select(['Productores.nombres', 'Productores.apellidos', 'Productores.dni', 'Productores.edad', 'Productores.telefono'])
+      .addSelect(['Genero.nombre'])
+      .addSelect(['Conflicto.nombre'])
+      .innerJoin('Productores.cultivos2', 'Cultivo')
+      .innerJoin('Productores.idGenero2', 'Genero')
+      .innerJoin('Productores.idConflicto2', 'Conflicto')
+      .where("Conflicto.nombre = 'No Aplica'")
+      .getMany()
+
+    return { victimsProducurs, excombatantsProducurs, notApplyProducurs }
   }
 
 }

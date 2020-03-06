@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Post, Body, Put, Param } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Body, Put, Param, Query } from '@nestjs/common';
 import { ProducersService } from './producers.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -54,5 +54,15 @@ export class ProducersController {
   async DateUpdateProducer() {
     const producerUpdate = await this._ProducersService.getProducerUpdate()
     return producerUpdate
+  }
+
+  @Get('get/count-crops/productiveline')
+  async getCropsProducersProductiveLine(@Query('dniproducer') dniproducer: number) {
+    return await this._ProducersService.getCropsProducersProductiveLine(dniproducer);
+  }
+
+  @Get('get/excombatant-victims')
+  async getProductorVictimsOrExcombatants() {
+    return await this._ProducersService.getProductorVictimsOrExcombatants();
   }
 }
