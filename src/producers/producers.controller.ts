@@ -65,4 +65,9 @@ export class ProducersController {
   async getProductorVictimsOrExcombatants() {
     return await this._ProducersService.getProductorVictimsOrExcombatants();
   }
+
+  @Get('get/producurs-organization')
+  async getAllDataProducurs(@Query('dniproducer') dniproducer: number) {
+    return await this._ProducersService.getAllDataProducurs(dniproducer);
+  }
 }
