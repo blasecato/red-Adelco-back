@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, Get, Put } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Get, Put, Query } from '@nestjs/common';
 import { organizationService } from './organization.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateOrganizationDto } from './dto/updateOrganization.dto';
@@ -33,4 +33,8 @@ export class organizationController {
     return await this._organizationService.updateOrganization(body);
   }
 
+  @Get('count/persons-organization')
+  async countPersonsOrganization(@Query('idOrganization') idOrganization: number) {
+    return await this._organizationService.countPersonsOrganization(idOrganization);
+  }
 }
