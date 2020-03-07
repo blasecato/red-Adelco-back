@@ -35,4 +35,20 @@ export class MunicipalityService {
     return await this.municipalityRepository.find({ relations: ["veredas"], where: { id: idMunicipio } })
   }
 
+  async getMunicipalityByTown(idTown: number) {
+    return await this.municipalityRepository.createQueryBuilder()
+      .select(['Municipio.nombre'])
+      .innerJoin('Municipio.veredas', 'vereda')
+      .where('vereda.id=:idTown', { idTown })
+      .getOne()
+  }
+  async quantityOrganizationsMunicipality(municipalityId: number) {
+    return await this.municipalityRepository.createQueryBuilder()
+      .select(['Municipio.nombre'])
+      .addSelect('count(Organizacion.id)', 'countOrganizacion')
+      .innerJoin('Municipio.veredas', 'Vereda')
+      .innerJoin('Vereda.organizacions', 'Organizacion')
+      .where('Municipio.id =:municipalityId', { municipalityId })
+      .getRawMany();
+  }
 }

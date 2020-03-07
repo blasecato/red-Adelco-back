@@ -37,4 +37,5 @@ export class organizationController {
   async countPersonsOrganization(@Query('idOrganization') idOrganization: number) {
     return await this._organizationService.countPersonsOrganization(idOrganization);
   }
+
 }
