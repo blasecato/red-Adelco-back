@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { CropsController } from './crops.controller';
-import { CropsService } from './crops.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CropsRepository } from './crops.repository';
+import { CropsService } from './crops.service';
+import { Cultivo } from '../entities/Cultivo';
+import { Municipio } from '../entities/Municipio';
+import { Productores } from '../entities/Productores';
+import { LineaProductiva } from '../entities/LineaProductiva';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CropsRepository]),
+    TypeOrmModule.forFeature([Cultivo, Productores, LineaProductiva, Municipio]),
   ],
   controllers: [CropsController],
   providers: [CropsService]

@@ -1,15 +1,8 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  BaseEntity
-} from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
 import { Productores } from "./Productores";
 import { Vereda } from "./Vereda";
+import { Ico } from "./Ico";
+import { Aft } from "./Aft";
 
 @Index("id_representante", ["representante"], {})
 @Index("id_vereda", ["idVereda"], {})
@@ -42,7 +35,11 @@ export class Organizacion extends BaseEntity {
 
   @Column("int", { name: "socio", nullable: true })
   socio: number | null;
-
+  @OneToMany(
+    () => Aft,
+    aft => aft.idOrganizacion2
+  )
+  afts: Aft[];
   @ManyToOne(
     () => Productores,
     productores => productores.organizacions,
@@ -72,4 +69,11 @@ export class Organizacion extends BaseEntity {
     productores => productores.idOrganizacion2
   )
   productores: Productores[];
+  @ManyToOne(
+    () => Ico,
+    ico => ico.organizacions,
+    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_ico", referencedColumnName: "id" }])
+  idIco2: Ico;
 }

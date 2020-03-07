@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
 import { Convenio } from "./Convenio";
 import { TipoInfraestructura } from "./TipoInfraestructura";
 import { Vereda } from "./Vereda";
@@ -14,7 +6,7 @@ import { Vereda } from "./Vereda";
 @Index("id_tipo_obra", ["idTipoObra"], {})
 @Index("id_vereda", ["idVereda"], {})
 @Entity("infraestructura", { schema: "redadelco" })
-export class Infraestructura {
+export class Infraestructura extends BaseEntity {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
@@ -48,18 +40,13 @@ export class Infraestructura {
   )
   convenios: Convenio[];
 
-  @ManyToOne(
-    () => TipoInfraestructura,
-    tipoInfraestructura => tipoInfraestructura.infraestructuras,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  @ManyToOne(() => TipoInfraestructura, tipoInfraestructura => tipoInfraestructura.infraestructuras,
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_tipo_obra", referencedColumnName: "id" }])
   idTipoObra2: TipoInfraestructura;
 
-  @ManyToOne(
-    () => Vereda,
-    vereda => vereda.infraestructuras,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  @ManyToOne(() => Vereda, vereda => vereda.infraestructuras, { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
   idVereda2: Vereda;

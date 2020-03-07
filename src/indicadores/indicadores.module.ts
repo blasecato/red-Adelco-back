@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { IndicadoresController } from './Indicadores.controller';
-import { IndicadoresService } from './Indicadores.service';
+import { IndicadoresController } from './indicadores.controller';
+import { IndicadoresService } from './indicadores.service';
 import { Indicadores } from "../entities/Indicadores";
 
 @Module({

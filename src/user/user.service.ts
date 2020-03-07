@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { UserRepository } from "./user.repository";
 import { InjectRepository } from "@nestjs/typeorm";
+import { LoginDto } from "src/auth/dto/login.dto";
 
 @Injectable()
 export class UserService {
@@ -17,6 +18,9 @@ export class UserService {
     if (!userFind) throw new BadRequestException("email does not exist");
 
     return userFind
+  }
+  async isExist(body: LoginDto) {
+    return await this._userRepository.findOne({ select: ["dni", "user", "state"], where: body });
   }
 
   async getAll() {
