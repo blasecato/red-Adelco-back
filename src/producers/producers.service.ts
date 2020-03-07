@@ -219,4 +219,25 @@ export class ProducersService {
     return { victimsProducurs, excombatantsProducurs, notApplyProducurs }
   }
 
+  async getAllDataProducurs(dniproducer: number) {
+    return await this.cropRepository.createQueryBuilder()
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
+      .addSelect(['Genero.nombre'])
+      .addSelect(['organizacion.nombre','organizacion.descripcion','organizacion.contacto','organizacion.temaCapacitacion','organizacion.temaEmpresarial'])
+      .addSelect(['Municipio.nombre'])
+      .addSelect(['Vereda.nombre'])
+      .addSelect(['LineaProductiva.nombre'])
+      .addSelect(['CadenaProductiva.nombre'])
+      .innerJoin('Cultivo.dniProductor2', 'Productor')
+      .innerJoin('Productor.idOrganizacion2', 'organizacion')
+      .innerJoin('Productor.idGenero2', 'Genero')
+      .innerJoin('Cultivo.idMunicipio2', 'Municipio')
+      .innerJoin('Cultivo.idVereda2', 'Vereda')
+      .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
+      .innerJoin('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
+      .where('Productor.dni =:dniproducer', { dniproducer })
+      .getMany();
+  }
+
 }
