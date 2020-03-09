@@ -53,4 +53,5 @@ export class MunicipalityService {
       .groupBy('Organizacion.id')
       .getRawMany();
   }
+  /*  */
 }

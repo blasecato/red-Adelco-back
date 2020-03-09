@@ -236,5 +236,5 @@ export class ProducersService {
       .innerJoin('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
       .getMany();
   }
-
+/*  */
 }

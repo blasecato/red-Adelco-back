@@ -70,4 +70,5 @@ export class ProducersController {
   async getAllDataProducurs() {
     return await this._ProducersService.getAllDataProducurs();
   }
+  /*  */
 }
