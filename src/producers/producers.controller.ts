@@ -57,8 +57,8 @@ export class ProducersController {
   }
 
   @Get('get/count-crops/productiveline')
-  async getCropsProducersProductiveLine(@Query('dniproducer') dniproducer: number) {
-    return await this._ProducersService.getCropsProducersProductiveLine(dniproducer);
+  async getCropsProducersProductiveLine() {
+    return await this._ProducersService.getCropsProducersProductiveLine();
   }
 
   @Get('get/excombatant-victims')
@@ -67,7 +67,8 @@ export class ProducersController {
   }
 
   @Get('get/producurs-organization')
-  async getAllDataProducurs(@Query('dniproducer') dniproducer: number) {
-    return await this._ProducersService.getAllDataProducurs(dniproducer);
+  async getAllDataProducurs() {
+    return await this._ProducersService.getAllDataProducurs();
   }
+  /*  */
 }

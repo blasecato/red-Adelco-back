@@ -46,9 +46,12 @@ export class MunicipalityService {
     return await this.municipalityRepository.createQueryBuilder()
       .select(['Municipio.nombre'])
       .addSelect('count(Organizacion.id)', 'countOrganizacion')
-      .innerJoin('Municipio.veredas', 'Vereda')
-      .innerJoin('Vereda.organizacions', 'Organizacion')
+      .addSelect(['Organizacion.nombre','Organizacion.descripcion','Organizacion.contacto','Organizacion.temaCapacitacion','Organizacion.temaEmpresarial'])
+      .leftJoin('Municipio.veredas', 'Vereda')
+      .leftJoin('Vereda.organizacions', 'Organizacion')
       .where('Municipio.id =:municipalityId', { municipalityId })
+      .groupBy('Organizacion.id')
       .getRawMany();
   }
+  /*  */
 }

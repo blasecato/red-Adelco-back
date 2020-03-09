@@ -155,16 +155,15 @@ export class ProducersService {
     return { etnia, cargo: cargoOrg, parentesco, discapacidad, conflicto, organizacion, jefeFamily }
   }
 
-  async getCoutCropsProducer(dniproducer: number) {
+  async getCoutCropsProducer() {
     return await this.cropRepository.createQueryBuilder()
       .select('count(Cultivo.id)', 'countCrops')
       .innerJoin('Cultivo.dniProductor2', 'Productor')
-      .where('Productor.dni = :dniproducer', { dniproducer })
       .getRawOne();
   }
 
-  async getCropsProducersProductiveLine(dniproducer: number) {
-    const countCrops = await this.getCoutCropsProducer(dniproducer)
+  async getCropsProducersProductiveLine() {
+    const countCrops = await this.getCoutCropsProducer()
     const response = await this.cropRepository.createQueryBuilder()
       .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
       .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
@@ -179,7 +178,6 @@ export class ProducersService {
       .innerJoin('Cultivo.idVereda2', 'Vereda')
       .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
       .innerJoin('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
-      .where('Productor.dni =:dniproducer', { dniproducer })
       .getMany();
 
     return { countCrops, response }
@@ -219,7 +217,7 @@ export class ProducersService {
     return { victimsProducurs, excombatantsProducurs, notApplyProducurs }
   }
 
-  async getAllDataProducurs(dniproducer: number) {
+  async getAllDataProducurs() {
     return await this.cropRepository.createQueryBuilder()
       .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
       .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
@@ -236,8 +234,7 @@ export class ProducersService {
       .innerJoin('Cultivo.idVereda2', 'Vereda')
       .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
       .innerJoin('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
-      .where('Productor.dni =:dniproducer', { dniproducer })
       .getMany();
   }
-
+/*  */
 }
