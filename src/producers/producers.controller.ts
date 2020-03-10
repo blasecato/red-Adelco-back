@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Post, Body, Put, Param, Query } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Body, Put, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { ProducersService } from './producers.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -69,6 +69,11 @@ export class ProducersController {
   @Get('get/producurs-organization')
   async getAllDataProducurs() {
     return await this._ProducersService.getAllDataProducurs();
+  }
+
+  @Get('get-by-id/:id')
+  async getProducerById(@Param('id', ParseIntPipe) id: number) {
+    return await this._ProducersService.getProducerById(id);
   }
   /*  */
 }

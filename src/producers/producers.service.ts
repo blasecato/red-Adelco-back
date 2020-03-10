@@ -222,7 +222,7 @@ export class ProducersService {
       .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
       .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
       .addSelect(['Genero.nombre'])
-      .addSelect(['organizacion.nombre','organizacion.descripcion','organizacion.contacto','organizacion.temaCapacitacion','organizacion.temaEmpresarial'])
+      .addSelect(['organizacion.nombre', 'organizacion.descripcion', 'organizacion.contacto', 'organizacion.temaCapacitacion', 'organizacion.temaEmpresarial'])
       .addSelect(['Municipio.nombre'])
       .addSelect(['Vereda.nombre'])
       .addSelect(['LineaProductiva.nombre'])
@@ -236,5 +236,11 @@ export class ProducersService {
       .innerJoin('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
       .getMany();
   }
-/*  */
+
+  async getProducerById(dni) {
+    return await this._ProducersRepository.findOne(dni, {
+      relations: ['idGenero2', 'idOrganizacion2', 'idConflicto2', 'idDiscapacitado2', 'idEtnia2', 'idParentesco2']
+    })
+  }
+  /*  */
 }
