@@ -49,7 +49,7 @@ export class MunicipalityService {
       .addSelect(['Organizacion.nombre','Organizacion.descripcion','Organizacion.contacto','Organizacion.temaCapacitacion','Organizacion.temaEmpresarial'])
       .leftJoin('Municipio.veredas', 'Vereda')
       .leftJoin('Vereda.organizacions', 'Organizacion')
-      .where('Municipio.id =:municipalityId', { municipalityId })
+      // .where('Municipio.id =:municipalityId', { municipalityId })
       .groupBy('Organizacion.id')
       .getRawMany();
   }
