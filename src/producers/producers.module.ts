@@ -6,7 +6,7 @@ import { ProducersRepository } from './producers.repository';
 import { GeneroRepository } from '../gender/gender.repository';
 import { RelationshipRepository } from '../relationship/relationship.repository';
 import { GrupoEtnico } from '../entities/GrupoEtnico';
-import { Cargo } from '../entities/Cargo';
+// import { Cargo } from '../entities/Cargo';
 import { Parentesco } from '../entities/Parentesco';
 import { Discapacidad } from '../entities/Discapacidad';
 import { Conflicto } from '../entities/Conflicto';

@@ -15,8 +15,9 @@ export class IndicadoresService {
 
       async getById() {
         return await this.indicadoresRepository.createQueryBuilder()
-        // .select('id')
-        //.innerJoin('indicadores.idObjetivo2' , 'objetivo')
+        .select(['Indicadores.id','Indicadores.descripcion','Indicadores.observacion','Indicadores.fuenteVerificacion'])
+        .addSelect(['Objetivo.nombre'])
+        .innerJoin('Indicadores.idObjetivo2' , 'Objetivo')
         .getMany();
       }
   
