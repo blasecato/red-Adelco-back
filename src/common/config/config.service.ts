@@ -44,9 +44,9 @@ export class ConfigService {
       password: this.envConfig.DB_PASSWORD,
       database: this.envConfig.DB_DATABASE,
       synchronize: true,
-      logging: true,
+      logging: false,
       ssl: this.isProduction || this.isDevelopment,
-      entities: [(this.isProduction || this.isDevelopment ?  'src/entities/*.ts' : 'dist/entities/*.js')]
+      entities: [(this.isProduction || this.isDevelopment ? 'src/entities/*.ts' : 'dist/entities/*.js')]
     }
   }
 
