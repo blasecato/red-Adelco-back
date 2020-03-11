@@ -75,7 +75,7 @@ export class CropsService {
 
   async getCountCropsLineProducter(productivelineId: number) {
     const countCrop = await this._CropsRepository.createQueryBuilder()
-      .select('count(Cultivo.id', 'countCrops')
+      .select('count(Cultivo.id)', 'countCrops')
       .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
       .where('LineaProductiva.id=:productivelineId', { productivelineId })
       .getRawOne()
@@ -87,7 +87,7 @@ export class CropsService {
     .innerJoinAndSelect('Productor.idEtnia2','Etnia')
     .innerJoinAndSelect('Cultivo.idLineaProductiva2','LineaProductiva')
     .innerJoinAndSelect('Cultivo.idMunicipio2','Municipio')
-    .innerJoinAndSelect('Municipio.vereda','Vereda')
+    .innerJoinAndSelect('Municipio.veredas','Vereda')
     .where('LineaProductiva.id=:productivelineId',{productivelineId})
     .getMany()
 
