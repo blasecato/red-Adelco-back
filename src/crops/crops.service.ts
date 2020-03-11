@@ -44,7 +44,7 @@ export class CropsService {
   async createCrop(body: CreateCropDto) {
     try {
       await this._CropsRepository.save(body)
-       
+
       return { success: 'OK' }
     } catch (error) {
       return { error }
@@ -71,6 +71,27 @@ export class CropsService {
     } catch (error) {
       return error;
     }
+  }
+
+  async getCountCropsLineProducter(productivelineId: number) {
+    const countCrop = await this._CropsRepository.createQueryBuilder()
+      .select('count(Cultivo.id', 'countCrops')
+      .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
+      .where('LineaProductiva.id=:productivelineId', { productivelineId })
+      .getRawOne()
+
+    const dataCrops = await this._CropsRepository.createQueryBuilder()
+    .select(['Cultivo.hectareas','Cultivo.fechaInicio'])
+    .innerJoinAndSelect('Cultivo.dniProductor2','Productor')
+    .innerJoinAndSelect('Productor.idGenero2','Genero')
+    .innerJoinAndSelect('Productor.idEtnia2','Etnia')
+    .innerJoinAndSelect('Cultivo.idLineaProductiva2','LineaProductiva')
+    .innerJoinAndSelect('Cultivo.idMunicipio2','Municipio')
+    .innerJoinAndSelect('Municipio.vereda','Vereda')
+    .where('LineaProductiva.id=:productivelineId',{productivelineId})
+    .getMany()
+
+    return {countCrop, dataCrops}
   }
 
 }
