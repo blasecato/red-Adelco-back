@@ -1,11 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Objetivo } from "./Objetivo";
 
 @Index("id_objetivo", ["idObjetivo"], {})
 @Entity("indicadores", { schema: "redadelco" })
 export class Indicadores {
-  @Column("varchar", { primary: true, name: "id", length: 45 })
-  id: string;
+  @PrimaryGeneratedColumn({ type: "int", name: "id" })
+  id: number;
 
   @Column("longtext", { name: "descripcion" })
   descripcion: string;
