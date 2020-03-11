@@ -5,9 +5,7 @@ import { LoginDto } from "src/auth/dto/login.dto";
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(UserRepository)
-    private readonly _userRepository: UserRepository,
+  constructor(@InjectRepository(UserRepository) private readonly _userRepository: UserRepository,
   ) { }
 
   async findOne(user: string) {
@@ -24,9 +22,7 @@ export class UserService {
   }
 
   async getAll() {
-    const users = await this._userRepository.find({});
-
-    return users
+    return await this._userRepository.find();
   }
 
   async get(id: number) {
