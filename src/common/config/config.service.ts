@@ -49,8 +49,6 @@ export class ConfigService {
       entities: [(this.isProduction || this.isDevelopment ? 'src/entities/*.ts' : 'dist/entities/*.js')]
     }
   }
-
-
 }
 
 export default new ConfigService()
