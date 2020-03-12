@@ -18,8 +18,7 @@ export class organizationController {
   @UseGuards(AuthGuard('jwt'))
   @Get('getMunicipios')
   async getMunicipios() {
-    const municipios = await this._organizationService.getMunicipio();
-    return municipios;
+    return await this._organizationService.getMunicipio();
   }
 
   @UseGuards(AuthGuard('jwt'))

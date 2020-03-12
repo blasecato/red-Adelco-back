@@ -31,7 +31,7 @@ export class organizationService {
   }
 
   async getMunicipio() {
-    const municipios = await this._OrganizationRepository.find({
+    const municipios = await this._MunicipioRepository.find({
       relations: ['veredas']
     })
     return municipios
