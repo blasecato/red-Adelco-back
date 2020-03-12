@@ -1,8 +1,9 @@
-import { Controller, UseGuards, Get, Body, Post, Put } from '@nestjs/common';
+import { Controller, UseGuards, Get, Body, Post, Put, Query } from '@nestjs/common';
 import { CropsService } from './crops.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateCropDto } from './dto/updateCrop.dto';
 import { CreateCropDto } from './dto/createCrop.dto';
+import { get } from 'http';
 
 @Controller('crops')
 export class CropsController {
@@ -34,4 +35,8 @@ export class CropsController {
     return await this._CropsService.updateCrop(body)
   }
 
+  @Get('quantity/productive-line')
+  async getCountCropsLineProducter(@Query('productivelineId') productivelineId:number){
+    return await this._CropsService.getCountCropsLineProducter(productivelineId);
+  }
 }

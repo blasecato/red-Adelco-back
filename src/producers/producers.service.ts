@@ -198,9 +198,9 @@ export class ProducersService {
       .select(['Productores.nombres', 'Productores.apellidos', 'Productores.dni', 'Productores.edad', 'Productores.telefono'])
       .addSelect(['Genero.nombre'])
       .addSelect(['Conflicto.nombre'])
-      .innerJoin('Productores.cultivos2', 'Cultivo')
-      .innerJoin('Productores.idGenero2', 'Genero')
-      .innerJoin('Productores.idConflicto2', 'Conflicto')
+      .leftJoin('Productores.cultivos2', 'Cultivo')
+      .leftJoin('Productores.idGenero2', 'Genero')
+      .leftJoin('Productores.idConflicto2', 'Conflicto')
       .where("Conflicto.nombre = 'Excombatiente'")
       .getMany()
 
