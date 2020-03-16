@@ -242,5 +242,5 @@ export class ProducersService {
       relations: ['idGenero2', 'idOrganizacion2', 'idConflicto2', 'idDiscapacitado2', 'idEtnia2', 'idParentesco2']
     })
   }
-  /*  */
+
 }
