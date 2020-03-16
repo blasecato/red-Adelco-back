@@ -24,8 +24,8 @@ export class MunicipalityController {
   }
 
   @Get('quantity/Organizations-Municipality')
-  async quantityOrganizationsMunicipality(@Query('municipalityId') municipalityId: number) {
-    return await this.municipalityService.quantityOrganizationsMunicipality(municipalityId);
+  async quantityOrganizationsMunicipality() {
+    return await this.municipalityService.quantityOrganizationsMunicipality();
   }
 
 }
