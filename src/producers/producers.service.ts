@@ -245,13 +245,19 @@ export class ProducersService {
   }
 
   async createProducerBeneficiary(body: CreateProducerBeneficiaryDto) {
-    const producer = await this._ProducersRepository.findOne({ select: ['id', 'nombres', 'dni'], where: { id: body.idProducer } })
+    const producer = await this._ProducersRepository.findOne({
+      select: ['id', 'nombres', 'dni'],
+      where: { id: body.idProducer, dni: body.dni }
+    })
 
     if (!producer)
       return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
 
     try {
-      await this.ProductoresBeneficioRepository.save(body)
+      await this.ProductoresBeneficioRepository.save({
+        ...body,
+        idProductor2: { id: producer.id }
+      })
       return { success: 'OK' }
     } catch (error) {
       return { error }

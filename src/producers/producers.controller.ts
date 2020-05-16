@@ -77,7 +77,7 @@ export class ProducersController {
     return await this._ProducersService.getProducerById(id);
   }
 
-  @Post('create-Producer-Beneficial')
+  @Post('create-producer-beneficiary')
   async createProducerBeneficiary(@Body() body: CreateProducerBeneficiaryDto) {
     return await this._ProducersService.createProducerBeneficiary(body);
   }

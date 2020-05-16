@@ -2,8 +2,11 @@ import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateProducerBeneficiaryDto {
 
+  @IsString()
+  idProducer: string;
+
   @IsNumber()
-  idProducer: number;
+  dni: number;
 
   @IsNumber()
   @IsOptional()
@@ -27,6 +30,10 @@ export class CreateProducerBeneficiaryDto {
 
   @IsString()
   @IsOptional()
+  escuelaAromaticas: string;
+
+  @IsString()
+  @IsOptional()
   escuelaPermacultura: string;
 
   @IsString()
@@ -44,6 +51,10 @@ export class CreateProducerBeneficiaryDto {
   @IsString()
   @IsOptional()
   cacaoPlanadas: string;
+
+  @IsString()
+  @IsOptional()
+  canaPanelera: string;
 
   @IsString()
   @IsOptional()
