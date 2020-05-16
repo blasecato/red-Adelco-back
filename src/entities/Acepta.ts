@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Cultivo } from "./Cultivo";
 
-@Entity("acepta", { schema: "redadelco" })
+@Entity("acepta", { schema: "tcsp_database" })
 export class Acepta {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;

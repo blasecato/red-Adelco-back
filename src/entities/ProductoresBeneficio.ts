@@ -9,9 +9,9 @@ import {
 import { Productores } from "./Productores";
 import { Beneficio } from "./Beneficio";
 
-@Index("id_beneficio", ["idBeneficio"], {})
 @Index("id_productor", ["idProductor"], {})
-@Entity("productores_beneficio", { schema: "redadelco" })
+@Index("id_beneficio", ["idBeneficio"], {})
+@Entity("productores_beneficio", { schema: "tcsp_database" })
 export class ProductoresBeneficio {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
