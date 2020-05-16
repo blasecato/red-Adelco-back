@@ -1,6 +1,7 @@
 import { Controller, UseGuards, Get, Post, Body, Put, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { ProducersService } from './producers.service';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -75,5 +76,9 @@ export class ProducersController {
   async getProducerById(@Param('id', ParseIntPipe) id: number) {
     return await this._ProducersService.getProducerById(id);
   }
-  /*  */
+
+  @Post('create-producer-beneficiary')
+  async createProducerBeneficiary(@Body() body: CreateProducerBeneficiaryDto) {
+    return await this._ProducersService.createProducerBeneficiary(body);
+  }
 }

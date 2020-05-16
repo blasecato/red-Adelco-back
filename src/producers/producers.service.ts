@@ -5,15 +5,15 @@ import { ProducersRepository } from './producers.repository';
 import { GeneroRepository } from '../gender/gender.repository';
 import { Discapacidad } from '../entities/Discapacidad';
 import { Organizacion } from '../entities/Organizacion';
-import { CropsService } from '../crops/crops.service';
 import { Productores } from '../entities/Productores';
 import { GrupoEtnico } from '../entities/GrupoEtnico';
 import { Parentesco } from '../entities/Parentesco';
 import { Conflicto } from '../entities/Conflicto';
 import { CargoOrg } from '../entities/CargoOrg';
+import { Cultivo } from '../entities/Cultivo';
 import { RelationshipRepository } from '../relationship/relationship.repository';
-import { Cultivo } from 'src/entities/Cultivo';
-import { relative } from 'path';
+import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
+import { ProductoresBeneficio } from '../entities/ProductoresBeneficio';
 
 @Injectable()
 export class ProducersService {
@@ -28,7 +28,8 @@ export class ProducersService {
     @InjectRepository(Discapacidad) private readonly DiscapacidadRepository: Repository<Discapacidad>,
     @InjectRepository(Conflicto) private readonly ConflictoRepository: Repository<Conflicto>,
     @InjectRepository(Organizacion) private readonly OrganizacionRepository: Repository<Organizacion>,
-    @InjectRepository(Cultivo) private readonly cropRepository: Repository<Cultivo>
+    @InjectRepository(Cultivo) private readonly cropRepository: Repository<Cultivo>,
+    @InjectRepository(ProductoresBeneficio) private readonly ProductoresBeneficioRepository: Repository<ProductoresBeneficio>
   ) { }
 
   async createProducers(signupProducer) {
@@ -241,6 +242,26 @@ export class ProducersService {
     return await this._ProducersRepository.findOne(dni, {
       relations: ['idGenero2', 'idOrganizacion2', 'idConflicto2', 'idDiscapacitado2', 'idEtnia2', 'idParentesco2']
     })
+  }
+
+  async createProducerBeneficiary(body: CreateProducerBeneficiaryDto) {
+    const producer = await this._ProducersRepository.findOne({
+      select: ['id', 'nombres', 'dni'],
+      where: { id: body.idProducer, dni: body.dni }
+    })
+
+    if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
+
+    try {
+      await this.ProductoresBeneficioRepository.save({
+        ...body,
+        idProductor2: { id: producer.id }
+      })
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
   }
 
 }

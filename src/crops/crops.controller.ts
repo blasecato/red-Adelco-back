@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UpdateCropDto } from './dto/updateCrop.dto';
 import { CreateCropDto } from './dto/createCrop.dto';
 import { get } from 'http';
+import { CreateAcceptDto } from './dto/createAccept.dto';
 
 @Controller('crops')
 export class CropsController {
@@ -22,10 +23,10 @@ export class CropsController {
   async geDateCrop() {
     return await this._CropsService.geDateCrop();
   }
-  
+
   //@UseGuards(AuthGuard('jwt'))
   @Post('create')
-  async createCrop(@Body() body:CreateCropDto) {
+  async createCrop(@Body() body: CreateCropDto) {
     console.log(body);
     return await this._CropsService.createCrop(body)
   }
@@ -36,7 +37,12 @@ export class CropsController {
   }
 
   @Get('quantity/productive-line')
-  async getCountCropsLineProducter(@Query('productivelineId') productivelineId:number){
+  async getCountCropsLineProducter(@Query('productivelineId') productivelineId: number) {
     return await this._CropsService.getCountCropsLineProducter(productivelineId);
+  }
+
+  @Post('create-accept')
+  async createAccept(@Body() body: CreateAcceptDto) {
+    return await this._CropsService.createAccept(body);
   }
 }
