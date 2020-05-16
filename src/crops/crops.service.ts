@@ -6,7 +6,9 @@ import { CreateCropDto } from './dto/createCrop.dto';
 import { Municipio } from '../entities/Municipio';
 import { Productores } from '../entities/Productores';
 import { Cultivo } from '../entities/Cultivo';
+import { Acepta } from '../entities/Acepta';
 import { LineaProductiva } from '../entities/LineaProductiva';
+import { CreateAcceptDto } from './dto/createAccept.dto';
 
 @Injectable()
 export class CropsService {
@@ -16,6 +18,7 @@ export class CropsService {
     @InjectRepository(Productores) private readonly ProductoresRepository: Repository<Productores>,
     @InjectRepository(LineaProductiva) private readonly lineaProductivaRepository: Repository<LineaProductiva>,
     @InjectRepository(Municipio) private readonly municipioRepository: Repository<Municipio>,
+    @InjectRepository(Acepta) private readonly AceptaRepository: Repository<Acepta>
   ) { }
 
   async getCropsProducer() {
@@ -81,17 +84,30 @@ export class CropsService {
       .getRawOne()
 
     const dataCrops = await this._CropsRepository.createQueryBuilder()
-    .select(['Cultivo.hectareas','Cultivo.fechaInicio'])
-    .innerJoinAndSelect('Cultivo.dniProductor2','Productor')
-    .innerJoinAndSelect('Productor.idGenero2','Genero')
-    .innerJoinAndSelect('Productor.idEtnia2','Etnia')
-    .innerJoinAndSelect('Cultivo.idLineaProductiva2','LineaProductiva')
-    .innerJoinAndSelect('Cultivo.idMunicipio2','Municipio')
-    .innerJoinAndSelect('Municipio.veredas','Vereda')
-    .where('LineaProductiva.id=:productivelineId',{productivelineId})
-    .getMany()
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
+      .innerJoinAndSelect('Productor.idGenero2', 'Genero')
+      .innerJoinAndSelect('Productor.idEtnia2', 'Etnia')
+      .innerJoinAndSelect('Cultivo.idLineaProductiva2', 'LineaProductiva')
+      .innerJoinAndSelect('Cultivo.idMunicipio2', 'Municipio')
+      .innerJoinAndSelect('Municipio.veredas', 'Vereda')
+      .where('LineaProductiva.id=:productivelineId', { productivelineId })
+      .getMany()
 
-    return {countCrop, dataCrops}
+    return { countCrop, dataCrops }
+  }
+
+  async createAccept(body: CreateAcceptDto) {
+    const crop = await this._CropsRepository.findOne({ select: ['id'], where: { id: body.idCrop } })
+    if (!crop)
+      return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no existe.' }
+
+    try {
+      await this.AceptaRepository.save(body)
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
   }
 
 }
