@@ -103,7 +103,9 @@ export class CropsService {
       return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no existe.' }
 
     try {
-      await this.AceptaRepository.save(body)
+      const accept = await this.AceptaRepository.save(body)
+      await this._CropsRepository.update(crop.id, { idAcepta2: { id: accept.id } })
+
       return { success: 'OK' }
     } catch (error) {
       return { error }
