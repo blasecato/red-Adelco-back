@@ -13,11 +13,12 @@ import { Conflicto } from '../entities/Conflicto';
 import { Organizacion } from '../entities/Organizacion';
 import { CargoOrg } from '../entities/CargoOrg';
 import { Cultivo } from '../entities/Cultivo';
+import { ProductoresBeneficio } from '../entities/ProductoresBeneficio';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ProducersRepository, GeneroRepository, RelationshipRepository, GrupoEtnico, CargoOrg,
-      Parentesco, Discapacidad, Conflicto, Organizacion, Cultivo
+      Parentesco, Discapacidad, Conflicto, Organizacion, Cultivo, ProductoresBeneficio
     ]),
   ],
   controllers: [ProducersController],
