@@ -14,11 +14,17 @@ import { Organizacion } from '../entities/Organizacion';
 import { CargoOrg } from '../entities/CargoOrg';
 import { Cultivo } from '../entities/Cultivo';
 import { ProductoresBeneficio } from '../entities/ProductoresBeneficio';
+import { Kit } from '../entities/Kit';
+import { Herramienta } from '../entities/Herramienta';
+import { TipoHerramienta } from '../entities/TipoHerramienta';
+import { KitHerramienta } from '../entities/KitHerramienta';
+import { KitUser } from '../entities/KitUser';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ProducersRepository, GeneroRepository, RelationshipRepository, GrupoEtnico, CargoOrg,
-      Parentesco, Discapacidad, Conflicto, Organizacion, Cultivo, ProductoresBeneficio
+    TypeOrmModule.forFeature([ProducersRepository, GeneroRepository, RelationshipRepository, GrupoEtnico,
+      CargoOrg, Parentesco, Discapacidad, Conflicto, Organizacion, Cultivo, ProductoresBeneficio, Kit,
+      Herramienta, TipoHerramienta, KitHerramienta, KitUser
     ]),
   ],
   controllers: [ProducersController],
