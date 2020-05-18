@@ -4,6 +4,7 @@ import { Vereda } from "./Vereda";
 import { Cultivo } from "./Cultivo";
 import { EnteConvenio } from "./EnteConvenio";
 import { GrupoGacc } from "./GrupoGacc";
+import { Aft } from "./Aft";
 
 @Entity("municipio", { schema: "tcsp_database" })
 export class Municipio {

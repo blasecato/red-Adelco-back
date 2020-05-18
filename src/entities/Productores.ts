@@ -18,7 +18,9 @@ import { ProductorOrg } from "./ProductorOrg";
 import { CargoOrg } from "./CargoOrg";
 import { Parentesco } from "./Parentesco";
 import { Finca } from "./Finca";
+import { Aft } from "./Aft";
 import { Cultivo } from "./Cultivo";
+
 
 @Index("id", ["id"], {})
 @Index("id_cargo_org", ["idCargoOrg"], {})
@@ -195,14 +197,19 @@ export class Productores {
   idFinca2: Finca;
 
   @OneToMany(
-    () => Cultivo,
-    cultivo => cultivo.codigoProductor2
-  )
-  cultivos: Cultivo[];
+    () => Aft, aft => aft.idProductor2)
+  afts: Aft[];
 
   @OneToMany(
     () => Cultivo,
     cultivo => cultivo.dniProductor2
   )
+  cultivos: Cultivo[];
+
+  @OneToMany(
+    () => Cultivo,
+    cultivo => cultivo.codigoProductor2
+  )
   cultivos2: Cultivo[];
+
 }
