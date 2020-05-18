@@ -179,7 +179,7 @@ export class ProducersService {
   async getCropsProducersProductiveLine() {
     const countCrops = await this.getCoutCropsProducer()
     const response = await this.cropRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
       .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
       .addSelect(['Genero.nombre'])
       .addSelect(['Municipio.nombre'])
@@ -233,7 +233,7 @@ export class ProducersService {
 
   async getAllDataProducurs() {
     return await this.cropRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
       .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
       .addSelect(['Genero.nombre'])
       .addSelect(['organizacion.nombre', 'organizacion.descripcion', 'organizacion.contacto', 'organizacion.temaCapacitacion', 'organizacion.temaEmpresarial'])

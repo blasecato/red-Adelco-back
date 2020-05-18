@@ -15,6 +15,9 @@ export class CreateCropDto {
     @IsOptional()
     codigoProductor: string;
 
+    @IsOptional()
+    posicionAcepta: string;
+
     @IsNumber()
     @IsOptional()
     idAcepta: number;

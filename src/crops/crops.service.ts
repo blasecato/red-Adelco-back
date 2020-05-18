@@ -22,13 +22,13 @@ export class CropsService {
   ) { }
 
   async getCropsProducer() {
-    const cropsProducer = await this._CropsRepository.createQueryBuilder("crops")
-      .select(["crops.id", "crops.dniProductor", "crops.hectareas"])
+    const cropsProducer = await this._CropsRepository.createQueryBuilder()
+      .select(["Cultivo.id", "Cultivo.dniProductor", "Cultivo.hectareas", "Cultivo.posicionAcepta"])
       .addSelect(["municipality.nombre", "sidewalk.nombre", "producer.nombres", "producer.apellidos", "lineProducer.nombre"])
-      .innerJoin("crops.idMunicipio2", "municipality")
-      .innerJoin("crops.idVereda2", "sidewalk")
-      .innerJoin("crops.codigoProductor2", "producer")
-      .innerJoin("crops.idLineaProductiva2", "lineProducer")
+      .innerJoin("Cultivo.idMunicipio2", "municipality")
+      .innerJoin("Cultivo.idVereda2", "sidewalk")
+      .innerJoin("Cultivo.codigoProductor2", "producer")
+      .innerJoin("Cultivo.idLineaProductiva2", "lineProducer")
       .getMany()
 
     return cropsProducer
@@ -63,6 +63,7 @@ export class CropsService {
       await this._CropsRepository.update(body.idCrop, {
         hectareas: body.hectareas,
         fechaInicio: body.fechaInicio,
+        posicionAcepta: body.posicionAcepta,
         idLineaProductiva2: { id: body.idLineaProductiva },
         codigoProductor2: { id: body.codigoProductor },
         idAcepta2: { id: body.idAcepta },
@@ -84,7 +85,7 @@ export class CropsService {
       .getRawOne()
 
     const dataCrops = await this._CropsRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
       .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
       .innerJoinAndSelect('Productor.idGenero2', 'Genero')
       .innerJoinAndSelect('Productor.idEtnia2', 'Etnia')
