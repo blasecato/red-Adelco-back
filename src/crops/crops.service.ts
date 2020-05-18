@@ -8,7 +8,10 @@ import { Productores } from '../entities/Productores';
 import { Cultivo } from '../entities/Cultivo';
 import { Acepta } from '../entities/Acepta';
 import { LineaProductiva } from '../entities/LineaProductiva';
+import { Finca } from '../entities/Finca';
+import { Diagnostico } from '../entities/Diagnostico';
 import { CreateAcceptDto } from './dto/createAccept.dto';
+import { CreateDiagnosticDto } from './dto/createDiagnostic.dto';
 
 @Injectable()
 export class CropsService {
@@ -18,7 +21,9 @@ export class CropsService {
     @InjectRepository(Productores) private readonly ProductoresRepository: Repository<Productores>,
     @InjectRepository(LineaProductiva) private readonly lineaProductivaRepository: Repository<LineaProductiva>,
     @InjectRepository(Municipio) private readonly municipioRepository: Repository<Municipio>,
-    @InjectRepository(Acepta) private readonly AceptaRepository: Repository<Acepta>
+    @InjectRepository(Acepta) private readonly AceptaRepository: Repository<Acepta>,
+    @InjectRepository(Finca) private readonly farmRepository: Repository<Finca>,
+    @InjectRepository(Diagnostico) private readonly diagnosticRepository: Repository<Diagnostico>
   ) { }
 
   async getCropsProducer() {
@@ -110,6 +115,32 @@ export class CropsService {
       return { success: 'OK' }
     } catch (error) {
       return { error }
+    }
+  }
+
+  async createDiagnostic(body: CreateDiagnosticDto) {
+    const crop = await this._CropsRepository.findOne({
+      select: ['id', 'posicionAcepta'],
+      where: { id: body.idCultivo }
+    })
+    const farm = await this.farmRepository.findOne({
+      select: ['id', 'nombre'],
+      where: { id: body.idFinca }
+    })
+
+    /*   if (!farm) {
+        return { error: 'FARM_NOT_EXIST', detail: 'La finca no se encuentra en la base de datos.' }
+      } else  */
+
+    if (!crop) {
+      return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no se encuentra en la base de datos.' }
+    } else {
+      try {
+        await this.diagnosticRepository.save(body)
+        return { success: 'OK' }
+      } catch (error) {
+        return { error }
+      }
     }
   }
 
