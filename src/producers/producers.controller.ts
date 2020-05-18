@@ -3,6 +3,7 @@ import { ProducersService } from './producers.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
 import { CreateKitDto } from './dto/createKit.dto';
+import { CreateAftDto } from './dto/createAft.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -106,5 +107,10 @@ export class ProducersController {
   @Post('create-kit')
   async createKit(@Body() body: CreateKitDto) {
     return await this._ProducersService.createKit(body);
+  }
+
+  @Post('create-aft')
+  async createAft(@Body() body: CreateAftDto) {
+    return await this._ProducersService.createAft(body);
   }
 }
