@@ -18,9 +18,7 @@ import { ProductorOrg } from "./ProductorOrg";
 import { CargoOrg } from "./CargoOrg";
 import { Parentesco } from "./Parentesco";
 import { Finca } from "./Finca";
-import { Aft } from "./Aft";
 import { Cultivo } from "./Cultivo";
-
 
 @Index("id", ["id"], {})
 @Index("id_cargo_org", ["idCargoOrg"], {})
@@ -81,12 +79,6 @@ export class Productores {
 
   @Column("int", { name: "id_cargo_org", nullable: true })
   idCargoOrg: number | null;
-
-  @OneToMany(
-    () => Aft,
-    aft => aft.idProductor2
-  )
-  afts: Aft[];
 
   @ManyToOne(
     () => Genero,
