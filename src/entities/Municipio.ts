@@ -3,6 +3,7 @@ import { Cultivo } from "./Cultivo";
 import { Vereda } from "./Vereda";
 import { EnteConvenio } from "./EnteConvenio";
 import { GrupoGacc } from "./GrupoGacc";
+import { Aft } from "./Aft";
 
 @Entity("municipio", { schema: "redadelco" })
 export class Municipio {
@@ -35,4 +36,8 @@ export class Municipio {
     enteConvenio => enteConvenio.idMunicipio2
   )
   enteConvenios: EnteConvenio[];
+
+  @OneToMany(
+    () => Aft, aft => aft.idMunicipio2)
+  afts: Aft[];
 }

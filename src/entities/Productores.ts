@@ -18,6 +18,7 @@ import { ProductorOrg } from "./ProductorOrg";
 import { CargoOrg } from "./CargoOrg";
 import { Parentesco } from "./Parentesco";
 import { Finca } from "./Finca";
+import { Aft } from "./Aft";
 
 @Index("id", ["id"], {})
 @Index("id_cargo_org", ["idCargoOrg"], {})
@@ -198,4 +199,8 @@ export class Productores {
   )
   @JoinColumn([{ name: "id_finca", referencedColumnName: "id" }])
   idFinca2: Finca;
+
+  @OneToMany(
+    () => Aft, aft => aft.idProductor2)
+  afts: Aft[];
 }
