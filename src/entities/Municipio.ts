@@ -1,10 +1,11 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Cultivo } from "./Cultivo";
+import { Aft } from "./Aft";
 import { Vereda } from "./Vereda";
+import { Cultivo } from "./Cultivo";
 import { EnteConvenio } from "./EnteConvenio";
 import { GrupoGacc } from "./GrupoGacc";
 
-@Entity("municipio", { schema: "redadelco" })
+@Entity("municipio", { schema: "tcsp_database" })
 export class Municipio {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
@@ -13,10 +14,10 @@ export class Municipio {
   nombre: string | null;
 
   @OneToMany(
-    () => Cultivo,
-    cultivo => cultivo.idMunicipio2
+    () => Aft,
+    aft => aft.idMunicipio2
   )
-  cultivos: Cultivo[];
+  afts: Aft[];
 
   @OneToMany(
     () => Vereda,
@@ -25,14 +26,20 @@ export class Municipio {
   veredas: Vereda[];
 
   @OneToMany(
-    () => GrupoGacc,
-    grupoGacc => grupoGacc.idMunicipio2
+    () => Cultivo,
+    cultivo => cultivo.idMunicipio2
   )
-  grupoGaccs: GrupoGacc[];
+  cultivos: Cultivo[];
 
   @OneToMany(
     () => EnteConvenio,
     enteConvenio => enteConvenio.idMunicipio2
   )
   enteConvenios: EnteConvenio[];
+
+  @OneToMany(
+    () => GrupoGacc,
+    grupoGacc => grupoGacc.idMunicipio2
+  )
+  grupoGaccs: GrupoGacc[];
 }
