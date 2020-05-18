@@ -1,10 +1,19 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Productores } from "./Productores";
-import { Municipio } from "./Municipio";
-import { Vereda } from "./Vereda";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from "typeorm";
+import { Diagnostico } from "./Diagnostico";
 import { Acepta } from "./Acepta";
 import { LineaProductiva } from "./LineaProductiva";
 import { RevisionVisita } from "./RevisionVisita";
+import { Municipio } from "./Municipio";
+import { Vereda } from "./Vereda";
+import { Productores } from "./Productores";
 
 @Index("id_acepta", ["idAcepta"], {})
 @Index("id_linea_productiva", ["idLineaProductiva"], {})
@@ -12,21 +21,12 @@ import { RevisionVisita } from "./RevisionVisita";
 @Index("id_productor", ["codigoProductor"], {})
 @Index("id_productores", ["dniProductor"], {})
 @Index("id_vereda", ["idVereda"], {})
-@Entity("cultivo", { schema: "redadelco" })
-
+@Entity("cultivo", { schema: "tcsp_database" })
 export class Cultivo {
-
-  @PrimaryGeneratedColumn({
-    type: "int",
-    name: "id"
-  })
+  @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("float", {
-    name: "hectareas",
-    nullable: true,
-    precision: 12
-  })
+  @Column("float", { name: "hectareas", nullable: true, precision: 12 })
   hectareas: number | null;
 
   @Column("date", { name: "fecha_inicio", nullable: true })
@@ -50,30 +50,66 @@ export class Cultivo {
   @Column("int", { name: "id_vereda", nullable: true })
   idVereda: number | null;
 
-  @ManyToOne(() => Productores, productores => productores.cultivos, { onDelete: "CASCADE", onUpdate: "NO ACTION" })
-  @JoinColumn([{ name: "dni_productor", referencedColumnName: "dni" }])
-  dniProductor2: Productores;
+  @Column("varchar", { name: "posicion_acepta", nullable: true, length: 150 })
+  posicionAcepta: string | null;
 
-  @ManyToOne(() => Municipio, municipio => municipio.cultivos, { onDelete: "CASCADE", onUpdate: "NO ACTION" })
-  @JoinColumn([{ name: "id_municipio", referencedColumnName: "id" }])
-  idMunicipio2: Municipio;
+  @OneToMany(
+    () => Diagnostico,
+    diagnostico => diagnostico.idCultivo2
+  )
+  diagnosticos: Diagnostico[];
 
-  @ManyToOne(() => Vereda, vereda => vereda.cultivos, { onDelete: "CASCADE", onUpdate: "NO ACTION" })
-  @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
-  idVereda2: Vereda;
-
-  @ManyToOne(() => Acepta, acepta => acepta.cultivos, { onDelete: "CASCADE", onUpdate: "NO ACTION" })
+  @ManyToOne(
+    () => Acepta,
+    acepta => acepta.cultivos,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
   @JoinColumn([{ name: "id_acepta", referencedColumnName: "id" }])
   idAcepta2: Acepta;
 
-  @ManyToOne(() => Productores, productores => productores.cultivos2, { onDelete: "CASCADE", onUpdate: "NO ACTION" })
-  @JoinColumn([{ name: "codigo_productor", referencedColumnName: "id" }])
-  codigoProductor2: Productores;
-
-  @ManyToOne(type => LineaProductiva, lineaProductiva => lineaProductiva.cultivos, { onDelete: "CASCADE", onUpdate: "CASCADE" })
+  @ManyToOne(
+    () => LineaProductiva,
+    lineaProductiva => lineaProductiva.cultivos,
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
+  )
   @JoinColumn([{ name: "id_linea_productiva", referencedColumnName: "id" }])
   idLineaProductiva2: LineaProductiva;
 
-  @OneToMany(() => RevisionVisita, revisionVisita => revisionVisita.idCultivo2)
+  @OneToMany(
+    () => RevisionVisita,
+    revisionVisita => revisionVisita.idCultivo2
+  )
   revisionVisitas: RevisionVisita[];
+
+  @ManyToOne(
+    () => Municipio,
+    municipio => municipio.cultivos,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_municipio", referencedColumnName: "id" }])
+  idMunicipio2: Municipio;
+
+  @ManyToOne(
+    () => Vereda,
+    vereda => vereda.cultivos,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
+  idVereda2: Vereda;
+
+  @ManyToOne(
+    () => Productores,
+    productores => productores.cultivos,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "codigo_productor", referencedColumnName: "id" }])
+  codigoProductor2: Productores;
+
+  @ManyToOne(
+    () => Productores,
+    productores => productores.cultivos2,
+    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "dni_productor", referencedColumnName: "dni" }])
+  dniProductor2: Productores;
 }

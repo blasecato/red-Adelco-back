@@ -6,10 +6,14 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn
 } from "typeorm";
+import { Productores } from "./Productores";
+import { Municipio } from "./Municipio";
 import { Organizacion } from "./Organizacion";
 
+@Index("id_municipio", ["idMunicipio"], {})
 @Index("id_organizacion", ["idOrganizacion"], {})
-@Entity("aft", { schema: "redadelco" })
+@Index("id_productor", ["idProductor"], {})
+@Entity("aft", { schema: "tcsp_database" })
 export class Aft {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
@@ -22,6 +26,52 @@ export class Aft {
 
   @Column("date", { name: "fecha_entrega", nullable: true })
   fechaEntrega: string | null;
+
+  @Column("bigint", { name: "cuenta", nullable: true })
+  cuenta: string | null;
+
+  @Column("varchar", { name: "tipo_cuenta", nullable: true, length: 100 })
+  tipoCuenta: string | null;
+
+  @Column("varchar", { name: "banco", nullable: true, length: 100 })
+  banco: string | null;
+
+  @Column("varchar", { name: "documento", nullable: true, length: 100 })
+  documento: string | null;
+
+  @Column("bigint", { name: "matricula", nullable: true })
+  matricula: string | null;
+
+  @Column("varchar", { name: "email", nullable: true, length: 100 })
+  email: string | null;
+
+  @Column("int", { name: "id_municipio", nullable: true })
+  idMunicipio: number | null;
+
+  @Column("int", { name: "DV", nullable: true })
+  dv: number | null;
+
+  @Column("bigint", { name: "nit", nullable: true })
+  nit: string | null;
+
+  @Column("int", { name: "id_productor", nullable: true })
+  idProductor: number | null;
+
+  @ManyToOne(
+    () => Productores,
+    productores => productores.afts,
+    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_productor", referencedColumnName: "dni" }])
+  idProductor2: Productores;
+
+  @ManyToOne(
+    () => Municipio,
+    municipio => municipio.afts,
+    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_municipio", referencedColumnName: "id" }])
+  idMunicipio2: Municipio;
 
   @ManyToOne(
     () => Organizacion,
