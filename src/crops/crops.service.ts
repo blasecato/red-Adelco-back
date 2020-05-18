@@ -8,7 +8,10 @@ import { Productores } from '../entities/Productores';
 import { Cultivo } from '../entities/Cultivo';
 import { Acepta } from '../entities/Acepta';
 import { LineaProductiva } from '../entities/LineaProductiva';
+import { Finca } from '../entities/Finca';
+import { Diagnostico } from '../entities/Diagnostico';
 import { CreateAcceptDto } from './dto/createAccept.dto';
+import { CreateDiagnosticDto } from './dto/createDiagnostic.dto';
 
 @Injectable()
 export class CropsService {
@@ -18,17 +21,19 @@ export class CropsService {
     @InjectRepository(Productores) private readonly ProductoresRepository: Repository<Productores>,
     @InjectRepository(LineaProductiva) private readonly lineaProductivaRepository: Repository<LineaProductiva>,
     @InjectRepository(Municipio) private readonly municipioRepository: Repository<Municipio>,
-    @InjectRepository(Acepta) private readonly AceptaRepository: Repository<Acepta>
+    @InjectRepository(Acepta) private readonly AceptaRepository: Repository<Acepta>,
+    @InjectRepository(Finca) private readonly farmRepository: Repository<Finca>,
+    @InjectRepository(Diagnostico) private readonly diagnosticRepository: Repository<Diagnostico>
   ) { }
 
   async getCropsProducer() {
-    const cropsProducer = await this._CropsRepository.createQueryBuilder("crops")
-      .select(["crops.id", "crops.dniProductor", "crops.hectareas"])
+    const cropsProducer = await this._CropsRepository.createQueryBuilder()
+      .select(["Cultivo.id", "Cultivo.dniProductor", "Cultivo.hectareas", "Cultivo.posicionAcepta"])
       .addSelect(["municipality.nombre", "sidewalk.nombre", "producer.nombres", "producer.apellidos", "lineProducer.nombre"])
-      .innerJoin("crops.idMunicipio2", "municipality")
-      .innerJoin("crops.idVereda2", "sidewalk")
-      .innerJoin("crops.codigoProductor2", "producer")
-      .innerJoin("crops.idLineaProductiva2", "lineProducer")
+      .innerJoin("Cultivo.idMunicipio2", "municipality")
+      .innerJoin("Cultivo.idVereda2", "sidewalk")
+      .innerJoin("Cultivo.codigoProductor2", "producer")
+      .innerJoin("Cultivo.idLineaProductiva2", "lineProducer")
       .getMany()
 
     return cropsProducer
@@ -63,6 +68,7 @@ export class CropsService {
       await this._CropsRepository.update(body.idCrop, {
         hectareas: body.hectareas,
         fechaInicio: body.fechaInicio,
+        posicionAcepta: body.posicionAcepta,
         idLineaProductiva2: { id: body.idLineaProductiva },
         codigoProductor2: { id: body.codigoProductor },
         idAcepta2: { id: body.idAcepta },
@@ -84,7 +90,7 @@ export class CropsService {
       .getRawOne()
 
     const dataCrops = await this._CropsRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
       .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
       .innerJoinAndSelect('Productor.idGenero2', 'Genero')
       .innerJoinAndSelect('Productor.idEtnia2', 'Etnia')
@@ -109,6 +115,32 @@ export class CropsService {
       return { success: 'OK' }
     } catch (error) {
       return { error }
+    }
+  }
+
+  async createDiagnostic(body: CreateDiagnosticDto) {
+    const crop = await this._CropsRepository.findOne({
+      select: ['id', 'posicionAcepta'],
+      where: { id: body.idCultivo }
+    })
+    const farm = await this.farmRepository.findOne({
+      select: ['id', 'nombre'],
+      where: { id: body.idFinca }
+    })
+
+    /*   if (!farm) {
+        return { error: 'FARM_NOT_EXIST', detail: 'La finca no se encuentra en la base de datos.' }
+      } else  */
+
+    if (!crop) {
+      return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no se encuentra en la base de datos.' }
+    } else {
+      try {
+        await this.diagnosticRepository.save(body)
+        return { success: 'OK' }
+      } catch (error) {
+        return { error }
+      }
     }
   }
 

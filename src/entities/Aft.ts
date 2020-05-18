@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Productores } from "./Productores";
 import { Municipio } from "./Municipio";
 import { Organizacion } from "./Organizacion";
@@ -39,7 +32,7 @@ export class Aft {
   @Column("varchar", { name: "documento", nullable: true, length: 100 })
   documento: string | null;
 
-  @Column("bigint", { name: "matricula", nullable: true })
+  @Column("varchar", { name: "matricula", nullable: true, length: 100 })
   matricula: string | null;
 
   @Column("varchar", { name: "email", nullable: true, length: 100 })

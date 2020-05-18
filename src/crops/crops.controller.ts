@@ -5,6 +5,7 @@ import { UpdateCropDto } from './dto/updateCrop.dto';
 import { CreateCropDto } from './dto/createCrop.dto';
 import { get } from 'http';
 import { CreateAcceptDto } from './dto/createAccept.dto';
+import { CreateDiagnosticDto } from './dto/createDiagnostic.dto';
 
 @Controller('crops')
 export class CropsController {
@@ -27,7 +28,6 @@ export class CropsController {
   //@UseGuards(AuthGuard('jwt'))
   @Post('create')
   async createCrop(@Body() body: CreateCropDto) {
-    console.log(body);
     return await this._CropsService.createCrop(body)
   }
 
@@ -44,5 +44,10 @@ export class CropsController {
   @Post('create-accept')
   async createAccept(@Body() body: CreateAcceptDto) {
     return await this._CropsService.createAccept(body);
+  }
+
+  @Post('create-diagnostic')
+  async createDiagnostic(@Body() body: CreateDiagnosticDto) {
+    return await this._CropsService.createDiagnostic(body)
   }
 }

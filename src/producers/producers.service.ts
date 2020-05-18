@@ -20,6 +20,8 @@ import { Herramienta } from '../entities/Herramienta';
 import { TipoHerramienta } from '../entities/TipoHerramienta';
 import { KitHerramienta } from '../entities/KitHerramienta';
 import { KitUser } from '../entities/KitUser';
+import { CreateAftDto } from './dto/createAft.dto';
+import { Aft } from '../entities/Aft';
 
 @Injectable()
 export class ProducersService {
@@ -41,6 +43,7 @@ export class ProducersService {
     @InjectRepository(TipoHerramienta) private readonly typeToolRepository: Repository<TipoHerramienta>,
     @InjectRepository(KitHerramienta) private readonly kitToolRepository: Repository<KitHerramienta>,
     @InjectRepository(KitUser) private readonly kitUserRepository: Repository<KitUser>,
+    @InjectRepository(Aft) private readonly aftRepository: Repository<Aft>,
 
 
   ) { }
@@ -179,7 +182,7 @@ export class ProducersService {
   async getCropsProducersProductiveLine() {
     const countCrops = await this.getCoutCropsProducer()
     const response = await this.cropRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
       .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
       .addSelect(['Genero.nombre'])
       .addSelect(['Municipio.nombre'])
@@ -233,7 +236,7 @@ export class ProducersService {
 
   async getAllDataProducurs() {
     return await this.cropRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio'])
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
       .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
       .addSelect(['Genero.nombre'])
       .addSelect(['organizacion.nombre', 'organizacion.descripcion', 'organizacion.contacto', 'organizacion.temaCapacitacion', 'organizacion.temaEmpresarial'])
@@ -351,6 +354,37 @@ export class ProducersService {
 
       await this.kitUserRepository.save({
         idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }
+      })
+
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async createAft(body: CreateAftDto) {
+    const producer = await this._ProducersRepository.findOne({
+      select: ['id', 'nombres', 'dni'],
+      where: { dni: body.producerDni }
+    })
+    if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
+
+    try {
+      await this.aftRepository.save({
+        idOrganizacion2: { id: body.idOrganizacion },
+        valorAft: body.valorAft,
+        fechaEntrega: body.fechaEntrega,
+        cuenta: body.cuenta,
+        tipoCuenta: body.tipoCuenta,
+        banco: body.banco,
+        documento: body.documento,
+        matricula: body.matricula,
+        email: body.email,
+        idMunicipio2: { id: body.idMunicipio },
+        dv: body.dv,
+        nit: body.nit,
+        idProductor2: { dni: body.producerDni }
       })
 
       return { success: 'OK' }

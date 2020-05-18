@@ -19,12 +19,13 @@ import { Herramienta } from '../entities/Herramienta';
 import { TipoHerramienta } from '../entities/TipoHerramienta';
 import { KitHerramienta } from '../entities/KitHerramienta';
 import { KitUser } from '../entities/KitUser';
+import { Aft } from '../entities/Aft';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ProducersRepository, GeneroRepository, RelationshipRepository, GrupoEtnico,
       CargoOrg, Parentesco, Discapacidad, Conflicto, Organizacion, Cultivo, ProductoresBeneficio, Kit,
-      Herramienta, TipoHerramienta, KitHerramienta, KitUser
+      Herramienta, TipoHerramienta, KitHerramienta, KitUser, Aft
     ]),
   ],
   controllers: [ProducersController],
