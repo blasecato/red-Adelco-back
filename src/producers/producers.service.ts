@@ -253,7 +253,10 @@ export class ProducersService {
 
   async getProducerById(dni) {
     return await this._ProducersRepository.findOne(dni, {
-      relations: ['idGenero2', 'idOrganizacion2', 'idConflicto2', 'idDiscapacitado2', 'idEtnia2', 'idParentesco2']
+      relations: ['idGenero2', 'idOrganizacion2', 'idConflicto2', 'idDiscapacitado2',
+        'idEtnia2', 'idParentesco2', 'productoresBeneficios', 'productoresBeneficios.idBeneficio2',
+        'productoresBeneficios.idBeneficio2.idTipoBeneficio2', 'kitUsers', 'kitUsers.idKitHerramienta2',
+        'kitUsers.idKitHerramienta2.idKit2']
     })
   }
 
