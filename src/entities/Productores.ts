@@ -6,7 +6,7 @@ import {
   ManyToOne,
   OneToMany
 } from "typeorm";
-import { Cultivo } from "./Cultivo";
+import { Aft } from "./Aft";
 import { Genero } from "./Genero";
 import { Organizacion } from "./Organizacion";
 import { Conflicto } from "./Conflicto";
@@ -18,6 +18,7 @@ import { ProductorOrg } from "./ProductorOrg";
 import { CargoOrg } from "./CargoOrg";
 import { Parentesco } from "./Parentesco";
 import { Finca } from "./Finca";
+import { Cultivo } from "./Cultivo";
 
 @Index("id", ["id"], {})
 @Index("id_cargo_org", ["idCargoOrg"], {})
@@ -29,7 +30,7 @@ import { Finca } from "./Finca";
 @Index("id_organizacion", ["idOrganizacion"], {})
 @Index("id_parentesco", ["idParentesco"], {})
 @Index("id_productor", ["idProductor"], {})
-@Entity("productores", { schema: "redadelco" })
+@Entity("productores", { schema: "tcsp_database" })
 export class Productores {
   @Column("varchar", { name: "id", length: 145 })
   id: string;
@@ -80,10 +81,10 @@ export class Productores {
   idCargoOrg: number | null;
 
   @OneToMany(
-    () => Cultivo,
-    cultivo => cultivo.dniProductor2
+    () => Aft,
+    aft => aft.idProductor2
   )
-  cultivos: Cultivo[];
+  afts: Aft[];
 
   @ManyToOne(
     () => Genero,
@@ -126,12 +127,6 @@ export class Productores {
     kitUser => kitUser.idProductor2
   )
   kitUsers: KitUser[];
-
-  @OneToMany(
-    () => Cultivo,
-    cultivo => cultivo.codigoProductor2
-  )
-  cultivos2: Cultivo[];
 
   @OneToMany(
     () => Organizacion,
@@ -198,4 +193,16 @@ export class Productores {
   )
   @JoinColumn([{ name: "id_finca", referencedColumnName: "id" }])
   idFinca2: Finca;
+
+  @OneToMany(
+    () => Cultivo,
+    cultivo => cultivo.codigoProductor2
+  )
+  cultivos: Cultivo[];
+
+  @OneToMany(
+    () => Cultivo,
+    cultivo => cultivo.dniProductor2
+  )
+  cultivos2: Cultivo[];
 }
