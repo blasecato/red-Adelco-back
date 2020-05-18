@@ -14,6 +14,12 @@ import { Cultivo } from '../entities/Cultivo';
 import { RelationshipRepository } from '../relationship/relationship.repository';
 import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
 import { ProductoresBeneficio } from '../entities/ProductoresBeneficio';
+import { Kit } from '../entities/Kit';
+import { CreateKitDto } from './dto/createKit.dto';
+import { Herramienta } from '../entities/Herramienta';
+import { TipoHerramienta } from '../entities/TipoHerramienta';
+import { KitHerramienta } from '../entities/KitHerramienta';
+import { KitUser } from '../entities/KitUser';
 
 @Injectable()
 export class ProducersService {
@@ -29,7 +35,14 @@ export class ProducersService {
     @InjectRepository(Conflicto) private readonly ConflictoRepository: Repository<Conflicto>,
     @InjectRepository(Organizacion) private readonly OrganizacionRepository: Repository<Organizacion>,
     @InjectRepository(Cultivo) private readonly cropRepository: Repository<Cultivo>,
-    @InjectRepository(ProductoresBeneficio) private readonly ProductoresBeneficioRepository: Repository<ProductoresBeneficio>
+    @InjectRepository(ProductoresBeneficio) private readonly ProductoresBeneficioRepository: Repository<ProductoresBeneficio>,
+    @InjectRepository(Kit) private readonly kitRepository: Repository<Kit>,
+    @InjectRepository(Herramienta) private readonly toolRepository: Repository<Herramienta>,
+    @InjectRepository(TipoHerramienta) private readonly typeToolRepository: Repository<TipoHerramienta>,
+    @InjectRepository(KitHerramienta) private readonly kitToolRepository: Repository<KitHerramienta>,
+    @InjectRepository(KitUser) private readonly kitUserRepository: Repository<KitUser>,
+
+
   ) { }
 
   async createProducers(signupProducer) {
@@ -258,6 +271,85 @@ export class ProducersService {
         ...body,
         idProductor2: { id: producer.id }
       })
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async getKits(idProducer: string, dni: number) {
+    return await this.kitRepository.createQueryBuilder()
+      .innerJoinAndSelect('Kit.kitHerramientas', 'kitHerramienta')
+      .innerJoinAndSelect('kitHerramienta.idHerramienta2', 'Herramienta')
+      .innerJoinAndSelect('Herramienta.idTipoHerramienta2', 'TipoHerramienta')
+      .innerJoinAndSelect('kitHerramienta.kitUsers', 'kitUser')
+      .innerJoinAndSelect('kitUser.idProductor2', 'Productor')
+      .where('Productor.id =:idProducer OR Productor.dni =:dni', { idProducer, dni })
+      .getMany();
+  }
+
+  async getKit() {
+    return await this.kitRepository.find({})
+  }
+
+  async createKitTool(body: CreateKitDto) {
+    const producer = await this._ProducersRepository.findOne({
+      select: ['id', 'nombres', 'dni'],
+      where: { id: body.idProducer }
+    })
+
+    if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
+
+    try {
+      const kit = await this.kitRepository.save({
+        nombre: body.kitName, imageActa: body.imagenActa
+      })
+
+      const tool = await this.toolRepository.save({
+        descripcion: body.toolDetail, idTipoHerramienta2: { id: body.idTypeTool }
+      })
+
+      const kitTool = await this.kitToolRepository.save({
+        idHerramienta2: { id: tool.id }, idKit2: { id: kit.id }
+      })
+
+      await this.kitUserRepository.save({
+        idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }
+      })
+
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async getAllTypeTool() {
+    return await this.typeToolRepository.find({})
+  }
+
+  async createKit(body: CreateKitDto) {
+    const producer = await this._ProducersRepository.findOne({
+      select: ['id', 'nombres', 'dni'],
+      where: { id: body.idProducer }
+    })
+
+    if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
+
+    try {
+      const kit = await this.kitRepository.save({
+        nombre: body.kitName, imageActa: body.imagenActa
+      })
+
+      const kitTool = await this.kitToolRepository.save({
+        idKit2: { id: kit.id }
+      })
+
+      await this.kitUserRepository.save({
+        idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }
+      })
+
       return { success: 'OK' }
     } catch (error) {
       return { error }

@@ -2,6 +2,7 @@ import { Controller, UseGuards, Get, Post, Body, Put, Param, Query, ParseIntPipe
 import { ProducersService } from './producers.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
+import { CreateKitDto } from './dto/createKit.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -80,5 +81,30 @@ export class ProducersController {
   @Post('create-producer-beneficiary')
   async createProducerBeneficiary(@Body() body: CreateProducerBeneficiaryDto) {
     return await this._ProducersService.createProducerBeneficiary(body);
+  }
+
+  @Get('get-kits')
+  async getKits(@Query('idproducer') idProducer: string, @Query('dni') dni: number) {
+    return await this._ProducersService.getKits(idProducer, dni);
+  }
+
+  @Get('get-kit')
+  async getKit() {
+    return await this._ProducersService.getKit();
+  }
+
+  @Get('get-type-tool')
+  async getAllTypeTool() {
+    return await this._ProducersService.getAllTypeTool();
+  }
+
+  @Post('create-kit-tool')
+  async createKitTool(@Body() body: CreateKitDto) {
+    return await this._ProducersService.createKitTool(body);
+  }
+
+  @Post('create-kit')
+  async createKit(@Body() body: CreateKitDto) {
+    return await this._ProducersService.createKit(body);
   }
 }
