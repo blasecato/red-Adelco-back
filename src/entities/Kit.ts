@@ -1,7 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { KitHerramienta } from "./KitHerramienta";
+import { KitUser } from "./KitUser";
 
-@Entity("kit", { schema: "redadelco" })
+@Entity("kit", { schema: "tcsp_database" })
 export class Kit {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
@@ -17,4 +18,10 @@ export class Kit {
     kitHerramienta => kitHerramienta.idKit2
   )
   kitHerramientas: KitHerramienta[];
+
+  @OneToMany(
+    () => KitUser,
+    kitUser => kitUser.idKit2
+  )
+  kitUsers: KitUser[];
 }
