@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
 import { CreateKitDto } from './dto/createKit.dto';
 import { CreateAftDto } from './dto/createAft.dto';
+import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -84,6 +85,11 @@ export class ProducersController {
     return await this._ProducersService.createProducerBeneficiary(body);
   }
 
+  @Put('update/producer-beneficiary')
+  async updateProducerBeneficiary(@Body() body: UpdateProducerBeneficiaryDto) {
+    return await this._ProducersService.updateProducerBeneficiary(body);
+  }
+
   @Get('get-kits')
   async getKits(@Query('idproducer') idProducer: string, @Query('dni') dni: number) {
     return await this._ProducersService.getKits(idProducer, dni);
@@ -92,6 +98,11 @@ export class ProducersController {
   @Get('get-kit')
   async getKit() {
     return await this._ProducersService.getKit();
+  }
+
+  @Get('get/kit-user')
+  async getKitUser() {
+    return await this._ProducersService.getKitUser();
   }
 
   @Get('get-type-tool')

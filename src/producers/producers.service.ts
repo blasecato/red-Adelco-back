@@ -22,6 +22,7 @@ import { KitHerramienta } from '../entities/KitHerramienta';
 import { KitUser } from '../entities/KitUser';
 import { CreateAftDto } from './dto/createAft.dto';
 import { Aft } from '../entities/Aft';
+import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dto';
 
 @Injectable()
 export class ProducersService {
@@ -37,7 +38,7 @@ export class ProducersService {
     @InjectRepository(Conflicto) private readonly ConflictoRepository: Repository<Conflicto>,
     @InjectRepository(Organizacion) private readonly OrganizacionRepository: Repository<Organizacion>,
     @InjectRepository(Cultivo) private readonly cropRepository: Repository<Cultivo>,
-    @InjectRepository(ProductoresBeneficio) private readonly ProductoresBeneficioRepository: Repository<ProductoresBeneficio>,
+    @InjectRepository(ProductoresBeneficio) private readonly productoresBeneficioRepository: Repository<ProductoresBeneficio>,
     @InjectRepository(Kit) private readonly kitRepository: Repository<Kit>,
     @InjectRepository(Herramienta) private readonly toolRepository: Repository<Herramienta>,
     @InjectRepository(TipoHerramienta) private readonly typeToolRepository: Repository<TipoHerramienta>,
@@ -274,9 +275,37 @@ export class ProducersService {
       return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
 
     try {
-      await this.ProductoresBeneficioRepository.save({
+      await this.productoresBeneficioRepository.save({
         ...body,
         idProductor2: { id: producer.id }
+      })
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async updateProducerBeneficiary(body: UpdateProducerBeneficiaryDto) {
+    const producer = await this._ProducersRepository.findOne({
+      select: ['id', 'nombres', 'dni'],
+      where: { id: body.idProducer, dni: body.dni }
+    })
+
+    const producerBeneficiary = await this.productoresBeneficioRepository.findOne({
+      select: ['id'],
+      where: { id: body.idProducerBeneficiary }
+    })
+
+    if (!producerBeneficiary)
+      return { error: 'PRODUCER_BENEFICIARY_NOT_EXIST', detail: 'El productor no tiene ningun beneficio registrado.' }
+    else if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
+
+    try {
+      await this.productoresBeneficioRepository.update(body.idProducerBeneficiary, {
+        ...body,
+        idProductor2: { id: producer.id }, idBeneficio2: { id: body.idBeneficiary }
+
       })
       return { success: 'OK' }
     } catch (error) {
@@ -396,6 +425,13 @@ export class ProducersService {
 
   async getAllAft() {
     return await this.aftRepository.find({ relations: ['idOrganizacion2'] });
+  }
+
+  async getKitUser() {
+    return await this.kitRepository.createQueryBuilder()
+      .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
+      .innerJoinAndSelect('kitUsers.idProductor2', 'Productores')
+      .getMany();
   }
 
 }
