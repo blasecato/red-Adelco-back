@@ -263,6 +263,7 @@ export class ProducersService {
     })
   }
 
+  /* Ojo */
   async createProducerBeneficiary(body: CreateProducerBeneficiaryDto) {
     const producer = await this._ProducersRepository.findOne({
       select: ['id', 'nombres', 'dni'],
@@ -391,6 +392,10 @@ export class ProducersService {
     } catch (error) {
       return { error }
     }
+  }
+
+  async getAllAft() {
+    return await this.aftRepository.find({ relations: ['idOrganizacion2'] });
   }
 
 }

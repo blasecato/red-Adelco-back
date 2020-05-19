@@ -113,4 +113,9 @@ export class ProducersController {
   async createAft(@Body() body: CreateAftDto) {
     return await this._ProducersService.createAft(body);
   }
+
+  @Get('get-aft/organization')
+  async getAllAft() {
+    return await this._ProducersService.getAllAft();
+  }
 }
