@@ -288,12 +288,12 @@ export class ProducersService {
   async updateProducerBeneficiary(body: UpdateProducerBeneficiaryDto) {
     const producer = await this._ProducersRepository.findOne({
       select: ['id', 'nombres', 'dni'],
-      where: { id: body.idProducer, dni: body.dni }
+      where: { id: body.idProductor2 }
     })
 
     const producerBeneficiary = await this.productoresBeneficioRepository.findOne({
       select: ['id'],
-      where: { id: body.idProducerBeneficiary }
+      where: { id: body.id }
     })
 
     if (!producerBeneficiary)
@@ -302,9 +302,9 @@ export class ProducersService {
       return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
 
     try {
-      await this.productoresBeneficioRepository.update(body.idProducerBeneficiary, {
+      await this.productoresBeneficioRepository.update(producerBeneficiary.id, {
         ...body,
-        idProductor2: { id: producer.id }, idBeneficio2: { id: body.idBeneficiary }
+        idProductor2: { id: producer.id }, idBeneficio2: { id: body.idBeneficio2 }
 
       })
       return { success: 'OK' }

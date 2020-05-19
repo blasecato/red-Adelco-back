@@ -3,17 +3,14 @@ import { IsNumber, IsString, IsOptional } from 'class-validator';
 export class UpdateProducerBeneficiaryDto {
 
   @IsNumber()
-  idProducerBeneficiary: number;
+  id: number;
 
   @IsString()
-  idProducer: string;
-
-  @IsNumber()
-  dni: number;
+  idProductor2: string;
 
   @IsNumber()
   @IsOptional()
-  idBeneficiary: number;
+  idBeneficio2: number;
 
   @IsString()
   @IsOptional()
