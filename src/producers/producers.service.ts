@@ -434,4 +434,12 @@ export class ProducersService {
       .getMany();
   }
 
+  async getKitUserId(idProducerId: string) {
+    return await this.kitRepository.createQueryBuilder()
+      .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
+      .innerJoinAndSelect('kitUsers.idProductor2', 'Productor')
+      .where('Productor.id =: idProducerId ', { idProducerId })
+      .getMany();
+  }
+
 }

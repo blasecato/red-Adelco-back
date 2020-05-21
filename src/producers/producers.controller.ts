@@ -105,6 +105,11 @@ export class ProducersController {
     return await this._ProducersService.getKitUser();
   }
 
+  @Get('get/kit-user')
+  async getKitUserId(@Query('idproducer') idProducerId: string) {
+    return await this._ProducersService.getKitUserId(idProducerId);
+  }
+
   @Get('get-type-tool')
   async getAllTypeTool() {
     return await this._ProducersService.getAllTypeTool();
