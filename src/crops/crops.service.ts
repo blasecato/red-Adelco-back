@@ -1,6 +1,6 @@
 import { Injectable, Body } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, IsNull } from 'typeorm';
 import { UpdateCropDto } from './dto/updateCrop.dto';
 import { CreateCropDto } from './dto/createCrop.dto';
 import { Municipio } from '../entities/Municipio';
@@ -51,7 +51,16 @@ export class CropsService {
 
   async createCrop(body: CreateCropDto) {
     try {
-      await this._CropsRepository.save(body)
+      await this._CropsRepository.save({
+        hectareas: body.hectareas,
+        fechaInicio: body.fechaInicio,
+        idAcepta2: { id: body.idVereda },
+        idLineaProductiva2: { id: body.idLineaProductiva },
+        idMunicipio2: { id: body.idMunicipio },
+        idVereda2: { id: body.idVereda },
+        codigoProductor2: { id: body.codigoProductor },
+        dniProductor2: { dni: body.dniProductor }
+      })
 
       return { success: 'OK' }
     } catch (error) {
@@ -145,7 +154,14 @@ export class CropsService {
   }
 
   async getCropsDiagnosticAll() {
-    return await this._CropsRepository.find({ relations: ['diagnosticos'], order: { id: 'ASC' } })
+    return await this._CropsRepository.find({
+      join: {
+        alias: 'crop',
+        innerJoinAndSelect: {
+          diagnosticos: "crop.diagnosticos"
+        }
+      }
+    })
   }
 
 }

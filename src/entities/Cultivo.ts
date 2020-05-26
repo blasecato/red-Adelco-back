@@ -62,7 +62,7 @@ export class Cultivo {
   @ManyToOne(
     () => Acepta,
     acepta => acepta.cultivos,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_acepta", referencedColumnName: "id" }])
   idAcepta2: Acepta;
@@ -84,7 +84,7 @@ export class Cultivo {
   @ManyToOne(
     () => Municipio,
     municipio => municipio.cultivos,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_municipio", referencedColumnName: "id" }])
   idMunicipio2: Municipio;
@@ -92,7 +92,7 @@ export class Cultivo {
   @ManyToOne(
     () => Vereda,
     vereda => vereda.cultivos,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
   idVereda2: Vereda;
@@ -100,7 +100,7 @@ export class Cultivo {
   @ManyToOne(
     () => Productores,
     productores => productores.cultivos,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "codigo_productor", referencedColumnName: "id" }])
   codigoProductor2: Productores;
@@ -108,7 +108,7 @@ export class Cultivo {
   @ManyToOne(
     () => Productores,
     productores => productores.cultivos2,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "dni_productor", referencedColumnName: "dni" }])
   dniProductor2: Productores;
