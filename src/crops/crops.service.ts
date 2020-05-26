@@ -144,4 +144,8 @@ export class CropsService {
     }
   }
 
+  async getCropsDiagnosticAll() {
+    return await this._CropsRepository.find({ relations: ['diagnosticos'], order: { id: 'ASC' } })
+  }
+
 }
