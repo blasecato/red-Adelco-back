@@ -65,7 +65,7 @@ export class Cultivo {
     { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_acepta", referencedColumnName: "id" }])
-  idAcepta2: Acepta;
+  idAcepta2: Acepta | null;
 
   @ManyToOne(
     () => LineaProductiva,
@@ -95,7 +95,7 @@ export class Cultivo {
     { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
-  idVereda2: Vereda;
+  idVereda2: Vereda | null;
 
   @ManyToOne(
     () => Productores,
