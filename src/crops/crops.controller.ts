@@ -3,7 +3,6 @@ import { CropsService } from './crops.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateCropDto } from './dto/updateCrop.dto';
 import { CreateCropDto } from './dto/createCrop.dto';
-import { get } from 'http';
 import { CreateAcceptDto } from './dto/createAccept.dto';
 import { CreateDiagnosticDto } from './dto/createDiagnostic.dto';
 
@@ -49,5 +48,10 @@ export class CropsController {
   @Post('create-diagnostic')
   async createDiagnostic(@Body() body: CreateDiagnosticDto) {
     return await this._CropsService.createDiagnostic(body)
+  }
+
+  @Get('get/crops-diagnostic')
+  async getCropsDiagnosticAll() {
+    return await this._CropsService.getCropsDiagnosticAll();
   }
 }
