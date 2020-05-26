@@ -351,7 +351,7 @@ export class ProducersService {
       })
 
       await this.kitUserRepository.save({
-        idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }
+        idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }, idKit2: { id: kit.id }
       })
 
       return { success: 'OK' }
@@ -365,27 +365,10 @@ export class ProducersService {
   }
 
   async createKit(body: CreateKitDto) {
-    const producer = await this._ProducersRepository.findOne({
-      select: ['id', 'nombres', 'dni'],
-      where: { id: body.idProducer }
-    })
-
-    if (!producer)
-      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
-
     try {
-      const kit = await this.kitRepository.save({
+      await this.kitRepository.save({
         nombre: body.kitName, imageActa: body.imagenActa
       })
-
-      const kitTool = await this.kitToolRepository.save({
-        idKit2: { id: kit.id }
-      })
-
-      await this.kitUserRepository.save({
-        idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }
-      })
-
       return { success: 'OK' }
     } catch (error) {
       return { error }
