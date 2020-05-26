@@ -12,6 +12,7 @@ import { Finca } from '../entities/Finca';
 import { Diagnostico } from '../entities/Diagnostico';
 import { CreateAcceptDto } from './dto/createAccept.dto';
 import { CreateDiagnosticDto } from './dto/createDiagnostic.dto';
+import { Vereda } from '../entities/Vereda';
 
 @Injectable()
 export class CropsService {
@@ -21,6 +22,7 @@ export class CropsService {
     @InjectRepository(Productores) private readonly ProductoresRepository: Repository<Productores>,
     @InjectRepository(LineaProductiva) private readonly lineaProductivaRepository: Repository<LineaProductiva>,
     @InjectRepository(Municipio) private readonly municipioRepository: Repository<Municipio>,
+    @InjectRepository(Vereda) private readonly sidewalkRepository: Repository<Vereda>,
     @InjectRepository(Acepta) private readonly AceptaRepository: Repository<Acepta>,
     @InjectRepository(Finca) private readonly farmRepository: Repository<Finca>,
     @InjectRepository(Diagnostico) private readonly diagnosticRepository: Repository<Diagnostico>
@@ -50,16 +52,30 @@ export class CropsService {
   }
 
   async createCrop(body: CreateCropDto) {
+    /*  const accept = await this.AceptaRepository.findOne({ where: { id: body.idAcepta } });
+     const productiveLine = await this.lineaProductivaRepository.findOne({ where: { id: body.idLineaProductiva } });
+     const municipality = await this.municipioRepository.findOne({ where: { id: body.idMunicipio } });
+     const sidewalk = await this.sidewalkRepository.findOne({ where: { id: body.idVereda } });
+     const productorId = await this.ProductoresRepository.findOne({ where: { id: body.codigoProductor } });
+     const productorDni = await this.ProductoresRepository.findOne({ where: { dni: body.dniProductor } });
+     
+         if (!accept)
+           return { error: 'ACCEPT_NOT_EXITS', detail: 'No existe ningun dato en la entidad acepta.' }
+         else if (!productiveLine)
+           return { error: 'PRODUCTIVE_LINE_NOT_EXITS', detail: 'No existe ningun registro de linea productiva.' }
+         else if (!municipality)
+           return { error: 'MUNICIPALITY_NOT_EXITS', detail: 'No existe ningun municipio.' }
+         else if (!sidewalk)
+           return { error: 'SIDEWALK_NOT_EXITS', detail: 'No existe ninguna vereda.' }
+         else if (!productorId)
+           return { error: 'ID_PRODUCTOR_NOT_EXITS', detail: 'No existe ningun productor con ese id.' }
+         else if (!productorDni)
+           return { error: 'DNI_PRODUCTOR_NOT_EXITS', detail: 'No existe ningun productor con ese dni.' }
+         else */
+
     try {
       await this._CropsRepository.save({
-        hectareas: body.hectareas,
-        fechaInicio: body.fechaInicio,
-        idAcepta2: { id: body.idVereda },
-        idLineaProductiva2: { id: body.idLineaProductiva },
-        idMunicipio2: { id: body.idMunicipio },
-        idVereda2: { id: body.idVereda },
-        codigoProductor2: { id: body.codigoProductor },
-        dniProductor2: { dni: body.dniProductor }
+        ...body
       })
 
       return { success: 'OK' }
@@ -113,13 +129,13 @@ export class CropsService {
   }
 
   async createAccept(body: CreateAcceptDto) {
-    const crop = await this._CropsRepository.findOne({ select: ['id'], where: { id: body.idCrop } })
-    if (!crop)
-      return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no existe.' }
+    /*  const crop = await this._CropsRepository.findOne({ select: ['id'], where: { id: body.idCrop } })
+     if (!crop)
+       return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no existe.' } */
 
     try {
-      const accept = await this.AceptaRepository.save(body)
-      await this._CropsRepository.update(crop.id, { idAcepta2: { id: accept.id } })
+      const accept = await this.AceptaRepository.save({ ...body })
+      /*  await this._CropsRepository.update(crop.id, { idAcepta2: { id: accept.id } }) */
 
       return { success: 'OK' }
     } catch (error) {
