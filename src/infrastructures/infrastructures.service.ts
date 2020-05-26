@@ -1,10 +1,10 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Infraestructura } from 'src/entities/Infraestructura';
+import { Infraestructura } from '../entities/Infraestructura';
 import { Repository } from 'typeorm';
-import { TipoInfraestructura } from 'src/entities/TipoInfraestructura';
-import { Vereda } from 'src/entities/Vereda';
-import { Municipio } from 'src/entities/Municipio';
+import { TipoInfraestructura } from '../entities/TipoInfraestructura';
+import { Vereda } from '../entities/Vereda';
+import { Municipio } from '../entities/Municipio';
 import { UpdateInfrastructureDto } from './dto/updateInfrastructure.dto';
 
 @Injectable()

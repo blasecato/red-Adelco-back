@@ -13,6 +13,11 @@ export class MunicipalityController {
     return await this.municipalityService.createTown(body);
   }
 
+  @Post('create/municipality')
+  async createMunicipality(@Body() body: CreateTownDto) {
+    return await this.municipalityService.createMunicipality(body);
+  }
+
   @Put('update/town')
   async updateTowb(@Body() body: UpdateTownDto) {
     return await this.municipalityService.updateTown(body);
