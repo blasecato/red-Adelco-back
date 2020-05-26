@@ -125,6 +125,11 @@ export class ProducersController {
     return await this._ProducersService.createKit(body);
   }
 
+  @Post('create/kit-user')
+  async createKitUser(@Body() body: CreateKitDto) {
+    return await this._ProducersService.createKitUser(body);
+  }
+
   @Post('create-aft')
   async createAft(@Body() body: CreateAftDto) {
     return await this._ProducersService.createAft(body);

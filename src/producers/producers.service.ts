@@ -392,6 +392,34 @@ export class ProducersService {
     }
   }
 
+  async createKitUser(body: CreateKitDto) {
+    const producer = await this._ProducersRepository.findOne({
+      select: ['id', 'nombres', 'dni'],
+      where: { id: body.idProducer }
+    })
+
+    const kit = await this.kitRepository.findOne({
+      select: ['id'],
+      where: { id: body.idKit }
+    })
+
+    if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
+    else if (!kit)
+      return { error: 'KIT_NOT_EXIST', detail: 'El Kit no se encuentra en la base de datos.' }
+
+    try {
+      await this.kitUserRepository.save({
+        idProductor2: { id: producer.id }, idKit2: { id: kit.id }
+      })
+
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+
   async createAft(body: CreateAftDto) {
     const producer = await this._ProducersRepository.findOne({
       select: ['id', 'nombres', 'dni'],
