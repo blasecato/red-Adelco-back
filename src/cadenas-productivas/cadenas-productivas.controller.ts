@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Get, Post, Body } from '@nestjs/common';
 import { CadenasProductivasService } from './cadenas-productivas.service';
-import { AuthGuard } from '@nestjs/passport';
+import { CreateProductiveChainDTO } from './dto/createProductiveChain.dto';
 
 @Controller('cadenas-productivas')
 export class CadenasProductivasController {
@@ -20,8 +20,8 @@ export class CadenasProductivasController {
 
   //@UseGuards(AuthGuard('jwt'))
   @Post()
-  async create(@Body() cadena) {
-    return await this._cadenasProductivasService.create(cadena);
+  async create(@Body() body: CreateProductiveChainDTO) {
+    return await this._cadenasProductivasService.create(body);
   }
 
   @Post('line')

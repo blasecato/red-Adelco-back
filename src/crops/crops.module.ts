@@ -9,10 +9,11 @@ import { LineaProductiva } from '../entities/LineaProductiva';
 import { Acepta } from '../entities/Acepta';
 import { Finca } from '../entities/Finca';
 import { Diagnostico } from '../entities/Diagnostico';
+import { Vereda } from '../entities/Vereda';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Cultivo, Productores, LineaProductiva, Municipio, Acepta, Finca, Diagnostico]),
+    TypeOrmModule.forFeature([Cultivo, Productores, LineaProductiva, Municipio, Acepta, Finca, Diagnostico, Vereda]),
   ],
   controllers: [CropsController],
   providers: [CropsService]

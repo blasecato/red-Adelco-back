@@ -25,12 +25,12 @@ export class CropsController {
   }
 
   //@UseGuards(AuthGuard('jwt'))
-  @Post('create')
+  @Post('/create')
   async createCrop(@Body() body: CreateCropDto) {
     return await this._CropsService.createCrop(body)
   }
 
-  @Put('update')
+  @Put('/update')
   async updateCrop(@Body() body: UpdateCropDto) {
     return await this._CropsService.updateCrop(body)
   }

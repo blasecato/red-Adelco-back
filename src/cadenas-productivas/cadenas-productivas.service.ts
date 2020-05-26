@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineaProductiva } from 'src/entities/LineaProductiva';
-import { CadenaProductiva } from 'src/entities/CadenaProductiva';
-import { Vereda } from 'src/entities/Vereda';
+import { LineaProductiva } from '../entities/LineaProductiva';
+import { CadenaProductiva } from '../entities/CadenaProductiva';
+import { Vereda } from '../entities/Vereda';
+import { CreateProductiveChainDTO } from './dto/createProductiveChain.dto';
 
 @Injectable()
 export class CadenasProductivasService {
@@ -28,8 +29,19 @@ export class CadenasProductivasService {
     })
   }
 
-  async create(cadena) {
-    return await this.cadenaProductivaRepository.save(cadena)
+  async create(body: CreateProductiveChainDTO) {
+    try {
+      const chain = await this.cadenaProductivaRepository.save({
+        nombre: body.nombreC
+      })
+
+      await this.LineaProductivaRepository.save({
+        nombre: body.nombreL, idCadenaProductiva2: { id: chain.id }
+      })
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
   }
 
   async createline(line) {
