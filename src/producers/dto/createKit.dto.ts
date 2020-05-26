@@ -8,6 +8,9 @@ export class CreateKitDto {
   @IsString()
   idProducer: string;
 
+  @IsString()
+  idKit: string;
+
   @IsNumber()
   @IsOptional()
   idTypeTool: number;
