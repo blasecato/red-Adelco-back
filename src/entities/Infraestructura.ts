@@ -28,6 +28,9 @@ export class Infraestructura extends BaseEntity {
   @Column("longtext", { name: "covertura", nullable: true })
   covertura: string | null;
 
+  @Column("varchar", { nullable: true })
+  estado: string | null;
+
   @Column("int", { name: "id_tipo_obra", nullable: true })
   idTipoObra: number | null;
 
