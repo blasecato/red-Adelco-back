@@ -22,7 +22,7 @@ export class InfrastructuresService {
   ) { }
 
   async createInfrastructure(infraestructura) {
-    const { covertura, descripcion, direccion, idTypeInfraestructura, idVereda,idTipoObra2, nombre, planos, responsable } = infraestructura
+    const { covertura, descripcion, direccion, idTypeInfraestructura, idVereda, nombre, planos, responsable, estado } = infraestructura
 
     const typeInfraestructura = await this.TipoInfraestructuraRepository.findOne({
       where: { id: idTypeInfraestructura }
@@ -41,6 +41,7 @@ export class InfrastructuresService {
     newInfraestructura.nombre = nombre;
     newInfraestructura.planos = planos;
     newInfraestructura.responsable = responsable;
+    newInfraestructura.estado = estado;
 
     return await newInfraestructura.save()
   }

@@ -2,39 +2,32 @@ import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateIndicatorDto {
 
-  @IsNumber()
-  id: number;
-
-  @IsString()
-  @IsOptional()
-  nombre: string;
-
   @IsString()
   @IsOptional()
   descripcion: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  planos: string;
+  meta: number;
 
   @IsString()
   @IsOptional()
-  direccion: string;
+  observacion: string;
 
   @IsString()
   @IsOptional()
-  responsable: string;
+  fuenteVerificacion: string;
 
   @IsString()
   @IsOptional()
-  covertura: string;
+  archivo: string;
+
+  @IsString()
+  @IsOptional()
+  avances: string;
 
   @IsNumber()
   @IsOptional()
-  idTipoObra: number;
-
-  @IsNumber()
-  @IsOptional()
-  idVereda: number;
+  idObjetivo: number;
 
 }

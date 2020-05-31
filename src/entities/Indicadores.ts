@@ -22,6 +22,9 @@ export class Indicadores {
   @Column("longtext", { name: "archivo", nullable: true })
   archivo: string | null;
 
+  @Column("longtext", { nullable: true })
+  avances: string | null;
+
   @Column("int", { name: "id_objetivo", nullable: true })
   idObjetivo: number | null;
 
