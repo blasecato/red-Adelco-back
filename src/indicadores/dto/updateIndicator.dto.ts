@@ -24,4 +24,8 @@ export class UpdateIndicatorDto {
   @IsString()
   @IsOptional()
   archivo: string;
+
+  @IsString()
+  @IsOptional()
+  avances: string;
 }
