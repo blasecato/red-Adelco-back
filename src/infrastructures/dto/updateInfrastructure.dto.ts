@@ -37,4 +37,8 @@ export class UpdateInfrastructureDto {
   @IsOptional()
   idVereda: number;
 
+  @IsString()
+  @IsOptional()
+  estado: string;
+
 }

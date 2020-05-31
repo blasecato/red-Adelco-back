@@ -20,7 +20,7 @@ export class InfrastructuresController {
     return this.InfrastructuresService.getInfraestructura();
   }
 
-  @Get('DateInfra')
+  @Get('dateinfra')
   async getDateInfra() {
     return await this.InfrastructuresService.getDateInfra()
   }
