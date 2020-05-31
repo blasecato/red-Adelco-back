@@ -152,7 +152,7 @@ export class ProducersService {
       .leftJoin("producer.idConflicto2", "conflicto")
       .leftJoin("producer.idDiscapacitado2", "discapacitado")
       .leftJoin("producer.idProductor2", "productor")
-      .innerJoin("producer.idParentesco2", "parentesco")
+      .leftJoin("producer.idParentesco2", "parentesco")
       .leftJoinAndSelect("producer.idCargoOrg2", "cargoOrg")
       .getMany()
 
