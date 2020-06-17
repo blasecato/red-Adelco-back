@@ -28,7 +28,7 @@ export class ProducersService {
   constructor(
     @InjectRepository(Productores) private readonly _ProducersRepository: Repository<Productores>,
     @InjectRepository(Genero) private readonly _GeneroRepository: Repository<Genero>,
-    @InjectRepository(Parentesco) private readonly _RelationshipRepository:Repository<Parentesco>,
+    @InjectRepository(Parentesco) private readonly _RelationshipRepository: Repository<Parentesco>,
     @InjectRepository(GrupoEtnico) private readonly GrupoEtnicoRepository: Repository<GrupoEtnico>,
     @InjectRepository(CargoOrg) private readonly CargoOrgRepository: Repository<CargoOrg>,
     @InjectRepository(Parentesco) private readonly ParentescoRepository: Repository<Parentesco>,
@@ -257,7 +257,7 @@ export class ProducersService {
 
   async getProducerById(id, dni) {
     return await this._ProducersRepository.findOne({
-      relations: ['idGenero2', 'idOrganizacion2', 'idConflicto2', 'idDiscapacitado2',
+      relations: ['idGenero2', 'productoresOrganizaciones', 'productoresOrganizaciones.idOrganizacion', 'idConflicto2', 'idDiscapacitado2',
         'idEtnia2', 'idParentesco2', 'productoresBeneficios', 'productoresBeneficios.idBeneficio2',
         'productoresBeneficios.idBeneficio2.idTipoBeneficio2', 'kitUsers', 'kitUsers.idKitHerramienta2',
         'kitUsers.idKitHerramienta2.idKit2'],
