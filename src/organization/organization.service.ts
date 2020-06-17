@@ -1,33 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { OrganizationRepository } from './organization.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Organizacion } from 'src/entities/Organizacion';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Municipio } from '../entities/Municipio';
 import { Productores } from '../entities/Productores';
 import { UpdateOrganizationDto } from './dto/updateOrganization.dto';
+import { CreateOrganizationDto } from './dto/createOrganizacion.dto';
+import { Organizacion } from '../entities/Organizacion';
 
 @Injectable()
 export class organizationService {
 
   constructor(
-    @InjectRepository(OrganizationRepository) private readonly _OrganizationRepository: OrganizationRepository,
+    @InjectRepository(Organizacion) private readonly _OrganizationRepository: Repository<Organizacion>,
     @InjectRepository(Municipio) private readonly _MunicipioRepository: Repository<Municipio>,
     @InjectRepository(Productores) private readonly producersRepository: Repository<Productores>
   ) { }
 
-  async createOrganization(signupOrganization) {
+  async createOrganization(body: CreateOrganizationDto) {
+    try {
+      await this._OrganizationRepository.save({ ...body });
 
-    const { nombre, contacto, idVereda2, representante2, descripcion, temaCapacitacion, temaEmpresarial } = signupOrganization
-    const newOrganization = await new Organizacion()
-    newOrganization.nombre = nombre
-    newOrganization.contacto = contacto
-    newOrganization.idVereda2 = idVereda2
-    newOrganization.representante2 = representante2
-    newOrganization.descripcion = descripcion
-    newOrganization.temaEmpresarial = temaEmpresarial
-    newOrganization.temaCapacitacion = temaCapacitacion
-    return await newOrganization.save()
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
   }
 
   async getMunicipio() {

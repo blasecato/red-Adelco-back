@@ -1,9 +1,6 @@
 import { IsNumber, IsString, IsOptional } from 'class-validator';
 
-export class UpdateOrganizationDto {
-
-  @IsNumber()
-  id: number;
+export class CreateOrganizationDto {
 
   @IsString()
   @IsOptional()
@@ -13,13 +10,33 @@ export class UpdateOrganizationDto {
   @IsOptional()
   descripcion: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
   contacto: string;
 
   @IsString()
   @IsOptional()
   temaCapacitacion: string;
+
+  @IsString()
+  @IsOptional()
+  focalizacion: string;
+
+  @IsString()
+  @IsOptional()
+  aplicacionICO: string;
+
+  @IsString()
+  @IsOptional()
+  diagnosticoICO: string;
+
+  @IsString()
+  @IsOptional()
+  tipoAft: string;
+
+  @IsString()
+  @IsOptional()
+  participacionMesaMujerGenero: string;
 
   @IsString()
   @IsOptional()
