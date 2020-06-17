@@ -14,7 +14,8 @@ import { Finca } from "./Finca";
 import { Cultivo } from "./Cultivo";
 import { ProductorOrganizacion } from "./ProductorOrganizacion";
 
-@Index("id", ["id"], {})
+@Index('id', ['id'], {})
+@Index('dni', ['dni'], { unique: true })
 @Index("id_cargo_org", ["idCargoOrg"], {})
 @Index("id_conflicto", ["idConflicto"], {})
 @Index("id_discapacitado", ["idDiscapacitado"], {})
@@ -207,7 +208,7 @@ export class Productores {
   )
   cultivos2: Cultivo[];
 
-  @OneToMany(() => ProductorOrganizacion, productor_organizacion => productor_organizacion.idProductor )
+  @OneToMany(() => ProductorOrganizacion, productor_organizacion => productor_organizacion.dniProductor )
   productoresOrganizaciones: ProductorOrganizacion[];
 
 }

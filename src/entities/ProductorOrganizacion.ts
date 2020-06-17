@@ -18,6 +18,6 @@ export class ProductorOrganizacion {
 
     @ManyToOne(() => Productores, Productores => Productores.productoresOrganizaciones, { onUpdate: 'CASCADE' },)
     @JoinColumn([{ name: 'fk_productor', referencedColumnName: 'dni' }])
-    idProductor: Productores;
+    dniProductor: Productores;
 
 }
