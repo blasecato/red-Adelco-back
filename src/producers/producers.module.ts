@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProducersController } from './producers.controller';
 import { ProducersService } from './producers.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProducersRepository } from './producers.repository';
 import { GeneroRepository } from '../gender/gender.repository';
 import { RelationshipRepository } from '../relationship/relationship.repository';
 import { GrupoEtnico } from '../entities/GrupoEtnico';
-// import { Cargo } from '../entities/Cargo';
 import { Parentesco } from '../entities/Parentesco';
 import { Discapacidad } from '../entities/Discapacidad';
 import { Conflicto } from '../entities/Conflicto';
@@ -20,6 +19,7 @@ import { TipoHerramienta } from '../entities/TipoHerramienta';
 import { KitHerramienta } from '../entities/KitHerramienta';
 import { KitUser } from '../entities/KitUser';
 import { Aft } from '../entities/Aft';
+
 
 @Module({
   imports: [
