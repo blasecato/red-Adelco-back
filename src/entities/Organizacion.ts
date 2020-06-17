@@ -3,7 +3,7 @@ import { Productores } from "./Productores";
 import { Vereda } from "./Vereda";
 import { Ico } from "./Ico";
 import { Aft } from "./Aft";
-import { ProductorOrganizacion } from "./ProductoOrganizacion";
+import { ProductorOrganizacion } from "./ProductorOrganizacion";
 
 @Index("id_representante", ["representante2"], {})
 @Index("id_vereda", ["idVereda2"], {})
@@ -86,6 +86,6 @@ export class Organizacion extends BaseEntity {
   @JoinColumn([{ name: "id_ico", referencedColumnName: "id" }])
   idIco2: Ico;
 
-  @OneToMany(() => ProductorOrganizacion, productor_organizacion => productor_organizacion.organizacion,)
+  @OneToMany(() => ProductorOrganizacion, productor_organizacion => productor_organizacion.idOrganizacion,)
   productoresOrganizaciones: ProductorOrganizacion[];
 }

@@ -14,10 +14,10 @@ export class ProductorOrganizacion {
 
     @ManyToOne(() => Organizacion, organizacion => organizacion.productoresOrganizaciones, { onUpdate: 'CASCADE' },)
     @JoinColumn([{ name: 'fk_organizacion', referencedColumnName: 'id' }])
-    organizacion: Organizacion;
+    idOrganizacion: Organizacion;
 
     @ManyToOne(() => Productores, Productores => Productores.productoresOrganizaciones, { onUpdate: 'CASCADE' },)
     @JoinColumn([{ name: 'fk_productor', referencedColumnName: 'dni' }])
-    productores: Productores;
+    idProductor: Productores;
 
 }
