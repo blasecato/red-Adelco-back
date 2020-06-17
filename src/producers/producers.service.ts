@@ -51,7 +51,8 @@ export class ProducersService {
 
   async createProducers(signupProducer) {
 
-    const { id, nombres, apellidos, dni, edad, telefono, idGenero } = signupProducer
+    const { id, nombres, apellidos, dni, idGenero, telefono, edad, idParentesco,
+      idConflicto, idEtnia } = signupProducer
 
     const producerExists = await this._ProducersRepository.findOne({
       where: { dni },
@@ -64,9 +65,12 @@ export class ProducersService {
     producer.nombres = nombres;
     producer.apellidos = apellidos;
     producer.dni = dni;
-    producer.edad = edad;
-    producer.telefono = telefono;
     producer.idGenero = idGenero;
+    producer.telefono = telefono;
+    producer.edad = edad;
+    producer.idParentesco = idParentesco;
+    producer.idConflicto = idConflicto;
+    producer.idEtnia = idEtnia;
 
     return await this._ProducersRepository.save(producer)
   }
@@ -255,12 +259,13 @@ export class ProducersService {
       .getMany();
   }
 
-  async getProducerById(dni) {
-    return await this._ProducersRepository.findOne(dni, {
+  async getProducerById(id, dni) {
+    return await this._ProducersRepository.findOne({
       relations: ['idGenero2', 'idOrganizacion2', 'idConflicto2', 'idDiscapacitado2',
         'idEtnia2', 'idParentesco2', 'productoresBeneficios', 'productoresBeneficios.idBeneficio2',
         'productoresBeneficios.idBeneficio2.idTipoBeneficio2', 'kitUsers', 'kitUsers.idKitHerramienta2',
-        'kitUsers.idKitHerramienta2.idKit2']
+        'kitUsers.idKitHerramienta2.idKit2'],
+      where: [{ id }, { dni }]
     })
   }
 
@@ -422,6 +427,7 @@ export class ProducersService {
         documento: body.documento,
         matricula: body.matricula,
         email: body.email,
+        avances: body.avances,
         idMunicipio2: { id: body.idMunicipio },
         dv: body.dv,
         nit: body.nit,

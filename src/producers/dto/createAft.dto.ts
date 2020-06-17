@@ -38,6 +38,10 @@ export class CreateAftDto {
   @IsOptional()
   email: string;
 
+  @IsString()
+  @IsOptional()
+  avances: string;
+
   @IsNumber()
   producerDni: number;
 
