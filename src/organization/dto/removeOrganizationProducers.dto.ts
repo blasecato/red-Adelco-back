@@ -15,5 +15,5 @@ export class RemoveOrganizationProducersDto {
 
     @IsNumber()
     @IsOptional()
-    idProductor: number;
+    dniProductor: number;
 }

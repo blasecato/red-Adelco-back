@@ -56,9 +56,9 @@ export class organizationService {
   }
 
   async removeOrganizationProductor(body: RemoveOrganizationProducersDto) {
-    const exist = await this.ProductorOrganizacionRepository.findOne({ select: ["id"], where: { id: body.id } })
-    const organization = await this._OrganizationRepository.findOne({ select: ["nombre"], where: { id: body.idOrganizacion } })
-    const producer = await this.producersRepository.findOne({ select: ["id"], where: { id: body.idProductor } })
+    const exist = await this.ProductorOrganizacionRepository.findOne({ where: { id: body.id } })
+    const organization = await this._OrganizationRepository.findOne({ where: { id: body.idOrganizacion } })
+    const producer = await this.producersRepository.findOne({ where: { dni: body.dniProductor } })
 
     if (!exist)
       return { error: 'PRODUCTOR_ORGANIZATION_NOT_EXIST', detail: '¡No hay productores registrados en organizaciones!' }
@@ -74,7 +74,7 @@ export class organizationService {
 
   async createProducerOrganization(body: CreateProducerOrganizationDto) {
     const organization = await this._OrganizationRepository.findOne({ where: { id: body.idOrganizacion } });
-    const producer = await this.producersRepository.findOne({ where: { id: body.idProductor } });
+    const producer = await this.producersRepository.findOne({ where: { dni: body.dniProductor } });
 
     if (!organization)
       return { error: 'ORGANIZATION_NOT_EXIST', detail: '¡La Organización no existe!' }
@@ -83,8 +83,8 @@ export class organizationService {
 
     try {
       await this.ProductorOrganizacionRepository.save({
-        idOrganizacion: { id: organization.id }, idProducer: { dni: producer.dni }
-      })
+        dniProductor: { dni: producer.dni }, idOrganizacion:{id:organization.id}
+      });
       return { success: 'OK' }
     } catch (error) {
       return { error }
