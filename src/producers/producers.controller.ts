@@ -1,9 +1,9 @@
-import { Controller, UseGuards, Get, Post, Body, Put, Param, Query, ParseIntPipe } from '@nestjs/common';
-import { ProducersService } from './producers.service';
+import { Controller, UseGuards, Get, Post, Body, Put, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
 import { CreateKitDto } from './dto/createKit.dto';
 import { CreateAftDto } from './dto/createAft.dto';
+import { ProducersService } from './producers.service';
+import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
 import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dto';
 
 @Controller('producers')

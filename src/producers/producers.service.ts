@@ -1,36 +1,34 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProducersRepository } from './producers.repository';
-import { GeneroRepository } from '../gender/gender.repository';
-import { Discapacidad } from '../entities/Discapacidad';
+import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
+import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dto';
+import { CreateAftDto } from './dto/createAft.dto';
+import { CreateKitDto } from './dto/createKit.dto';
+import { ProductoresBeneficio } from '../entities/ProductoresBeneficio';
+import { TipoHerramienta } from '../entities/TipoHerramienta';
+import { KitHerramienta } from '../entities/KitHerramienta';
 import { Organizacion } from '../entities/Organizacion';
+import { Discapacidad } from '../entities/Discapacidad';
 import { Productores } from '../entities/Productores';
+import { Herramienta } from '../entities/Herramienta';
 import { GrupoEtnico } from '../entities/GrupoEtnico';
 import { Parentesco } from '../entities/Parentesco';
 import { Conflicto } from '../entities/Conflicto';
 import { CargoOrg } from '../entities/CargoOrg';
 import { Cultivo } from '../entities/Cultivo';
-import { RelationshipRepository } from '../relationship/relationship.repository';
-import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
-import { ProductoresBeneficio } from '../entities/ProductoresBeneficio';
-import { Kit } from '../entities/Kit';
-import { CreateKitDto } from './dto/createKit.dto';
-import { Herramienta } from '../entities/Herramienta';
-import { TipoHerramienta } from '../entities/TipoHerramienta';
-import { KitHerramienta } from '../entities/KitHerramienta';
 import { KitUser } from '../entities/KitUser';
-import { CreateAftDto } from './dto/createAft.dto';
+import { Genero } from '../entities/Genero';
+import { Kit } from '../entities/Kit';
 import { Aft } from '../entities/Aft';
-import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dto';
 
 @Injectable()
 export class ProducersService {
 
   constructor(
-    @InjectRepository(ProducersRepository) private readonly _ProducersRepository: ProducersRepository,
-    @InjectRepository(GeneroRepository) private readonly _GeneroRepository: GeneroRepository,
-    @InjectRepository(RelationshipRepository) private readonly _RelationshipRepository: RelationshipRepository,
+    @InjectRepository(Productores) private readonly _ProducersRepository: Repository<Productores>,
+    @InjectRepository(Genero) private readonly _GeneroRepository: Repository<Genero>,
+    @InjectRepository(Parentesco) private readonly _RelationshipRepository:Repository<Parentesco>,
     @InjectRepository(GrupoEtnico) private readonly GrupoEtnicoRepository: Repository<GrupoEtnico>,
     @InjectRepository(CargoOrg) private readonly CargoOrgRepository: Repository<CargoOrg>,
     @InjectRepository(Parentesco) private readonly ParentescoRepository: Repository<Parentesco>,
@@ -132,7 +130,6 @@ export class ProducersService {
     })
 
     return genderCount
-
   }
 
   async getRelationship() {

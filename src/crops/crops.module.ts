@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CropsController } from './crops.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CropsController } from './crops.controller';
 import { CropsService } from './crops.service';
 import { Cultivo } from '../entities/Cultivo';
 import { Municipio } from '../entities/Municipio';

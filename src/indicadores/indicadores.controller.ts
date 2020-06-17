@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Query } from "@nestjs/common";
-import { Indicadores } from "../entities/Indicadores";
+import { Controller, Get, Post, Put, Body, Query } from "@nestjs/common";
 import { IndicadoresService } from "./indicadores.service";
-import { AuthGuard } from "@nestjs/passport";
 import { UpdateIndicatorDto } from "./dto/updateIndicator.dto";
 import { CreateIndicatorDto } from "./dto/createIndicadores.dto";
 import { CreateObjetiveDto } from "./dto/createObjective.dto";

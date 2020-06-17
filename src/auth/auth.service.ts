@@ -1,10 +1,10 @@
-import { Injectable, ConflictException, BadRequestException } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { AuthRepository } from './auth.repository';
 import { UserService } from '../user/user.service';
 import { IJwtPayload } from './interfaces/jwt-payload.interface';
 import { compare } from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
-import { AuthRepository } from './auth.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
