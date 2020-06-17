@@ -94,6 +94,8 @@ export class CropsService {
         hectareas: body.hectareas,
         fechaInicio: body.fechaInicio,
         posicionAcepta: body.posicionAcepta,
+        entidadPerteneciente: body.entidadPerteneciente,
+        trabajoPrincipal: body.trabajoPrincipal,
         idLineaProductiva2: { id: body.idLineaProductiva },
         codigoProductor2: { id: body.codigoProductor },
         idAcepta2: { id: body.idAcepta },
@@ -115,7 +117,8 @@ export class CropsService {
       .getRawOne()
 
     const dataCrops = await this._CropsRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
+      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta',
+      'Cultivo.entidadPerteneciente','Cultivo.trabajoPrincipal'])
       .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
       .innerJoinAndSelect('Productor.idGenero2', 'Genero')
       .innerJoinAndSelect('Productor.idEtnia2', 'Etnia')

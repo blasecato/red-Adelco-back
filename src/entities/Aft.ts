@@ -38,6 +38,9 @@ export class Aft {
   @Column("varchar", { name: "email", nullable: true, length: 100 })
   email: string | null;
 
+  @Column("varchar", { nullable: true, length: 2000 })
+  avances: string | null;
+
   @Column("int", { name: "id_municipio", nullable: true })
   idMunicipio: number | null;
 

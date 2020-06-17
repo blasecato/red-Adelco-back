@@ -75,9 +75,9 @@ export class ProducersController {
     return await this._ProducersService.getAllDataProducurs();
   }
 
-  @Get('get-by-id/:id')
-  async getProducerById(@Param('id', ParseIntPipe) id: number) {
-    return await this._ProducersService.getProducerById(id);
+  @Get('get-by')
+  async getProducerById(@Query('id') id: string, @Query('dni') dni: number) {
+    return await this._ProducersService.getProducerById(id, dni);
   }
 
   @Post('create-producer-beneficiary')
@@ -100,7 +100,7 @@ export class ProducersController {
     return await this._ProducersService.getKit();
   }
 
-  @Get('get/kit-user')
+  @Get('get/all/kit-user')
   async getKitUser() {
     return await this._ProducersService.getKitUser();
   }
