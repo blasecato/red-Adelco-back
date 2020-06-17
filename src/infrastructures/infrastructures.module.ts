@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { InfrastructuresController } from './infrastructures.controller';
-import { InfrastructuresService } from './infrastructures.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Infraestructura } from 'src/entities/Infraestructura';
-import { TipoInfraestructura } from 'src/entities/TipoInfraestructura';
-import { Vereda } from 'src/entities/Vereda';
-import { Municipio } from 'src/entities/Municipio';
+import { Module } from '@nestjs/common';
+import { Vereda } from '../entities/Vereda';
+import { Municipio } from '../entities/Municipio';
+import { Infraestructura } from '../entities/Infraestructura';
+import { InfrastructuresService } from './infrastructures.service';
+import { InfrastructuresController } from './infrastructures.controller';
+import { TipoInfraestructura } from '../entities/TipoInfraestructura';
 
 @Module({
   imports: [

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { MunicipalityController } from './municipality.controller';
 import { MunicipalityService } from './municipality.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Municipio } from '../entities/Municipio';
 import { Vereda } from '../entities/Vereda';
 

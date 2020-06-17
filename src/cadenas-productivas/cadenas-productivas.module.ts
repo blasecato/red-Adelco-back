@@ -1,18 +1,14 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CadenasProductivasController } from './cadenas-productivas.controller';
 import { CadenasProductivasService } from './cadenas-productivas.service';
-import { LineaProductiva } from 'src/entities/LineaProductiva';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { CadenaProductiva } from 'src/entities/CadenaProductiva';
-import { Vereda } from 'src/entities/Vereda';
+import { Vereda } from '../entities/Vereda';
+import { LineaProductiva } from '../entities/LineaProductiva';
+import { CadenaProductiva } from '../entities/CadenaProductiva';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      LineaProductiva,
-      CadenaProductiva,
-      Vereda
-    ]),
+    TypeOrmModule.forFeature([LineaProductiva,CadenaProductiva,Vereda]),
   ],
   controllers: [CadenasProductivasController],
   providers: [CadenasProductivasService]

@@ -11,7 +11,6 @@ export class organizationController {
 
   constructor(private readonly _organizationService: organizationService) { }
 
-  /* @UseGuards(AuthGuard('jwt')) */
   @Post('create')
   async createOrganization(@Body() body: CreateOrganizationDto) {
     return await this._organizationService.createOrganization(body);
@@ -27,19 +26,16 @@ export class organizationController {
     return await this._organizationService.removeOrganizationProductor(body);
   }
 
-
   @Post('create/producer-organization')
   async createProducerOrganization(@Body() body: CreateProducerOrganizationDto) {
     return await this._organizationService.createProducerOrganization(body);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('getMunicipios')
   async getMunicipios() {
     return await this._organizationService.getMunicipio();
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   async getOrganizacion() {
     return await this._organizationService.getOrganizacion();

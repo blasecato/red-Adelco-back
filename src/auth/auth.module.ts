@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UserModule } from '../user/userlogin.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { LocalStrategy } from './strategy/local.strategy';
-import { CommonModule } from 'src/common/common.module';
-import { ConfigService } from 'src/common/config/config.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthRepository } from './auth.repository';
+import { AuthController } from './auth.controller';
+import { UserModule } from '../user/userlogin.module';
+import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { LocalStrategy } from './strategy/local.strategy';
+import { CommonModule } from '../common/common.module';
+import { ConfigService } from '../common/config/config.service';
+import { AuthRepository } from './auth.repository';
 
 @Module({
   imports: [

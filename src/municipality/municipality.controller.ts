@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Get, Param, Query } from '@nestjs/common';
+import { Controller, Post, Body, Put, Get, Query } from '@nestjs/common';
 import { MunicipalityService } from './municipality.service';
 import { CreateTownDto } from './dto/createTown.dto';
 import { UpdateTownDto } from './dto/updateTown.dto';
