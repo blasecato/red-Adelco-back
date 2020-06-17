@@ -3,6 +3,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { organizationService } from './organization.service';
 import { UpdateOrganizationDto } from './dto/updateOrganization.dto';
 import { CreateOrganizationDto } from './dto/createOrganizacion.dto';
+import { RemoveOrganizationProducersDto } from './dto/removeOrganizationProducers.dto';
+import { CreateProducerOrganizationDto } from './dto/createProducerOrganization.dto';
 
 @Controller('organization')
 export class organizationController {
@@ -18,6 +20,17 @@ export class organizationController {
   @Put('update')
   async updateOrganization(@Body() body: UpdateOrganizationDto) {
     return await this._organizationService.updateOrganization(body);
+  }
+
+  @Put('remove/organization-producer')
+  async removeOrganizationProductor(@Body() body: RemoveOrganizationProducersDto) {
+    return await this._organizationService.removeOrganizationProductor(body);
+  }
+
+
+  @Post('create/producer-organization')
+  async createProducerOrganization(@Body() body: CreateProducerOrganizationDto) {
+    return await this._organizationService.createProducerOrganization(body);
   }
 
   @UseGuards(AuthGuard('jwt'))

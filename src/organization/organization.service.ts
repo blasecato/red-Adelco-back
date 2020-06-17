@@ -6,6 +6,9 @@ import { Productores } from '../entities/Productores';
 import { UpdateOrganizationDto } from './dto/updateOrganization.dto';
 import { CreateOrganizationDto } from './dto/createOrganizacion.dto';
 import { Organizacion } from '../entities/Organizacion';
+import { RemoveOrganizationProducersDto } from './dto/removeOrganizationProducers.dto';
+import { ProductorOrganizacion } from '../entities/ProductorOrganizacion';
+import { CreateProducerOrganizationDto } from './dto/createProducerOrganization.dto';
 
 @Injectable()
 export class organizationService {
@@ -13,7 +16,8 @@ export class organizationService {
   constructor(
     @InjectRepository(Organizacion) private readonly _OrganizationRepository: Repository<Organizacion>,
     @InjectRepository(Municipio) private readonly _MunicipioRepository: Repository<Municipio>,
-    @InjectRepository(Productores) private readonly producersRepository: Repository<Productores>
+    @InjectRepository(Productores) private readonly producersRepository: Repository<Productores>,
+    @InjectRepository(ProductorOrganizacion) private readonly ProductorOrganizacionRepository: Repository<ProductorOrganizacion>,
   ) { }
 
   async createOrganization(body: CreateOrganizationDto) {
@@ -49,6 +53,43 @@ export class organizationService {
     await this._OrganizationRepository.update(body.id, body)
 
     return { success: 'OK' }
+  }
+
+  async removeOrganizationProductor(body: RemoveOrganizationProducersDto) {
+    const exist = await this.ProductorOrganizacionRepository.findOne({ select: ["id"], where: { id: body.id } })
+    const organization = await this._OrganizationRepository.findOne({ select: ["nombre"], where: { id: body.idOrganizacion } })
+    const producer = await this.producersRepository.findOne({ select: ["id"], where: { id: body.idProductor } })
+
+    if (!exist)
+      return { error: 'PRODUCTOR_ORGANIZATION_NOT_EXIST', detail: '¡No hay productores registrados en organizaciones!' }
+    if (!organization)
+      return { error: 'ORGANIZATION_NOT_EXIST', detail: '¡La Organización no existe!' }
+    if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: '¡El Productor no existe!' }
+
+    await this.ProductorOrganizacionRepository.update(exist.id, { estado: body.estado });
+
+    return { success: 'OK' }
+  }
+
+  async createProducerOrganization(body: CreateProducerOrganizationDto) {
+    const organization = await this._OrganizationRepository.findOne({ where: { id: body.idOrganizacion } });
+    const producer = await this.producersRepository.findOne({ where: { id: body.idProductor } });
+
+    if (!organization)
+      return { error: 'ORGANIZATION_NOT_EXIST', detail: '¡La Organización no existe!' }
+    if (!producer)
+      return { error: 'PRODUCER_NOT_EXIST', detail: '¡El Productor no existe!' }
+
+    try {
+      await this.ProductorOrganizacionRepository.save({
+        idOrganizacion: { id: organization.id }, idProducer: { dni: producer.dni }
+      })
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+
   }
 
   async countPersonsOrganization(idOrganization: number) {
