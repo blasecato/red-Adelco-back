@@ -76,12 +76,6 @@ export class Organizacion extends BaseEntity {
   @JoinColumn([{ name: "representante", referencedColumnName: "dni" }])
   representante2: Productores;
 
-  @OneToMany(
-    () => Productores,
-    productores => productores.idOrganizacion2
-  )
-  productores: Productores[];
-
   @ManyToOne(() => Ico, ico => ico.organizacions, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_ico", referencedColumnName: "id" }])
   idIco2: Ico;

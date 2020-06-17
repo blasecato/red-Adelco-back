@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Productores } from "./Productores";
 
 @Entity("zona", { schema: "redadelco" })
 export class Zona {
@@ -7,4 +8,10 @@ export class Zona {
 
   @Column("varchar", { name: "nombre", nullable: true, length: 45 })
   nombre: string | null;
+
+  @OneToMany(
+    () => Productores,
+    Productores => Productores.idZona2
+  )
+  producers: Productores[];
 }

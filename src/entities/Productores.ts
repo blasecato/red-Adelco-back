@@ -13,6 +13,7 @@ import { Parentesco } from "./Parentesco";
 import { Finca } from "./Finca";
 import { Cultivo } from "./Cultivo";
 import { ProductorOrganizacion } from "./ProductorOrganizacion";
+import { Zona } from "./Zona";
 
 @Index('id', ['id'], {})
 @Index('dni', ['dni'], { unique: true })
@@ -22,7 +23,7 @@ import { ProductorOrganizacion } from "./ProductorOrganizacion";
 @Index("id_etnia", ["idEtnia"], {})
 @Index("id_finca", ["idFinca"], {})
 @Index("id_genero", ["idGenero"], {})
-@Index("id_organizacion", ["idOrganizacion"], {})
+@Index("id_zona", ["idZona"], {})
 @Index("id_parentesco", ["idParentesco"], {})
 @Index("id_productor", ["idProductor"], {})
 @Entity("productores", { schema: "tcsp_database" })
@@ -53,9 +54,6 @@ export class Productores {
 
   @Column("int", { name: "id_genero" })
   idGenero: number;
-
-  @Column("int", { name: "id_organizacion", nullable: true })
-  idOrganizacion: number | null;
 
   @Column("int", { name: "id_finca", nullable: true })
   idFinca: number | null;
@@ -126,6 +124,14 @@ export class Productores {
   )
   kitUsers: KitUser[];
 
+  @ManyToOne(
+    () => Zona,
+    Zona => Zona.producers,
+    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
+  )
+  @JoinColumn([{ name: "id_kit", referencedColumnName: "id" }])
+  idZona2: Zona;
+
   @OneToMany(
     () => Organizacion,
     organizacion => organizacion.representante2
@@ -153,14 +159,6 @@ export class Productores {
   )
   @JoinColumn([{ name: "id_etnia", referencedColumnName: "id" }])
   idEtnia2: GrupoEtnico;
-
-  @ManyToOne(
-    () => Organizacion,
-    organizacion => organizacion.productores,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_organizacion", referencedColumnName: "id" }])
-  idOrganizacion2: Organizacion;
 
   @OneToMany(
     () => ProductorOrg,
