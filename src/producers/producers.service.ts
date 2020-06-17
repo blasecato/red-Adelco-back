@@ -44,15 +44,14 @@ export class ProducersService {
     @InjectRepository(TipoHerramienta) private readonly typeToolRepository: Repository<TipoHerramienta>,
     @InjectRepository(KitHerramienta) private readonly kitToolRepository: Repository<KitHerramienta>,
     @InjectRepository(KitUser) private readonly kitUserRepository: Repository<KitUser>,
-    @InjectRepository(Aft) private readonly aftRepository: Repository<Aft>,
-
+    @InjectRepository(Aft) private readonly aftRepository: Repository<Aft>
 
   ) { }
 
-  async createProducers(signupProducer) {
+  async createProducers(body) {
 
     const { id, nombres, apellidos, dni, idGenero, telefono, edad, idParentesco,
-      idConflicto, idEtnia } = signupProducer
+      idConflicto, idEtnia } = body
 
     const producerExists = await this._ProducersRepository.findOne({
       where: { dni },

@@ -13,9 +13,8 @@ export class ProducersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
-  async createProducers(@Body() signupProducer) {
-    const producer = await this._ProducersService.createProducers(signupProducer);
-    return producer;
+  async createProducers(@Body() body) {
+    return await this._ProducersService.createProducers(body);
   }
 
   @UseGuards(AuthGuard('jwt'))
