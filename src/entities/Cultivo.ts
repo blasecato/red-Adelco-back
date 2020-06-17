@@ -1,19 +1,11 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import {  Column,  Entity,  Index,  JoinColumn,  ManyToOne,  OneToMany,  PrimaryGeneratedColumn} from "typeorm";
 import { Diagnostico } from "./Diagnostico";
-import { Acepta } from "./Acepta";
 import { LineaProductiva } from "./LineaProductiva";
 import { RevisionVisita } from "./RevisionVisita";
-import { Municipio } from "./Municipio";
-import { Vereda } from "./Vereda";
 import { Productores } from "./Productores";
+import { Municipio } from "./Municipio";
+import { Acepta } from "./Acepta";
+import { Vereda } from "./Vereda";
 
 @Index("id_acepta", ["idAcepta"], {})
 @Index("id_linea_productiva", ["idLineaProductiva"], {})
@@ -50,8 +42,14 @@ export class Cultivo {
   @Column("int", { name: "id_vereda", nullable: true })
   idVereda: number | null;
 
-  @Column("varchar", { name: "posicion_acepta", nullable: true, length: 150 })
+  @Column("varchar", { name: "posicion_acepta", nullable: true, length: 450 })
   posicionAcepta: string | null;
+
+  @Column("varchar", { name: "entidad_perteneciente", nullable: true, length: 450 })
+  entidadPerteneciente: string | null;
+
+  @Column("varchar", { name: "trabajo_principal", nullable: true, length: 750 })
+  trabajoPrincipal: string | null;
 
   @OneToMany(
     () => Diagnostico,

@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany
-} from "typeorm";
+import {  Column,  Entity,  Index,  JoinColumn,  ManyToOne,  OneToMany} from "typeorm";
 import { Aft } from "./Aft";
 import { Genero } from "./Genero";
 import { Organizacion } from "./Organizacion";
@@ -19,6 +12,7 @@ import { CargoOrg } from "./CargoOrg";
 import { Parentesco } from "./Parentesco";
 import { Finca } from "./Finca";
 import { Cultivo } from "./Cultivo";
+import { ProductorOrganizacion } from "./ProductoOrganizacion";
 
 @Index("id", ["id"], {})
 @Index("id_cargo_org", ["idCargoOrg"], {})
@@ -52,7 +46,7 @@ export class Productores {
 
   @Column("varchar", { name: "id_productor", nullable: true, length: 45 })
   idProductor: string | null;
-
+ 
   @Column("int", { name: "id_conflicto", nullable: true })
   idConflicto: number | null;
 
@@ -79,6 +73,15 @@ export class Productores {
 
   @Column("int", { name: "id_cargo_org", nullable: true })
   idCargoOrg: number | null;
+
+/*   @Column("int", { name: "id_municipio", nullable: true })
+  idMunicipio: number | null;
+
+  @Column("int", { name: "id_vereda", nullable: true })
+  idVereda: number | null;
+
+  @Column("int", { name: "id_linea_productiva", nullable: true })
+  idLineaProductiva: number | null; */
 
   @ManyToOne(
     () => Genero,
@@ -203,5 +206,8 @@ export class Productores {
     cultivo => cultivo.codigoProductor2
   )
   cultivos2: Cultivo[];
+
+  @OneToMany(() => ProductorOrganizacion, productor_organizacion => productor_organizacion.organizacion )
+  productoresOrganizaciones: ProductorOrganizacion[];
 
 }
