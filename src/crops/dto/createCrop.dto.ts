@@ -35,4 +35,12 @@ export class CreateCropDto {
     @IsOptional()
     @IsString()
     posicionAcepta: string;
+
+    @IsOptional()
+    @IsString()
+    entidadPerteneciente: string;
+
+    @IsOptional()
+    @IsString()
+    trabajoPrincipal: string;
 }
