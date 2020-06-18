@@ -34,7 +34,7 @@ export class CropsService {
       .leftJoinAndSelect("Cultivo.idVereda2", "sidewalk")
       .leftJoinAndSelect("Cultivo.codigoProductor2", "producer")
       .leftJoinAndSelect("Cultivo.idLineaProductiva2", "lineProducer")
-      .getManyAndCount()
+      .getMany()
      
   }
 
