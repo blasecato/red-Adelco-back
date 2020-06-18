@@ -1,5 +1,4 @@
-import { Controller, UseGuards, Post, Body, Get, Put } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, Body, Get, Put } from '@nestjs/common';
 import { InfrastructuresService } from './infrastructures.service';
 import { UpdateInfrastructureDto } from './dto/updateInfrastructure.dto';
 
@@ -8,7 +7,6 @@ export class InfrastructuresController {
 
   constructor(private readonly InfrastructuresService: InfrastructuresService) { }
 
-  @UseGuards(AuthGuard('jwt'))
   @Post('create')
   async createInfrastructure(@Body() infrastructure) {
     return this.InfrastructuresService.createInfrastructure(infrastructure);

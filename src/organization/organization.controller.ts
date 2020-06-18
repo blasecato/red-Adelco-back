@@ -1,5 +1,4 @@
-import { Controller, UseGuards, Post, Body, Get, Put, Query } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, Body, Get, Put, Query } from '@nestjs/common';
 import { organizationService } from './organization.service';
 import { UpdateOrganizationDto } from './dto/updateOrganization.dto';
 import { CreateOrganizationDto } from './dto/createOrganizacion.dto';
