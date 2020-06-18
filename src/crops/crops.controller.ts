@@ -12,8 +12,12 @@ export class CropsController {
 
   @Get('producer')
   async getCropsProducer() {
-    const genderCount = await this._CropsService.getCropsProducer();
-    return genderCount;
+    return await this._CropsService.getCropsProducer();
+  }
+
+  @Get('all')
+  async getAllCrops() {
+    return await this._CropsService.getAllCrops();
   }
 
   @Get('date-crop')

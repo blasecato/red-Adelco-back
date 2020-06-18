@@ -29,16 +29,17 @@ export class CropsService {
   ) { }
 
   async getCropsProducer() {
-    const cropsProducer = await this._CropsRepository.createQueryBuilder()
-      .select(["Cultivo.id", "Cultivo.dniProductor", "Cultivo.hectareas", "Cultivo.posicionAcepta"])
-      .addSelect(["municipality.nombre", "sidewalk.nombre", "producer.nombres", "producer.apellidos", "lineProducer.nombre"])
-      .innerJoin("Cultivo.idMunicipio2", "municipality")
-      .innerJoin("Cultivo.idVereda2", "sidewalk")
-      .innerJoin("Cultivo.codigoProductor2", "producer")
-      .innerJoin("Cultivo.idLineaProductiva2", "lineProducer")
-      .getMany()
+    return await this._CropsRepository.createQueryBuilder()
+      .leftJoinAndSelect("Cultivo.idMunicipio2", "municipality")
+      .leftJoinAndSelect("Cultivo.idVereda2", "sidewalk")
+      .leftJoinAndSelect("Cultivo.codigoProductor2", "producer")
+      .leftJoinAndSelect("Cultivo.idLineaProductiva2", "lineProducer")
+      .getManyAndCount()
+     
+  }
 
-    return cropsProducer
+  async getAllCrops(){
+    return await this._CropsRepository.find({});
   }
 
   async geDateCrop() {
