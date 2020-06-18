@@ -143,20 +143,17 @@ export class ProducersService {
   }
 
   async getProducerDate() {
-    const producerDate = await this._ProducersRepository.createQueryBuilder("producer")
-      .select(["producer.id", "producer.nombres", "producer.apellidos", "producer.dni", "producer.edad", "producer.telefono"])
-      .addSelect(["etnia.nombre", "gender.nombre", "organizacion.nombre", "conflicto.nombre", "discapacitado.nombre", "parentesco.nombre", "productor.nombres"])
-      .leftJoin("producer.idGenero2", "gender")
-      .leftJoin("producer.idEtnia2", "etnia")
-      .leftJoin("producer.idOrganizacion2", "organizacion")
-      .leftJoin("producer.idConflicto2", "conflicto")
-      .leftJoin("producer.idDiscapacitado2", "discapacitado")
-      .leftJoin("producer.idProductor2", "productor")
-      .leftJoin("producer.idParentesco2", "parentesco")
+    return await this._ProducersRepository.createQueryBuilder("producer")
+      .leftJoinAndSelect("producer.idGenero2", "gender")
+      .leftJoinAndSelect("producer.idEtnia2", "etnia")
+      .leftJoinAndSelect("producer.productoresOrganizaciones", "productoresOrganizaciones")
+      .leftJoinAndSelect("productoresOrganizaciones.idOrganizacion", "organizacion")
+      .leftJoinAndSelect("producer.idConflicto2", "conflicto")
+      .leftJoinAndSelect("producer.idDiscapacitado2", "discapacitado")
+      .leftJoinAndSelect("producer.idProductor2", "productor")
+      .leftJoinAndSelect("producer.idParentesco2", "parentesco")
       .leftJoinAndSelect("producer.idCargoOrg2", "cargoOrg")
       .getMany()
-
-    return producerDate
   }
 
   async getProducerUpdate() {
