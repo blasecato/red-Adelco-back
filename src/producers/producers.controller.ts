@@ -35,8 +35,7 @@ export class ProducersController {
 
   @Get('producer-date')
   async getProducerDate() {
-    const producerDate = await this._ProducersService.getProducerDate();
-    return producerDate;
+    return await this._ProducersService.getProducerDate();
   }
 
   @Put('update')
