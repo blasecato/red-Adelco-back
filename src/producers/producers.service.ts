@@ -24,7 +24,7 @@ import { Aft } from '../entities/Aft';
 
 @Injectable()
 export class ProducersService {
-
+ 
   constructor(
     @InjectRepository(Productores) private readonly _ProducersRepository: Repository<Productores>,
     @InjectRepository(Genero) private readonly _GeneroRepository: Repository<Genero>,
