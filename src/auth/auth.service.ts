@@ -32,7 +32,7 @@ export class AuthService {
 
   async login(body: LoginDto) {
     const user = await this.userRepository.findOne({
-      select: ['id', 'email', 'state'],
+      select: ['email', 'state'],
       where: {email:body.email},
     });
 
