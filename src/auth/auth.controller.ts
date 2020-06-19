@@ -14,7 +14,7 @@ export class AuthController {
   ) { }
 
   @Post('signup')
-  async signUp2(@Body() body: SignUpDto) {
+  async signUp(@Body() body: SignUpDto) {
     const response = await this.authService.signUp(body);
 
     if (response.error) return { response };
@@ -23,7 +23,8 @@ export class AuthController {
   }
 
   @Post('login')
-  async login2(@Body() body: LoginDto) {
+  async login(@Body() body: LoginDto) {
+    
     body.password = this.cryptoService.encrypt(body.password);
 
     let response: any = await this.authService.login(body);

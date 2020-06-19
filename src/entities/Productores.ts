@@ -44,7 +44,7 @@ export class Productores {
   @Column("int", { name: "edad", nullable: true })
   edad: number | null;
 
-  @Column("bigint", { name: "telefono", nullable: true })
+  @Column("varchar", { name: "telefono", nullable: true,length: 10 })
   telefono: string | null;
 
   @Column("varchar", { name: "id_productor", nullable: true, length: 45 })

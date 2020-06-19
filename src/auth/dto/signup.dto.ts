@@ -13,32 +13,29 @@ export class SignUpDto {
   @IsOptional()
   apellidos: string;
 
-  @IsString()
   @IsOptional()
-  idGenero: string;
+  @IsNumber()
+  idGenero: number;
 
   @IsString()
   @IsOptional()
   telefono: string;
 
-  @IsString()
-  @IsOptional()
-  edad: string;
-
-  @IsString()
   @IsNumber()
   @IsOptional()
-  idParentesco: string;
+  edad: number;
 
-  @IsString()
   @IsNumber()
   @IsOptional()
-  idConflicto: string;
+  idParentesco: number;
 
-  @IsString()
   @IsNumber()
   @IsOptional()
-  idEtnia: string;
+  idConflicto: number;
+
+  @IsNumber()
+  @IsOptional()
+  idEtnia: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -53,4 +50,8 @@ export class SignUpDto {
   @IsString()
   @Length(3, 30)
   password: string;
+
+  @IsString()
+  @IsOptional()
+  rol: string;
 }

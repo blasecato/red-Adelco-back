@@ -7,6 +7,7 @@ import { HttpStrategy } from '../common/strategys/http.strategy';
 import { ConfigService } from '../common/config/config.service';
 import { Productores } from '../entities/Productores';
 import { User } from '../entities/User';
+import { CryptoService } from '../common/utils/crypto.service';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { User } from '../entities/User';
     TypeOrmModule.forFeature([User, Productores]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, HttpStrategy,ConfigService],
+  providers: [AuthService, HttpStrategy, CryptoService, ConfigService],
 })
 export class AuthModule { }

@@ -22,7 +22,7 @@ export class AuthService {
       .select(['producer.id', 'producer.nombres', 'producer.apellidos', 'producer.dni',
         'producer.edad', 'producer.telefono', 'producer.telefono', 'producer.telefono',
         'producer.telefono', 'producer.telefono', 'producer.telefono'])
-      .addSelect(['User.id', 'User.email', 'User.state', 'User.cargo'])
+      .addSelect(['User.id', 'User.email', 'User.state', 'User.rol'])
       .innerJoin('producer.user', 'User')
       .leftJoinAndSelect("producer.idGenero2", "gender")
       .leftJoinAndSelect("producer.idEtnia2", "etnia")
@@ -33,7 +33,7 @@ export class AuthService {
   async login(body: LoginDto) {
     const user = await this.userRepository.findOne({
       select: ['id', 'email', 'state'],
-      where: body,
+      where: {email:body.email},
     });
 
     if (!user)
@@ -51,9 +51,9 @@ export class AuthService {
     body.password = this.cryptoService.encrypt(body.password);
 
     const validateUser = await this.userRepository.findOne({
-      where: { email: body.email, state: 'active' },
+      where: { email: body.email, state: 'active' }
     });
-    const validatePerson = await this.producerRepository.findOne({
+    const validateProducer = await this.producerRepository.findOne({
       where: { dni: body.dni, state: 'active' },
     });
 
@@ -62,15 +62,21 @@ export class AuthService {
         error: 'EMAIL_IN_USE',
         detail: 'Ese correo electronico ya está siendo utilizado.',
       };
-    } else if (validatePerson) {
+    } else if (validateProducer) {
       return {
         error: 'IDENTIFICATION_CARD_IN_USE',
         detail: 'La cédula de ciudadanía ya está siendo utilizada.',
       };
     } else {
       try {
-        const producer = await this.producerRepository.save(body);
-        await this.userRepository.save({ ...body, dniProducer: { dni: producer.dni } });
+        const producer = await this.producerRepository.save({ ...body });
+
+        await this.userRepository.save({
+          email: body.email,
+          password: body.password,
+          rol: body.rol,
+          dniProducer: { dni: producer.dni }
+        });
 
         return { success: 'OK' };
       } catch (error) {
