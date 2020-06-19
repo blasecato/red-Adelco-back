@@ -1,78 +1,103 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { AuthRepository } from './auth.repository';
-import { UserService } from '../user/user.service';
-import { IJwtPayload } from './interfaces/jwt-payload.interface';
-import { compare } from 'bcryptjs';
+import { Repository } from 'typeorm';
+import { SignUpDto } from './dto/signUp.dto';
+import { User } from '../entities/User';
+import { Productores } from '../entities/Productores';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
 
   constructor(
-    @InjectRepository(AuthRepository)
-    private readonly _authRepository: AuthRepository,
-    private readonly _jwtService: JwtService,
-    private readonly _userService: UserService
+    @Inject('CryptoService') private readonly cryptoService,
+    private readonly jwtService: JwtService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Productores) private readonly producerRepository: Repository<Productores>
   ) { }
 
-  async validateUser(user: string, password: string) {
-    const userValidate = await this._userService.findOne(user);
-    const isMatch = await compare(password, userValidate.password);
-
-    if (userValidate && isMatch) {
-      const { password, ...result } = userValidate;
-      return result;
-    }
-
-    return null;
+  async getStructureToken(email: string) {
+    return await this.producerRepository.createQueryBuilder("producer")
+      .select(['producer.id', 'producer.nombres', 'producer.apellidos', 'producer.dni',
+        'producer.edad', 'producer.telefono', 'producer.telefono', 'producer.telefono',
+        'producer.telefono', 'producer.telefono', 'producer.telefono'])
+      .addSelect(['User.id', 'User.email', 'User.state', 'User.rol'])
+      .innerJoin('producer.user', 'User')
+      .leftJoinAndSelect("producer.idGenero2", "gender")
+      .leftJoinAndSelect("producer.idEtnia2", "etnia")
+      .where("producer.state = 'active' and User.state = 'active' and User.email = :email", { email },)
+      .getOne();
   }
 
-  async login(user: any) {
-
-    const payload: IJwtPayload = {
-      user: user.user,
-      dni: user.dni,
-      cargo: user.cargo
-    };
-
-    const token = this._jwtService.sign(payload);
-    return { token };
-  }
-
-  async login2(body: LoginDto) {
-    const user = await this._userService.isExist(body)
-
-    if (!user)
-      return { error: "USER_NOT_EXIST", detail: "Tu correo electronico o contraseña no son válidos." }
-    else if (user.state === 'inactive')
-      return { error: "USER_INACTIVE", detail: "Usuario inactivo." }
-
-    delete user.state;
-    return user;
-  }
-
-  async signup(signupUser) {
-
-    const { user, dni } = signupUser;
-
-    const userExists = await this._authRepository.findOne({
-      where: [{ user }, { dni }],
+  async login(body: LoginDto) {
+    const user = await this.userRepository.findOne({
+      select: ['id', 'email', 'state'],
+      where: {email:body.email},
     });
 
-    if (userExists) throw new ConflictException('email or dni already exists');
+    if (!user)
+      return {
+        error: 'USER_NOT_EXIST',
+        detail: 'Tu correo electronico o contraseña no son válidos.',
+      };
+    else if (user.state === 'inactive')
+      return { error: 'USER_INACTIVE', detail: 'Usuario inactivo.' };
 
-    const userselect = await this._authRepository.signup(signupUser);
+    return await this.getStructureToken(user.email);
+  }
 
-    const payload: IJwtPayload = {
-      user: userselect.user,
-      dni: userselect.dni,
-      cargo: userselect.cargo
-    };
+  async signUp(body: SignUpDto) {
+    body.password = this.cryptoService.encrypt(body.password);
 
-    const token = this._jwtService.sign(payload);
-    return { token };
+    const validateUser = await this.userRepository.findOne({
+      where: { email: body.email, state: 'active' }
+    });
+    const validateProducer = await this.producerRepository.findOne({
+      where: { dni: body.dni, state: 'active' },
+    });
+
+    if (validateUser) {
+      return {
+        error: 'EMAIL_IN_USE',
+        detail: 'Ese correo electronico ya está siendo utilizado.',
+      };
+    } else if (validateProducer) {
+      return {
+        error: 'IDENTIFICATION_CARD_IN_USE',
+        detail: 'La cédula de ciudadanía ya está siendo utilizada.',
+      };
+    } else {
+      try {
+        const producer = await this.producerRepository.save({ ...body });
+
+        await this.userRepository.save({
+          email: body.email,
+          password: body.password,
+          rol: body.rol,
+          dniProducer: { dni: producer.dni }
+        });
+
+        return { success: 'OK' };
+      } catch (error) {
+        return { error };
+      }
+    }
+  }
+
+  async validateUser(token: string): Promise<any> {
+    let payload: any = this.jwtService.decode(token);
+    if (payload) {
+      const user = await this.userRepository.findOne({
+        select: ["id", "email"],
+        relations: ["dniProducer"],
+        where: { email: payload.user.email }
+      })
+
+      return { ...user };
+    }
+
+    return false;
   }
 
 }

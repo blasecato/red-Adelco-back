@@ -1,4 +1,4 @@
-import {  Column,  Entity,  Index,  JoinColumn,  ManyToOne,  OneToMany} from "typeorm";
+import {  Column,  Entity,  Index,  JoinColumn,  ManyToOne,  OneToMany, OneToOne} from "typeorm";
 import { Aft } from "./Aft";
 import { Genero } from "./Genero";
 import { Organizacion } from "./Organizacion";
@@ -14,6 +14,7 @@ import { Finca } from "./Finca";
 import { Cultivo } from "./Cultivo";
 import { ProductorOrganizacion } from "./ProductorOrganizacion";
 import { Zona } from "./Zona";
+import { User } from "./User";
 
 @Index('id', ['id'], {})
 @Index('dni', ['dni'], { unique: true })
@@ -43,7 +44,7 @@ export class Productores {
   @Column("int", { name: "edad", nullable: true })
   edad: number | null;
 
-  @Column("bigint", { name: "telefono", nullable: true })
+  @Column("varchar", { name: "telefono", nullable: true,length: 10 })
   telefono: string | null;
 
   @Column("varchar", { name: "id_productor", nullable: true, length: 45 })
@@ -72,6 +73,9 @@ export class Productores {
 
   @Column("int", { name: "id_cargo_org", nullable: true })
   idCargoOrg: number | null;
+
+  @Column("varchar", { nullable: false, length: '50', default: 'active' })
+  state: string;
 
 /*   @Column("int", { name: "id_municipio", nullable: true })
   idMunicipio: number | null;
@@ -208,5 +212,8 @@ export class Productores {
 
   @OneToMany(() => ProductorOrganizacion, productor_organizacion => productor_organizacion.dniProductor )
   productoresOrganizaciones: ProductorOrganizacion[];
+
+  @OneToOne(() => User,User => User.dniProducer,)
+  user: User;
 
 }
