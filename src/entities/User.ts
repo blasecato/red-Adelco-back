@@ -15,7 +15,7 @@ export class User extends BaseEntity {
   password: string;
 
   @Column("varchar", { name: "rol", length: 145 })
-  rol: string;
+  rol: string | null;
 
   @Column("varchar", { nullable: false, length: '50', default: 'active' })
   state: string;
