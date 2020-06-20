@@ -304,13 +304,15 @@ export class ProducersService {
     }
   }
 
-/*   async getProducerIdKit(idKit: number) {
+  async getAllKitsProducer() {
     return await this.kitRepository.createQueryBuilder()
-    .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
-    .innerJoinAndSelect('kitUsers.idProductor2', 'Productor')
-    .where('Productor.id =: idProducerId ', { idKit })
-    .getMany();
-  } */
+      .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
+      .innerJoinAndSelect('kitUsers.idProductor2', 'idProductor2')
+      .innerJoinAndSelect('kitUsers.idKitHerramienta2', 'idKitHerramienta2')
+      .innerJoinAndSelect('idKitHerramienta2.idHerramienta2', 'idHerramienta2')
+      .innerJoinAndSelect('idHerramienta2.idTipoHerramienta2', 'idTipoHerramienta2') 
+      .getMany();
+  }
 
   async getKit() {
     return await this.kitRepository.find({})
@@ -434,4 +436,6 @@ export class ProducersService {
       where: { dni }
     })
   }
+
+
 }

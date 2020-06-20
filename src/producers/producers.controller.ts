@@ -80,10 +80,10 @@ export class ProducersController {
     return await this._ProducersService.updateProducerBeneficiary(body);
   }
 
-/*   @Get('get/kit-producer')
-  async getKits(@Query('idkit') idkit: number) {
-    return await this._ProducersService.getProducerIdKit(idkit);
-  } */
+  @Get('get/all/kit-producer')
+  async getAllKitsProducer() {
+    return await this._ProducersService.getAllKitsProducer();
+  } 
 
   @Get('get/kits/by/producer')
   async getKitUserId(@Query('dni') dni: number) {
