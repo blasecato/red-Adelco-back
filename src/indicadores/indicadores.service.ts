@@ -21,6 +21,7 @@ export class IndicadoresService {
         .innerJoin('Indicadores.idObjetivo2' , 'Objetivo')
         .getMany();
   }
+  
 
   async getById(indicadorId: number) {
     return await this.indicadoresRepository.createQueryBuilder()
