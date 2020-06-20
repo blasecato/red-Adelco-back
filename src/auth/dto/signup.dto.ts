@@ -6,11 +6,9 @@ export class SignUpDto {
   id: string;
 
   @IsString()
-  @IsOptional()
   nombres: string;
 
   @IsString()
-  @IsOptional()
   apellidos: string;
 
   @IsOptional()
@@ -18,7 +16,6 @@ export class SignUpDto {
   idGenero: number;
 
   @IsString()
-  @IsOptional()
   telefono: string;
 
   @IsNumber()
