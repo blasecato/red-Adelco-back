@@ -80,24 +80,19 @@ export class ProducersController {
     return await this._ProducersService.updateProducerBeneficiary(body);
   }
 
-  @Get('get-kits')
-  async getKits(@Query('idproducer') idProducer: string, @Query('dni') dni: number) {
-    return await this._ProducersService.getKits(idProducer, dni);
+/*   @Get('get/kit-producer')
+  async getKits(@Query('idkit') idkit: number) {
+    return await this._ProducersService.getProducerIdKit(idkit);
+  } */
+
+  @Get('get/kits/by/producer')
+  async getKitUserId(@Query('dni') dni: number) {
+    return await this._ProducersService.getKitProducerDni(dni);
   }
 
-  @Get('get-kit')
+  @Get('get/kit-all')
   async getKit() {
     return await this._ProducersService.getKit();
-  }
-
-  @Get('get/all/kit-user')
-  async getKitUser() {
-    return await this._ProducersService.getKitUser();
-  }
-
-  @Get('get/kit-user')
-  async getKitUserId(@Query('idproducer') idProducerId: string) {
-    return await this._ProducersService.getKitUserId(idProducerId);
   }
 
   @Get('get-type-tool')

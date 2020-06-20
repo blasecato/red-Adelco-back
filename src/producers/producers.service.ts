@@ -24,7 +24,7 @@ import { Aft } from '../entities/Aft';
 
 @Injectable()
 export class ProducersService {
- 
+
   constructor(
     @InjectRepository(Productores) private readonly _ProducersRepository: Repository<Productores>,
     @InjectRepository(Genero) private readonly _GeneroRepository: Repository<Genero>,
@@ -234,21 +234,14 @@ export class ProducersService {
 
   async getAllDataProducurs() {
     return await this.cropRepository.createQueryBuilder()
-      .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta'])
-      .addSelect(['Productor.nombres', 'Productor.apellidos', 'Productor.dni', 'Productor.edad', 'Productor.telefono'])
-      .addSelect(['Genero.nombre'])
-      .addSelect(['organizacion.nombre', 'organizacion.descripcion', 'organizacion.contacto', 'organizacion.temaCapacitacion', 'organizacion.temaEmpresarial'])
-      .addSelect(['Municipio.nombre'])
-      .addSelect(['Vereda.nombre'])
-      .addSelect(['LineaProductiva.nombre'])
-      .addSelect(['CadenaProductiva.nombre'])
-      .innerJoin('Cultivo.dniProductor2', 'Productor')
-      .innerJoin('Productor.idOrganizacion2', 'organizacion')
-      .innerJoin('Productor.idGenero2', 'Genero')
-      .innerJoin('Cultivo.idMunicipio2', 'Municipio')
-      .innerJoin('Cultivo.idVereda2', 'Vereda')
-      .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
-      .innerJoin('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
+      .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
+      .innerJoinAndSelect('Productor.productoresOrganizaciones', 'productoresOrganizaciones')
+      .innerJoinAndSelect('productoresOrganizaciones.idOrganizacion', 'idOrganizacion')
+      .innerJoinAndSelect('Productor.idGenero2', 'Genero')
+      .innerJoinAndSelect('Cultivo.idMunicipio2', 'Municipio')
+      .innerJoinAndSelect('Cultivo.idVereda2', 'Vereda')
+      .innerJoinAndSelect('Cultivo.idLineaProductiva2', 'LineaProductiva')
+      .innerJoinAndSelect('LineaProductiva.idCadenaProductiva2', 'CadenaProductiva')
       .getMany();
   }
 
@@ -311,16 +304,13 @@ export class ProducersService {
     }
   }
 
-  async getKits(idProducer: string, dni: number) {
+/*   async getProducerIdKit(idKit: number) {
     return await this.kitRepository.createQueryBuilder()
-      .innerJoinAndSelect('Kit.kitHerramientas', 'kitHerramienta')
-      .innerJoinAndSelect('kitHerramienta.idHerramienta2', 'Herramienta')
-      .innerJoinAndSelect('Herramienta.idTipoHerramienta2', 'TipoHerramienta')
-      .innerJoinAndSelect('kitHerramienta.kitUsers', 'kitUser')
-      .innerJoinAndSelect('kitUser.idProductor2', 'Productor')
-      .where('Productor.id =:idProducer OR Productor.dni =:dni', { idProducer, dni })
-      .getMany();
-  }
+    .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
+    .innerJoinAndSelect('kitUsers.idProductor2', 'Productor')
+    .where('Productor.id =: idProducerId ', { idKit })
+    .getMany();
+  } */
 
   async getKit() {
     return await this.kitRepository.find({})
@@ -437,19 +427,11 @@ export class ProducersService {
     return await this.aftRepository.find({ relations: ['idOrganizacion2'] });
   }
 
-  async getKitUser() {
-    return await this.kitRepository.createQueryBuilder()
-      .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
-      .innerJoinAndSelect('kitUsers.idProductor2', 'Productores')
-      .getMany();
+  async getKitProducerDni(dni: number) {
+    return await this._ProducersRepository.find({
+      relations: ['kitUsers', 'kitUsers.idKit2', 'kitUsers.idKitHerramienta2', 'kitUsers.idKitHerramienta2.idHerramienta2',
+        'kitUsers.idKitHerramienta2.idHerramienta2.idTipoHerramienta2'],
+      where: { dni }
+    })
   }
-
-  async getKitUserId(idProducerId: string) {
-    return await this.kitRepository.createQueryBuilder()
-      .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
-      .innerJoinAndSelect('kitUsers.idProductor2', 'Productor')
-      .where('Productor.id =: idProducerId ', { idProducerId })
-      .getMany();
-  }
-
 }
