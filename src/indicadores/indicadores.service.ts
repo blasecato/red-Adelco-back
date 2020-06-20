@@ -15,7 +15,11 @@ export class IndicadoresService {
   ) { }
 
   async findAll(): Promise<Indicadores[]> {
-    return await this.indicadoresRepository.find();
+    return await this.indicadoresRepository.createQueryBuilder()
+        .select(['Indicadores.id','Indicadores.descripcion','Indicadores.observacion','Indicadores.fuenteVerificacion'])
+        .addSelect(['Objetivo.nombre'])
+        .innerJoin('Indicadores.idObjetivo2' , 'Objetivo')
+        .getMany();
   }
 
   async getById(indicadorId: number) {
