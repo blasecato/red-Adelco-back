@@ -1,15 +1,8 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import {  Column,  Entity,  Index,  JoinColumn,  ManyToOne,  PrimaryGeneratedColumn} from "typeorm";
 import { Productores } from "./Productores";
 import { KitHerramienta } from "./KitHerramienta";
 import { Kit } from "./Kit";
-
+ 
 @Index("id_kit", ["idKit"], {})
 @Index("id_kit_herramienta", ["idKitHerramienta"], {})
 @Index("id_productor", ["idProductor"], {})

@@ -3,7 +3,7 @@ import { KitHerramienta } from "./KitHerramienta";
 import { KitUser } from "./KitUser";
 
 @Entity("kit", { schema: "tcsp_database" })
-export class Kit {
+export class Kit { 
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
