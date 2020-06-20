@@ -308,9 +308,9 @@ export class ProducersService {
     return await this.kitRepository.createQueryBuilder()
       .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
       .innerJoinAndSelect('kitUsers.idProductor2', 'idProductor2')
-      .innerJoinAndSelect('kitUsers.idKitHerramienta2', 'idKitHerramienta2')
-      .innerJoinAndSelect('idKitHerramienta2.idHerramienta2', 'idHerramienta2')
-      .innerJoinAndSelect('idHerramienta2.idTipoHerramienta2', 'idTipoHerramienta2') 
+      .leftJoinAndSelect('kitUsers.idKitHerramienta2', 'idKitHerramienta2')
+      .leftJoinAndSelect('idKitHerramienta2.idHerramienta2', 'idHerramienta2')
+      .leftJoinAndSelect('idHerramienta2.idTipoHerramienta2', 'idTipoHerramienta2') 
       .getMany();
   }
 
