@@ -203,7 +203,7 @@ export class Productores {
     cultivo => cultivo.dniProductor2
   )
   cultivos: Cultivo[];
-
+ 
   @OneToMany(
     () => Cultivo,
     cultivo => cultivo.codigoProductor2
