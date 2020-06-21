@@ -283,6 +283,7 @@ export class ProducersService {
     try {
       await this.productoresBeneficioRepository.save({
         ...body,
+        idBeneficiary2:{id:body.idBeneficiary},
         idProductor: { id: producer.id }
       })
       return { success: 'OK' }

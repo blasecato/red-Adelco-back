@@ -10,10 +10,10 @@ export class ProductoresBeneficio {
   id: number;
 
   @Column("datetime", { name: "fecha_inicio", nullable: true })
-  fechaInicio: Date | null;
+  fechaInicio: string | null;
 
   @Column("datetime", { name: "fecha_fin", nullable: true })
-  fechaFin: Date | null;
+  fechaFin: string | null;
 
   @Column("varchar", { name: "escuela_agroforesteria", nullable: true, length: 50 })
   escuelaAgroforesteria: string | null;

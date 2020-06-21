@@ -15,9 +15,6 @@ export class Acepta {
   @Column("date", { name: "fecha_acepta", nullable: true })
   fechaAcepta: string | null;
 
-  @OneToMany(
-    () => Cultivo,
-    cultivo => cultivo.idAcepta2
-  )
+  @OneToMany(() => Cultivo, cultivo => cultivo.idAcepta2)
   cultivos: Cultivo[];
 }

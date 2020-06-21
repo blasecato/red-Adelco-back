@@ -1,14 +1,6 @@
 import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateDiagnosticDto {
-
-  @IsNumber()
-  idCultivo: number;
-
-  @IsNumber()
-  @IsOptional()
-  idFinca: number;
-
   @IsString()
   @IsOptional()
   nombre: string;
@@ -28,4 +20,11 @@ export class CreateDiagnosticDto {
   @IsString()
   @IsOptional()
   imagen: string;
+
+  @IsNumber()
+  cultivos: number;
+
+  @IsNumber()
+  @IsOptional()
+  fincas: number;
 }

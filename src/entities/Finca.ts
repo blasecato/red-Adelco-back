@@ -25,7 +25,7 @@ export class Finca {
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
   idVereda2: Vereda;
 
-  @OneToMany(() => Diagnostico,diagnostico => diagnostico.idFinca )
+  @OneToMany(() => Diagnostico,diagnostico => diagnostico.fincas )
   diagnosticos: Diagnostico[];
 
   @OneToMany(() => Productores,productores => productores.idFinca)
