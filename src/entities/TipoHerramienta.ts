@@ -3,7 +3,7 @@ import { Herramienta } from "./Herramienta";
 
 @Entity("tipo_herramienta", { schema: "redadelco" })
 export class TipoHerramienta {
-  @PrimaryGeneratedColumn({ type: "int", name: "id" })
+  @PrimaryGeneratedColumn({ type: "int" })
   id: number;
 
   @Column("longtext", { name: "nombre", nullable: true })
@@ -17,7 +17,7 @@ export class TipoHerramienta {
 
   @OneToMany(
     () => Herramienta,
-    herramienta => herramienta.idTipoHerramienta2
+    herramienta => herramienta.tipoHerramienta
   )
   herramientas: Herramienta[];
 }

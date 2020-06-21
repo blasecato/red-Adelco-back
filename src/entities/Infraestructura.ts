@@ -44,13 +44,11 @@ export class Infraestructura extends BaseEntity {
   convenios: Convenio[];
 
   @ManyToOne(() => TipoInfraestructura, tipoInfraestructura => tipoInfraestructura.infraestructuras,
-    { onDelete: "CASCADE", onUpdate: "CASCADE" }
-  )
+    { onDelete: "CASCADE", onUpdate: "CASCADE" } )
   @JoinColumn([{ name: "id_tipo_obra", referencedColumnName: "id" }])
   idTipoObra2: TipoInfraestructura;
 
-  @ManyToOne(() => Vereda, vereda => vereda.infraestructuras, { onDelete: "CASCADE", onUpdate: "CASCADE" }
-  )
+  @ManyToOne(() => Vereda, vereda => vereda.infraestructuras, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
   idVereda2: Vereda;
 }
