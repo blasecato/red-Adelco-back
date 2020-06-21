@@ -4,6 +4,8 @@ import { CreateAftDto } from './dto/createAft.dto';
 import { ProducersService } from './producers.service';
 import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dto';
 import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dto';
+import { CreateTypeToolDto } from './dto/createTypeTool.dto';
+import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -98,11 +100,21 @@ export class ProducersController {
   @Get('get-type-tool')
   async getAllTypeTool() {
     return await this._ProducersService.getAllTypeTool();
-  }
+  } 
 
   @Post('create-kit-tool')
   async createKitTool(@Body() body: CreateKitDto) {
     return await this._ProducersService.createKitTool(body);
+  }
+
+  @Post('create/type-tool')
+  async createTypeTool(@Body() body: CreateTypeToolDto) {
+    return await this._ProducersService.createTypeTool(body);
+  }
+
+  @Put('update/type-tool')
+  async updateTypeTool(@Body() body: UpdateTypeToolDto) {
+    return await this._ProducersService.updateTypeTool(body);
   }
 
   @Post('create-kit')

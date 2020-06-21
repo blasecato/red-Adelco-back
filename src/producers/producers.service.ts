@@ -21,6 +21,8 @@ import { KitUser } from '../entities/KitUser';
 import { Genero } from '../entities/Genero';
 import { Kit } from '../entities/Kit';
 import { Aft } from '../entities/Aft';
+import { CreateTypeToolDto } from './dto/createTypeTool.dto';
+import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
 
 @Injectable()
 export class ProducersService {
@@ -42,7 +44,7 @@ export class ProducersService {
     @InjectRepository(TipoHerramienta) private readonly typeToolRepository: Repository<TipoHerramienta>,
     @InjectRepository(KitHerramienta) private readonly kitToolRepository: Repository<KitHerramienta>,
     @InjectRepository(KitUser) private readonly kitUserRepository: Repository<KitUser>,
-    @InjectRepository(Aft) private readonly aftRepository: Repository<Aft>
+    @InjectRepository(Aft) private readonly aftRepository: Repository<Aft>,
 
   ) { }
 
@@ -310,39 +312,67 @@ export class ProducersService {
       .innerJoinAndSelect('kitUsers.idProductor2', 'idProductor2')
       .leftJoinAndSelect('kitUsers.idKitHerramienta2', 'idKitHerramienta2')
       .leftJoinAndSelect('idKitHerramienta2.idHerramienta2', 'idHerramienta2')
-      .leftJoinAndSelect('idHerramienta2.idTipoHerramienta2', 'idTipoHerramienta2') 
+      .leftJoinAndSelect('idHerramienta2.tipoHerramienta', 'tipoHerramienta')
       .getMany();
   }
 
   async getKit() {
-    return await this.kitRepository.find({})
+    return await this.kitRepository.find({});
   }
 
   async createKitTool(body: CreateKitDto) {
     const producer = await this._ProducersRepository.findOne({
       select: ['id', 'nombres', 'dni'],
       where: { id: body.idProducer }
-    })
+    });
+
+    const typeTool = await this.typeToolRepository.findOne({ where: { id: body.typeTool } })
 
     if (!producer)
       return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
+    if (!typeTool)
+      return { error: 'TYPE_TOOL_NOT_EXIST', detail: 'El tipo de herramienta no se encuentra en la base de datos.' }
 
     try {
       const kit = await this.kitRepository.save({
         nombre: body.kitName, imageActa: body.imagenActa
-      })
+      });
 
       const tool = await this.toolRepository.save({
-        descripcion: body.toolDetail, idTipoHerramienta2: { id: body.idTypeTool }
-      })
+        descripcion: body.toolDetail, tipoHerramienta: { id: typeTool.id }
+      });
 
       const kitTool = await this.kitToolRepository.save({
         idHerramienta2: { id: tool.id }, idKit2: { id: kit.id }
-      })
+      });
 
       await this.kitUserRepository.save({
         idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }, idKit2: { id: kit.id }
-      })
+      });
+
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async createTypeTool(body: CreateTypeToolDto) {
+    try {
+      await this.typeToolRepository.save({ ...body });
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async updateTypeTool(body: UpdateTypeToolDto) {
+    const typeTool = await this.typeToolRepository.findOne({ where: { id: body.id } });
+
+    if (!typeTool)
+      return { error: 'TYPE_TOOL_NOT_EXIST', detail: 'El tipo de herramienta no existe!' }
+
+    try {
+      await this.typeToolRepository.update(typeTool.id, { ...body });
 
       return { success: 'OK' }
     } catch (error) {
@@ -351,14 +381,14 @@ export class ProducersService {
   }
 
   async getAllTypeTool() {
-    return await this.typeToolRepository.find({})
+    return await this.typeToolRepository.find({});
   }
 
   async createKit(body: CreateKitDto) {
     try {
       await this.kitRepository.save({
         nombre: body.kitName, imageActa: body.imagenActa
-      })
+      });
       return { success: 'OK' }
     } catch (error) {
       return { error }
@@ -432,10 +462,8 @@ export class ProducersService {
   async getKitProducerDni(dni: number) {
     return await this._ProducersRepository.find({
       relations: ['kitUsers', 'kitUsers.idKit2', 'kitUsers.idKitHerramienta2', 'kitUsers.idKitHerramienta2.idHerramienta2',
-        'kitUsers.idKitHerramienta2.idHerramienta2.idTipoHerramienta2'],
+        'kitUsers.idKitHerramienta2.idHerramienta2.tipoHerramienta'],
       where: { dni }
     })
   }
-
-
 }
