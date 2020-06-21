@@ -14,7 +14,7 @@ export class Genero {
 
   @OneToMany(
     () => Productores,
-    productores => productores.idGenero2
+    productores => productores.idGenero
   )
   productores: Productores[];
 }

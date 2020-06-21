@@ -70,7 +70,7 @@ export class Organizacion extends BaseEntity {
 
   @ManyToOne(
     () => Productores,
-    productores => productores.organizacions2,
+    productores => productores.organizacions,
     { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "representante", referencedColumnName: "dni" }])

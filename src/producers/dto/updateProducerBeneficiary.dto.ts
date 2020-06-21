@@ -6,7 +6,7 @@ export class UpdateProducerBeneficiaryDto {
   id: number;
 
   @IsString()
-  idProductor2: string;
+  idProductor: string;
 
   @IsNumber()
   @IsOptional()

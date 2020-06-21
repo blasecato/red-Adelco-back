@@ -14,24 +14,17 @@ export class KitUser {
   @Column("int", { name: "id_kit_herramienta", nullable: true })
   idKitHerramienta: number | null;
 
-  @Column("varchar", { name: "id_productor", nullable: true, length: 45 })
-  idProductor: string | null;
-
   @Column("int", { name: "id_kit", nullable: true })
   idKit: number | null;
 
-  @ManyToOne(
-    () => Productores,
-    productores => productores.kitUsers,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
+  @ManyToOne(() => Productores, productores => productores.kitUsers, { onDelete: "CASCADE", onUpdate: "CASCADE" } )
   @JoinColumn([{ name: "id_productor", referencedColumnName: "id" }])
-  idProductor2: Productores;
+  idProductor: Productores| null;
 
   @ManyToOne(
     () => KitHerramienta,
     kitHerramienta => kitHerramienta.kitUsers,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_kit_herramienta", referencedColumnName: "id" }])
   idKitHerramienta2: KitHerramienta;
@@ -39,7 +32,7 @@ export class KitUser {
   @ManyToOne(
     () => Kit,
     kit => kit.kitUsers,
-    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
+    { onDelete: "NO ACTION", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_kit", referencedColumnName: "id" }])
   idKit2: Kit;

@@ -45,7 +45,7 @@ export class CropsController {
     return await this._CropsService.createAccept(body);
   }
 
-  @Post('create-diagnostic')
+  @Post('create/diagnostic')
   async createDiagnostic(@Body() body: CreateDiagnosticDto) {
     return await this._CropsService.createDiagnostic(body)
   }

@@ -9,9 +9,6 @@ export class Parentesco {
   @Column("varchar", { name: "nombre", nullable: true, length: 45 })
   nombre: string | null;
 
-  @OneToMany(
-    () => Productores,
-    productores => productores.idParentesco2
-  )
+  @OneToMany(() => Productores, productores => productores.idParentesco, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   productores: Productores[];
 }

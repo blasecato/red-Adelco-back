@@ -11,7 +11,7 @@ export class GrupoEtnico {
 
   @OneToMany(
     () => Productores,
-    productores => productores.idEtnia2
+    productores => productores.idEtnia
   )
   productores: Productores[];
 }

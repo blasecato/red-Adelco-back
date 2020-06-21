@@ -24,10 +24,7 @@ export class IndicadoresService {
   
 
   async getById(indicadorId: number) {
-    return await this.indicadoresRepository.createQueryBuilder()
-      .innerJoinAndSelect('Indicadores.idObjetivo2', 'Objetivo')
-      .where('Indicadores.id =: indicadorId', { indicadorId })
-      .getMany();
+    return await this.indicadoresRepository.findOne({ relations: ['idObjetivo2'], where: { id: indicadorId } });
   }
 
   async updateIndicator(body: UpdateIndicatorDto) {
@@ -35,7 +32,7 @@ export class IndicadoresService {
     if (!exist)
       return { error: 'INDICATOR_NOT_EXIST', detail: '¡El indicador no existe!' }
 
-    const response = await this.indicadoresRepository.update(body.id, body)
+    const response = await this.indicadoresRepository.update(body.id,{ ...body})
 
     if (!response)
       return { error: 'DATA_ENTERED_INCORRECTLY', detail: '¡Los datos se han ingresado incorrectamente!' }
