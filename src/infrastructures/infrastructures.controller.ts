@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Query } from '@nestjs/common';
 import { InfrastructuresService } from './infrastructures.service';
 import { UpdateInfrastructureDto } from './dto/updateInfrastructure.dto';
 
@@ -20,6 +20,11 @@ export class InfrastructuresController {
   @Get('dateinfra')
   async getDateInfra() {
     return await this.InfrastructuresService.getDateInfra()
+  }
+
+  @Get('get/by')
+  async getById(@Query('id') idInfrastructure: number) {
+    return await this.InfrastructuresService.getById(idInfrastructure)
   }
 
   @Put('update')
