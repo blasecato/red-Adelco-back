@@ -6,14 +6,11 @@ export class RemoveOrganizationProducersDto {
     id: number;
 
     @IsString()
-    @IsOptional()
     estado: string;
 
     @IsNumber()
-    @IsOptional()
     idOrganizacion: number;
 
     @IsNumber()
-    @IsOptional()
     dniProductor: number;
 }

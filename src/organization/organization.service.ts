@@ -45,6 +45,18 @@ export class organizationService {
       .getMany()
   }
 
+  async getByIdOrganization(idOrganization: number) {
+    const organization = await this._OrganizationRepository.findOne({
+      relations: ['afts', 'socio2', 'idVereda2', 'representante2', 'idIco2', 'productoresOrganizaciones',
+        'productoresOrganizaciones.dniProductor'], where: { id: idOrganization }
+    });
+
+    if (!organization)
+      return { error: 'ORGANIZATION_NOT_EXIST', detail: 'La organizacion no existe' };
+
+    return organization;
+  }
+
   async updateOrganization(body: UpdateOrganizationDto) {
     const exist = await this._OrganizationRepository.findOne({ select: ["nombre"], where: { id: body.id } })
     if (!exist)
@@ -83,7 +95,7 @@ export class organizationService {
 
     try {
       await this.ProductorOrganizacionRepository.save({
-        dniProductor: { dni: producer.dni }, idOrganizacion:{id:organization.id}
+        dniProductor: { dni: producer.dni }, idOrganizacion: { id: organization.id }
       });
       return { success: 'OK' }
     } catch (error) {

@@ -63,6 +63,14 @@ export class InfrastructuresService {
     return { municipio, typeInfraestructura }
   }
 
+  async getById(idInfrastructure: number) {
+    return await this.infraestructuraRepository.find({
+      relations: ['convenios', 'idTipoObra2', 'idVereda2', 'idVereda2.idMunicipio2'],
+      where: { id: idInfrastructure },
+      order: { id: 'ASC' }
+    });
+  }
+
   async updateInfrastructure(body: UpdateInfrastructureDto) {
     const exist = await this.infraestructuraRepository.findOne({ select: ["nombre"], where: { id: body.id } })
     if (!exist)
