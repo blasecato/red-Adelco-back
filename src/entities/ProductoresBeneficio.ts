@@ -72,9 +72,6 @@ export class ProductoresBeneficio {
   @Column("varchar", { name: "fitosanitario_cultivos", nullable: true, length: 50 })
   fitosanitarioCultivos: string | null;
 
-  @Column("varchar", { name: "id_productor", nullable: true, length: 45 })
-  idProductor: string | null;
-
   @Column("int", { name: "id_beneficio", nullable: true })
   idBeneficio: number | null;
 
@@ -84,7 +81,7 @@ export class ProductoresBeneficio {
     { onDelete: "CASCADE", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "id_productor", referencedColumnName: "id" }])
-  idProductor2: Productores;
+  idProductor: Productores | null;
 
   @ManyToOne(
     () => Beneficio,

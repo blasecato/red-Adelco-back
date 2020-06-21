@@ -11,7 +11,7 @@ export class Discapacidad {
 
   @OneToMany(
     () => Productores,
-    productores => productores.idDiscapacitado2
+    productores => productores.idDiscapacitado
   )
   productores: Productores[];
 }

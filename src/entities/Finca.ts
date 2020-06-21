@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import { Column,  Entity,  Index,  JoinColumn,  ManyToOne,  OneToMany,  PrimaryGeneratedColumn} from "typeorm";
 import { Vereda } from "./Vereda";
 import { Diagnostico } from "./Diagnostico";
 import { Productores } from "./Productores";
@@ -29,23 +21,13 @@ export class Finca {
   @Column("int", { name: "id_vereda", nullable: true })
   idVereda: number | null;
 
-  @ManyToOne(
-    () => Vereda,
-    vereda => vereda.fincas,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
+  @ManyToOne(() => Vereda, vereda => vereda.fincas,{ onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_vereda", referencedColumnName: "id" }])
   idVereda2: Vereda;
 
-  @OneToMany(
-    () => Diagnostico,
-    diagnostico => diagnostico.idFinca2
-  )
+  @OneToMany(() => Diagnostico,diagnostico => diagnostico.idFinca )
   diagnosticos: Diagnostico[];
 
-  @OneToMany(
-    () => Productores,
-    productores => productores.idFinca2
-  )
+  @OneToMany(() => Productores,productores => productores.idFinca)
   productores: Productores[];
 }

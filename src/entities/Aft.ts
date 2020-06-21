@@ -50,16 +50,9 @@ export class Aft {
   @Column("bigint", { name: "nit", nullable: true })
   nit: string | null;
 
-  @Column("int", { name: "id_productor", nullable: true })
-  idProductor: number | null;
-
-  @ManyToOne(
-    () => Productores,
-    productores => productores.afts,
-    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
-  )
+  @ManyToOne(() => Productores,productores => productores.afts,{ onDelete: "NO ACTION", onUpdate: "NO ACTION" } )
   @JoinColumn([{ name: "id_productor", referencedColumnName: "dni" }])
-  idProductor2: Productores;
+  idProductor: Productores;
 
   @ManyToOne(
     () => Municipio,

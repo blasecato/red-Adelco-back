@@ -53,7 +53,7 @@ export class Cultivo {
 
   @OneToMany(
     () => Diagnostico,
-    diagnostico => diagnostico.idCultivo2
+    diagnostico => diagnostico.idCultivo
   )
   diagnosticos: Diagnostico[];
 

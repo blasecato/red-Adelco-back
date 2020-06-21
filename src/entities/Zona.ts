@@ -11,7 +11,7 @@ export class Zona {
 
   @OneToMany(
     () => Productores,
-    Productores => Productores.idZona2
+    Productores => Productores.idZona
   )
   producers: Productores[];
 }
