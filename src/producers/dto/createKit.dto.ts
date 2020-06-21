@@ -3,17 +3,10 @@ import { IsNumber, IsString, IsOptional } from 'class-validator';
 export class CreateKitDto {
 
   @IsString()
-  kitName: string;
-
-  @IsString()
   idProducer: string;
 
   @IsString()
-  idKit: string;
-
-  @IsNumber()
-  @IsOptional()
-  idTypeTool: number;
+  kitName: string;
 
   @IsString()
   @IsOptional()
@@ -34,5 +27,11 @@ export class CreateKitDto {
   @IsString()
   @IsOptional()
   toolMark: string;
+
+  @IsString()
+  idKit: string;
+
+  @IsNumber()
+  typeTool: number;
 
 }
