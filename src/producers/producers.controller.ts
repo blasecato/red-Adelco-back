@@ -6,6 +6,7 @@ import { CreateProducerBeneficiaryDto } from './dto/createproducerbeneficiary.dt
 import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dto';
 import { CreateTypeToolDto } from './dto/createTypeTool.dto';
 import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
+import { UpdateProducerDto } from './dto/UpdateProducer.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -41,8 +42,8 @@ export class ProducersController {
   }
 
   @Put('update')
-  async updateProducer(@Body() updateProducer) {
-    const producerUpdate = await this._ProducersService.updateProducer(updateProducer)
+  async updateProducer(@Body() body:UpdateProducerDto) {
+    const producerUpdate = await this._ProducersService.updateProducer(body)
     return producerUpdate
   }
 

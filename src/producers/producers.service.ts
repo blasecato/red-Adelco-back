@@ -23,6 +23,7 @@ import { Kit } from '../entities/Kit';
 import { Aft } from '../entities/Aft';
 import { CreateTypeToolDto } from './dto/createTypeTool.dto';
 import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
+import { UpdateProducerDto } from './dto/UpdateProducer.dto';
 
 @Injectable()
 export class ProducersService {
@@ -79,21 +80,33 @@ export class ProducersService {
     return producers
   }
 
-  async updateProducer(body) {
-    const producerExists = await this._ProducersRepository.findOne({
-      where: { dni: body.dni },
-    });
+  async updateProducer(body: UpdateProducerDto) {
+    const producerExists = await this._ProducersRepository.findOne({ where: { dni: body.dni } });
 
-    if (!producerExists) throw new ConflictException('producer does not exist');
+    if (!producerExists)
+      return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no existe!' }
 
-    const { dni, ...results } = body
+    try {
+      await this._ProducersRepository.update(producerExists.dni, {
+        id: body.id,
+        nombres: body.nombres,
+        apellidos: body.apellidos,
+        edad: body.edad,
+        telefono: body.telefono,
+        state: body.state,
+        idZona: {id:body.idZona},
+        idGenero: { id: body.idGenero },
+        idProductor: { id: body.idProductor },
+        idConflicto: { id: body.idConflicto },
+        idFinca: { id: body.idFinca },
+        idParentesco: { id: body.idParentesco },
+        idCargoOrg: { id: body.idCargoOrg }
+      });
 
-    console.log(results)
-
-    const producers = await this._ProducersRepository
-      .update(dni, results)
-
-    return producers
+      return { success: 'OK' }
+    } catch (err) {
+      return err
+    }
   }
 
   async getProducerGender() {
@@ -146,15 +159,15 @@ export class ProducersService {
 
   async getProducerDate() {
     return await this._ProducersRepository.createQueryBuilder("producer")
-      .leftJoinAndSelect("producer.idGenero2", "gender")
-      .leftJoinAndSelect("producer.idEtnia2", "etnia")
+      .leftJoinAndSelect("producer.idGenero", "gender")
+      .leftJoinAndSelect("producer.idEtnia", "etnia")
       .leftJoinAndSelect("producer.productoresOrganizaciones", "productoresOrganizaciones")
       .leftJoinAndSelect("productoresOrganizaciones.idOrganizacion", "organizacion")
-      .leftJoinAndSelect("producer.idConflicto2", "conflicto")
-      .leftJoinAndSelect("producer.idDiscapacitado2", "discapacitado")
-      .leftJoinAndSelect("producer.idProductor2", "productor")
-      .leftJoinAndSelect("producer.idParentesco2", "parentesco")
-      .leftJoinAndSelect("producer.idCargoOrg2", "cargoOrg")
+      .leftJoinAndSelect("producer.idConflicto", "conflicto")
+      .leftJoinAndSelect("producer.idDiscapacitado", "discapacitado")
+      .leftJoinAndSelect("producer.idProductor", "productor")
+      .leftJoinAndSelect("producer.idParentesco", "parentesco")
+      .leftJoinAndSelect("producer.idCargoOrg", "cargoOrg")
       .getMany()
   }
 
@@ -190,7 +203,7 @@ export class ProducersService {
       .addSelect(['LineaProductiva.nombre'])
       .addSelect(['CadenaProductiva.nombre'])
       .innerJoin('Cultivo.dniProductor2', 'Productor')
-      .innerJoin('Productor.idGenero2', 'Genero')
+      .innerJoin('Productor.idGenero', 'Genero')
       .innerJoin('Cultivo.idMunicipio2', 'Municipio')
       .innerJoin('Cultivo.idVereda2', 'Vereda')
       .innerJoin('Cultivo.idLineaProductiva2', 'LineaProductiva')
@@ -206,8 +219,8 @@ export class ProducersService {
       .addSelect(['Genero.nombre'])
       .addSelect(['Conflicto.nombre'])
       .innerJoin('Productores.cultivos2', 'Cultivo')
-      .innerJoin('Productores.idGenero2', 'Genero')
-      .innerJoin('Productores.idConflicto2', 'Conflicto')
+      .innerJoin('Productores.idGenero', 'Genero')
+      .innerJoin('Productores.idConflicto', 'Conflicto')
       .where("Conflicto.nombre= 'Victima'")
       .getMany()
 
@@ -216,8 +229,8 @@ export class ProducersService {
       .addSelect(['Genero.nombre'])
       .addSelect(['Conflicto.nombre'])
       .leftJoin('Productores.cultivos2', 'Cultivo')
-      .leftJoin('Productores.idGenero2', 'Genero')
-      .leftJoin('Productores.idConflicto2', 'Conflicto')
+      .leftJoin('Productores.idGenero', 'Genero')
+      .leftJoin('Productores.idConflicto', 'Conflicto')
       .where("Conflicto.nombre = 'Excombatiente'")
       .getMany()
 
@@ -226,8 +239,8 @@ export class ProducersService {
       .addSelect(['Genero.nombre'])
       .addSelect(['Conflicto.nombre'])
       .innerJoin('Productores.cultivos2', 'Cultivo')
-      .innerJoin('Productores.idGenero2', 'Genero')
-      .innerJoin('Productores.idConflicto2', 'Conflicto')
+      .innerJoin('Productores.idGenero', 'Genero')
+      .innerJoin('Productores.idConflicto', 'Conflicto')
       .where("Conflicto.nombre = 'No Aplica'")
       .getMany()
 
@@ -239,7 +252,7 @@ export class ProducersService {
       .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
       .innerJoinAndSelect('Productor.productoresOrganizaciones', 'productoresOrganizaciones')
       .innerJoinAndSelect('productoresOrganizaciones.idOrganizacion', 'idOrganizacion')
-      .innerJoinAndSelect('Productor.idGenero2', 'Genero')
+      .innerJoinAndSelect('Productor.idGenero', 'Genero')
       .innerJoinAndSelect('Cultivo.idMunicipio2', 'Municipio')
       .innerJoinAndSelect('Cultivo.idVereda2', 'Vereda')
       .innerJoinAndSelect('Cultivo.idLineaProductiva2', 'LineaProductiva')
@@ -249,8 +262,8 @@ export class ProducersService {
 
   async getProducerById(id, dni) {
     return await this._ProducersRepository.findOne({
-      relations: ['idGenero2', 'productoresOrganizaciones', 'productoresOrganizaciones.idOrganizacion', 'idConflicto2', 'idDiscapacitado2',
-        'idEtnia2', 'idParentesco2', 'productoresBeneficios', 'productoresBeneficios.idBeneficio2',
+      relations: ['idGenero', 'productoresOrganizaciones', 'productoresOrganizaciones.idOrganizacion', 'idConflicto', 'idDiscapacitado',
+        'idEtnia', 'idParentesco', 'productoresBeneficios', 'productoresBeneficios.idBeneficio2',
         'productoresBeneficios.idBeneficio2.idTipoBeneficio2', 'kitUsers', 'kitUsers.idKitHerramienta2',
         'kitUsers.idKitHerramienta2.idKit2'],
       where: [{ id }, { dni }]
@@ -270,7 +283,7 @@ export class ProducersService {
     try {
       await this.productoresBeneficioRepository.save({
         ...body,
-        idProductor2: { id: producer.id }
+        idProductor: { id: producer.id }
       })
       return { success: 'OK' }
     } catch (error) {
@@ -281,7 +294,7 @@ export class ProducersService {
   async updateProducerBeneficiary(body: UpdateProducerBeneficiaryDto) {
     const producer = await this._ProducersRepository.findOne({
       select: ['id', 'nombres', 'dni'],
-      where: { id: body.idProductor2 }
+      where: { id: body.idProductor }
     })
 
     const producerBeneficiary = await this.productoresBeneficioRepository.findOne({
@@ -297,7 +310,7 @@ export class ProducersService {
     try {
       await this.productoresBeneficioRepository.update(producerBeneficiary.id, {
         ...body,
-        idProductor2: { id: producer.id }, idBeneficio2: { id: body.idBeneficio2 }
+        idProductor: { id: producer.id }, idBeneficio2: { id: body.idBeneficio2 }
 
       })
       return { success: 'OK' }
@@ -309,7 +322,7 @@ export class ProducersService {
   async getAllKitsProducer() {
     return await this.kitRepository.createQueryBuilder()
       .innerJoinAndSelect('Kit.kitUsers', 'kitUsers')
-      .innerJoinAndSelect('kitUsers.idProductor2', 'idProductor2')
+      .innerJoinAndSelect('kitUsers.idProductor', 'idProductor')
       .leftJoinAndSelect('kitUsers.idKitHerramienta2', 'idKitHerramienta2')
       .leftJoinAndSelect('idKitHerramienta2.idHerramienta2', 'idHerramienta2')
       .leftJoinAndSelect('idHerramienta2.tipoHerramienta', 'tipoHerramienta')
@@ -347,7 +360,7 @@ export class ProducersService {
       });
 
       await this.kitUserRepository.save({
-        idProductor2: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }, idKit2: { id: kit.id }
+        idProductor: { id: body.idProducer }, idKitHerramienta2: { id: kitTool.id }, idKit2: { id: kit.id }
       });
 
       return { success: 'OK' }
@@ -413,7 +426,7 @@ export class ProducersService {
 
     try {
       await this.kitUserRepository.save({
-        idProductor2: { id: producer.id }, idKit2: { id: kit.id }
+        idProductor: { id: producer.id }, idKit2: { id: kit.id }
       })
 
       return { success: 'OK' }
@@ -446,7 +459,7 @@ export class ProducersService {
         idMunicipio2: { id: body.idMunicipio },
         dv: body.dv,
         nit: body.nit,
-        idProductor2: { dni: body.producerDni }
+        idProductor: { dni: body.producerDni }
       })
 
       return { success: 'OK' }
