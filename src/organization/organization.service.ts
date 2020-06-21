@@ -57,6 +57,14 @@ export class organizationService {
     return organization;
   }
 
+  async getPrododucerOrganization() {
+    return await this._OrganizationRepository.createQueryBuilder()
+      .innerJoinAndSelect('Organizacion.productoresOrganizaciones', 'productoresOrganizaciones')
+      .innerJoinAndSelect('productoresOrganizaciones.dniProductor', 'productor')
+      .where("productoresOrganizaciones.estado='activo'")
+      .getMany();
+  }
+
   async updateOrganization(body: UpdateOrganizationDto) {
     const exist = await this._OrganizationRepository.findOne({ select: ["nombre"], where: { id: body.id } })
     if (!exist)
