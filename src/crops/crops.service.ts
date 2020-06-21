@@ -35,10 +35,10 @@ export class CropsService {
       .leftJoinAndSelect("Cultivo.codigoProductor2", "producer")
       .leftJoinAndSelect("Cultivo.idLineaProductiva2", "lineProducer")
       .getMany()
-     
+
   }
 
-  async getAllCrops(){
+  async getAllCrops() {
     return await this._CropsRepository.find({});
   }
 
@@ -119,10 +119,10 @@ export class CropsService {
 
     const dataCrops = await this._CropsRepository.createQueryBuilder()
       .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta',
-      'Cultivo.entidadPerteneciente','Cultivo.trabajoPrincipal'])
+        'Cultivo.entidadPerteneciente', 'Cultivo.trabajoPrincipal'])
       .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
-      .innerJoinAndSelect('Productor.idGenero2', 'Genero')
-      .innerJoinAndSelect('Productor.idEtnia2', 'Etnia')
+      .innerJoinAndSelect('Productor.idGenero', 'Genero')
+      .innerJoinAndSelect('Productor.idEtnia', 'Etnia')
       .innerJoinAndSelect('Cultivo.idLineaProductiva2', 'LineaProductiva')
       .innerJoinAndSelect('Cultivo.idMunicipio2', 'Municipio')
       .innerJoinAndSelect('Municipio.veredas', 'Vereda')
@@ -165,7 +165,16 @@ export class CropsService {
       return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no se encuentra en la base de datos.' }
     } else {
       try {
-        await this.diagnosticRepository.save(body)
+        await this.diagnosticRepository.save({
+          nombre: body.nombre,
+          fecha: body.fecha,
+          horaInicio: body.horaInicio,
+          horaFin: body.horaFin,
+          imagen: body.imagen,
+          idCultivo: { id: body.idCultivo },
+          idFinca: { id: body.idFinca }
+        });
+
         return { success: 'OK' }
       } catch (error) {
         return { error }

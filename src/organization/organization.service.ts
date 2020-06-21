@@ -121,7 +121,7 @@ export class organizationService {
       .getRawOne()
 
     const dataProducers = await this.producersRepository.createQueryBuilder()
-      .innerJoinAndSelect('Productores.idGenero2', 'Genero')
+      .innerJoinAndSelect('Productores.idGenero', 'Genero')
       .innerJoinAndSelect('Productores.productoresOrganizaciones', 'productoresOrganizaciones')
       .innerJoinAndSelect('productoresOrganizaciones.idOrganizacion', 'organizacion')
       .where('organizacion.id =:idOrganization', { idOrganization })
@@ -129,21 +129,21 @@ export class organizationService {
 
     const countWoman = await this.producersRepository.createQueryBuilder()
       .select('count(Genero.id)', 'countWoman')
-      .innerJoin('Productores.idGenero2', 'Genero')
+      .innerJoin('Productores.idGenero', 'Genero')
       .innerJoin('Productores.productoresOrganizaciones', 'productoresOrganizaciones')
       .innerJoin('productoresOrganizaciones.idOrganizacion', 'organizacion')
       .where("Genero.key='woman' and organizacion.id =:idOrganization", { idOrganization })
       .getRawOne()
 
     const dataWoman = await this.producersRepository.createQueryBuilder()
-      .innerJoinAndSelect('Productores.idGenero2', 'Genero')
+      .innerJoinAndSelect('Productores.idGenero', 'Genero')
       .innerJoinAndSelect('Productores.productoresOrganizaciones', 'productoresOrganizaciones')
       .innerJoinAndSelect('productoresOrganizaciones.idOrganizacion', 'organizacion')
       .where("Genero.key='woman' and organizacion.id =:idOrganization", { idOrganization })
       .getManyAndCount()
 
     const dataMan = await this.producersRepository.createQueryBuilder()
-      .innerJoinAndSelect('Productores.idGenero2', 'Genero')
+      .innerJoinAndSelect('Productores.idGenero', 'Genero')
       .innerJoinAndSelect('Productores.productoresOrganizaciones', 'productoresOrganizaciones')
       .innerJoinAndSelect('productoresOrganizaciones.idOrganizacion', 'organizacion')
       .where("Genero.key='man' and organizacion.id =:idOrganization", { idOrganization })
@@ -151,7 +151,7 @@ export class organizationService {
 
     const countMan = await this.producersRepository.createQueryBuilder()
       .select('count(Genero.id)', 'countMan')
-      .innerJoin('Productores.idGenero2', 'Genero')
+      .innerJoin('Productores.idGenero', 'Genero')
       .innerJoin('Productores.productoresOrganizaciones', 'productoresOrganizaciones')
       .innerJoin('productoresOrganizaciones.idOrganizacion', 'organizacion')
       .where("Genero.key='man' and organizacion.id =:idOrganization", { idOrganization })
