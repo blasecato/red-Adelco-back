@@ -11,7 +11,7 @@ export class Conflicto {
 
   @OneToMany(
     () => Productores,
-    productores => productores.idConflicto2
+    productores => productores.idConflicto
   )
   productores: Productores[];
 }

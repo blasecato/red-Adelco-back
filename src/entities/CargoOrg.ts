@@ -11,7 +11,7 @@ export class CargoOrg {
 
   @OneToMany(
     () => Productores,
-    productores => productores.idCargoOrg2
+    productores => productores.idCargoOrg
   )
   productores: Productores[];
 }

@@ -24,8 +24,8 @@ export class AuthService {
         'producer.telefono', 'producer.telefono', 'producer.telefono'])
       .addSelect(['User.id', 'User.email', 'User.state', 'User.rol'])
       .innerJoin('producer.user', 'User')
-      .leftJoinAndSelect("producer.idGenero2", "gender")
-      .leftJoinAndSelect("producer.idEtnia2", "etnia")
+      .leftJoinAndSelect("producer.idGenero", "gender")
+      .leftJoinAndSelect("producer.idEtnia", "etnia")
       .where("producer.state = 'active' and User.state = 'active' and User.email = :email", { email },)
       .getOne();
   }
@@ -69,7 +69,16 @@ export class AuthService {
       };
     } else {
       try {
-        const producer = await this.producerRepository.save({ ...body });
+        const producer = await this.producerRepository.save({
+          id: body.id,
+          nombres: body.nombres,
+          apellidos: body.apellidos,
+          dni:body.dni,
+          edad: body.edad,
+          telefono: body.telefono,
+          idGenero: { id: body.idGenero },
+          idParentesco: { id: body.idParentesco }
+        });
 
         await this.userRepository.save({
           email: body.email,

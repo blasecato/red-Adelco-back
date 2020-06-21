@@ -35,10 +35,9 @@ export class CropsService {
       .leftJoinAndSelect("Cultivo.codigoProductor2", "producer")
       .leftJoinAndSelect("Cultivo.idLineaProductiva2", "lineProducer")
       .getMany()
-     
   }
 
-  async getAllCrops(){
+  async getAllCrops() {
     return await this._CropsRepository.find({});
   }
 
@@ -76,7 +75,17 @@ export class CropsService {
 
     try {
       await this._CropsRepository.save({
-        ...body
+        hectareas: body.hectareas,
+        fechaInicio: body.fechaInicio,
+        trabajoPrincipal: body.trabajoPrincipal,
+        entidadPerteneciente: body.entidadPerteneciente,
+        posicionAcepta: body.posicionAcepta,
+        idLineaProductiva2: { id: body.idLineaProductiva },
+        codigoProductor2: { id: body.codigoProductor },
+        idAcepta2: { id: body.idAcepta },
+        dniProductor2: { dni: body.dniProductor },
+        idMunicipio2: { id: body.idMunicipio },
+        idVereda2: { id: body.idVereda }
       })
 
       return { success: 'OK' }
@@ -119,10 +128,10 @@ export class CropsService {
 
     const dataCrops = await this._CropsRepository.createQueryBuilder()
       .select(['Cultivo.hectareas', 'Cultivo.fechaInicio', 'Cultivo.posicionAcepta',
-      'Cultivo.entidadPerteneciente','Cultivo.trabajoPrincipal'])
+        'Cultivo.entidadPerteneciente', 'Cultivo.trabajoPrincipal'])
       .innerJoinAndSelect('Cultivo.dniProductor2', 'Productor')
-      .innerJoinAndSelect('Productor.idGenero2', 'Genero')
-      .innerJoinAndSelect('Productor.idEtnia2', 'Etnia')
+      .innerJoinAndSelect('Productor.idGenero', 'Genero')
+      .innerJoinAndSelect('Productor.idEtnia', 'Etnia')
       .innerJoinAndSelect('Cultivo.idLineaProductiva2', 'LineaProductiva')
       .innerJoinAndSelect('Cultivo.idMunicipio2', 'Municipio')
       .innerJoinAndSelect('Municipio.veredas', 'Vereda')
@@ -148,40 +157,31 @@ export class CropsService {
   }
 
   async createDiagnostic(body: CreateDiagnosticDto) {
-    const crop = await this._CropsRepository.findOne({
-      select: ['id', 'posicionAcepta'],
-      where: { id: body.idCultivo }
-    })
-    const farm = await this.farmRepository.findOne({
-      select: ['id', 'nombre'],
-      where: { id: body.idFinca }
-    })
+    const crop = await this._CropsRepository.findOne({ where: { id: body.cultivos } });
 
-    /*   if (!farm) {
-        return { error: 'FARM_NOT_EXIST', detail: 'La finca no se encuentra en la base de datos.' }
-      } else  */
-
-    if (!crop) {
+    if (!crop)
       return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no se encuentra en la base de datos.' }
-    } else {
-      try {
-        await this.diagnosticRepository.save(body)
-        return { success: 'OK' }
-      } catch (error) {
-        return { error }
-      }
+
+    try {
+      const asux = await this.diagnosticRepository.save({
+        nombre: body.nombre,
+        fecha: body.fecha,
+        horaInicio: body.horaInicio,
+        horaFin: body.horaFin,
+        imagen: body.imagen,
+        cultivos: { id: crop.id },
+        fincas: { id: body.fincas }
+      });
+      console.log(asux);
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
     }
   }
 
   async getCropsDiagnosticAll() {
-    return await this._CropsRepository.find({
-      join: {
-        alias: 'crop',
-        innerJoinAndSelect: {
-          diagnosticos: "crop.diagnosticos"
-        }
-      }
-    })
+    return await this.diagnosticRepository.createQueryBuilder()
+    .innerJoinAndSelect('Diagnostico.cultivos','cultivos')
+    .getMany()
   }
-
 }

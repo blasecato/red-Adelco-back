@@ -1,16 +1,7 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Cultivo } from "./Cultivo";
 import { Finca } from "./Finca";
 
-@Index("id_cultivo", ["idCultivo"], {})
-@Index("id_finca", ["idFinca"], {})
 @Entity("diagnostico", { schema: "tcsp_database" })
 export class Diagnostico {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
@@ -31,25 +22,11 @@ export class Diagnostico {
   @Column("longtext", { name: "imagen", nullable: true })
   imagen: string | null;
 
-  @Column("int", { name: "id_finca", nullable: true })
-  idFinca: number | null;
+  @ManyToOne(() => Cultivo, cultivo => cultivo.diagnosticos, { onDelete: "CASCADE", onUpdate: "CASCADE" })
+  @JoinColumn([{ name: "id_cultivo" }])
+  cultivos: Cultivo | null;
 
-  @Column("int", { name: "id_cultivo", nullable: true })
-  idCultivo: number | null;
-
-  @ManyToOne(
-    () => Cultivo,
-    cultivo => cultivo.diagnosticos,
-    { onDelete: "NO ACTION", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_cultivo", referencedColumnName: "id" }])
-  idCultivo2: Cultivo;
-
-  @ManyToOne(
-    () => Finca,
-    finca => finca.diagnosticos,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_finca", referencedColumnName: "id" }])
-  idFinca2: Finca;
+  @ManyToOne(() => Finca, finca => finca.diagnosticos, { onDelete: "CASCADE", onUpdate: "CASCADE" })
+  @JoinColumn([{ name: "id_finca" }])
+  fincas: Finca | null;
 }

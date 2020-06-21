@@ -29,5 +29,5 @@ export class ProductorOrg {
     { onDelete: "CASCADE", onUpdate: "NO ACTION" }
   )
   @JoinColumn([{ name: "id_productor", referencedColumnName: "dni" }])
-  idProductor2: Productores;
+  productorOrg: Productores;
 }

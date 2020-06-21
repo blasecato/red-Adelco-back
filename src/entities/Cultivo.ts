@@ -51,17 +51,10 @@ export class Cultivo {
   @Column("varchar", { name: "trabajo_principal", nullable: true, length: 750 })
   trabajoPrincipal: string | null;
 
-  @OneToMany(
-    () => Diagnostico,
-    diagnostico => diagnostico.idCultivo2
-  )
+  @OneToMany(() => Diagnostico, diagnostico => diagnostico.cultivos)
   diagnosticos: Diagnostico[];
 
-  @ManyToOne(
-    () => Acepta,
-    acepta => acepta.cultivos,
-    { onDelete: "CASCADE", onUpdate: "CASCADE" }
-  )
+  @ManyToOne(() => Acepta,acepta => acepta.cultivos, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_acepta", referencedColumnName: "id" }])
   idAcepta2: Acepta | null;
 

@@ -28,11 +28,7 @@ export class Indicadores {
   @Column("int", { name: "id_objetivo", nullable: true })
   idObjetivo: number | null;
 
-  @ManyToOne(
-    () => Objetivo,
-    objetivo => objetivo.indicadores,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
-  @JoinColumn([{ name: "id_objetivo", referencedColumnName: "id" }])
+  @ManyToOne(() => Objetivo, objetivo => objetivo.indicadores,{ onDelete: "CASCADE", onUpdate: "CASCADE" })
+  @JoinColumn([{ name: "id_objetivo" }])
   idObjetivo2: Objetivo;
 }
