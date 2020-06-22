@@ -53,6 +53,69 @@ export class Productores {
   @Column("varchar", { nullable: true, length: '50', default: 'active' })
   state: string | null;
 
+  @Column("datetime", { name: "fecha_inicio", nullable: true })
+  fechaInicio: string | null;
+
+  @Column("datetime", { name: "fecha_fin", nullable: true })
+  fechaFin: string | null;
+
+  @Column("varchar", { name: "escuela_agroforesteria", nullable: true, length: 50 })
+  escuelaAgroforesteria: string | null;
+
+  @Column("varchar", { name: "escuela_agrosilvopastoril", nullable: true, length: 50 })
+  escuelaAgrosilvopastoril: string | null;
+
+  @Column("varchar", { name: "escuela_aromaticas", nullable: true, length: 50 })
+  escuelaAromaticas: string | null;
+
+  @Column("varchar", { name: "escuela_permacultura", nullable: true, length: 50 })
+  escuelaPermacultura: string | null;
+
+  @Column("varchar", { name: "escuela_srcacao", nullable: true, length: 50 })
+  escuelaSRCacao: string | null;
+
+  @Column("varchar", { name: "escuela_srpnmb", nullable: true, length: 50 })
+  escuelaSRPNMB: string | null;
+
+  @Column("varchar", { name: "parcela_demostrativa", nullable: true, length: 50 })
+  parcelaDemostrativa: string | null;
+
+  @Column("varchar", { name: "cacao_planadas", nullable: true, length: 50 })
+  cacaoPlanadas: string | null;
+
+  @Column("varchar", { name: "cana_panelera", nullable: true, length: 50 })
+  canaPanelera: string | null;
+
+  @Column("varchar", { name: "intercambio_huitora", nullable: true, length: 50 })
+  intercambioHuitora: string | null;
+
+  @Column("varchar", { name: "gira_pnmb", nullable: true, length: 50 })
+  giraPNMB: string | null;
+
+  @Column("varchar", { name: "gira_cacao", nullable: true, length: 50 })
+  giraCacao: string | null;
+
+  @Column("varchar", { name: "poscosecha_cacao", nullable: true, length: 50 })
+  poscosechaCacao: string | null;
+
+  @Column("varchar", { name: "transformacion_pulpas", nullable: true, length: 50 })
+  transformacionPulpas: string | null;
+
+  @Column("varchar", { name: "manejo_ecosistemico", nullable: true, length: 50 })
+  manejoEcosistemico: string | null;
+
+  @Column("varchar", { name: "transformacion_chocolate", nullable: true, length: 50 })
+  transformacionChocolate: string | null;
+
+  @Column("varchar", { name: "certificado_organica", nullable: true, length: 50 })
+  certificadoOrganica: string | null;
+
+  @Column("varchar", { name: "transformacion_pnmb", nullable: true, length: 50 })
+  transformacionPNMB: string | null;
+
+  @Column("varchar", { name: "fitosanitario_cultivos", nullable: true, length: 50 })
+  fitosanitarioCultivos: string | null;
+
   @ManyToOne(() => Genero, genero => genero.productores, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_genero", referencedColumnName: "id" }])
   idGenero: Genero | null;
