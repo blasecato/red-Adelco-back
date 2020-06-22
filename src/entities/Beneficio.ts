@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TipoBeneficio } from "./TipoBeneficio";
 import { ProductoresBeneficio } from "./ProductoresBeneficio";
 
@@ -25,17 +17,10 @@ export class Beneficio {
   @Column("int", { name: "id_tipo_beneficio", nullable: true })
   idTipoBeneficio: number | null;
 
-  @ManyToOne(
-    () => TipoBeneficio,
-    tipoBeneficio => tipoBeneficio.beneficios,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
-  )
+  @ManyToOne(() => TipoBeneficio, tipoBeneficio => tipoBeneficio.beneficios, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_tipo_beneficio", referencedColumnName: "id" }])
   idTipoBeneficio2: TipoBeneficio;
 
-  @OneToMany(
-    () => ProductoresBeneficio,
-    productoresBeneficio => productoresBeneficio.idBeneficio2
-  )
+  @OneToMany(() => ProductoresBeneficio, productoresBeneficio => productoresBeneficio.idBeneficio2)
   productoresBeneficios: ProductoresBeneficio[];
 }

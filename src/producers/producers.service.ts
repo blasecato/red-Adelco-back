@@ -25,6 +25,8 @@ import { CreateTypeToolDto } from './dto/createTypeTool.dto';
 import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
 import { UpdateProducerDto } from './dto/UpdateProducer.dto';
 import { UpdateAftDto } from './dto/updateAft.dto';
+import { Beneficio } from '../entities/Beneficio';
+import { CreateBeneficiaryDto } from './dto/createBenefit.dto';
 
 @Injectable()
 export class ProducersService {
@@ -47,6 +49,7 @@ export class ProducersService {
     @InjectRepository(KitHerramienta) private readonly kitToolRepository: Repository<KitHerramienta>,
     @InjectRepository(KitUser) private readonly kitUserRepository: Repository<KitUser>,
     @InjectRepository(Aft) private readonly aftRepository: Repository<Aft>,
+    @InjectRepository(Beneficio) private readonly benefitRepository: Repository<Beneficio>,
 
   ) { }
 
@@ -272,7 +275,7 @@ export class ProducersService {
     })
   }
 
-  /* Ojo */
+
   async createProducerBeneficiary(body: CreateProducerBeneficiaryDto) {
     const producer = await this._ProducersRepository.findOne({
       select: ['id', 'nombres', 'dni'],
@@ -283,11 +286,44 @@ export class ProducersService {
       return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
 
     try {
-      await this.productoresBeneficioRepository.save({
+      const producerBenediciary = await this.productoresBeneficioRepository.save({
         ...body,
-        idBeneficiary2: { id: body.idBeneficiary },
         idProductor: { id: producer.id }
+      });
+
+      await this.productoresBeneficioRepository.update(producerBenediciary.id, {
+        fechaInicio: body.fechaInicio,
+        fechaFin: body.fechaFin,
+        idBeneficio2: { id: body.idBeneficiary }
       })
+
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async createBeneficiary(body: CreateBeneficiaryDto) {
+    try {
+      await this.benefitRepository.save({ ...body });
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async updateBeneficiary(body: CreateBeneficiaryDto) {
+    const benefit = await this.benefitRepository.findOne({ where: { id: body.idBeneficio } });
+    if (!benefit)
+      return { error: 'BENEFIT_NOT_EXIST', detail: 'El beneficio no existe.' }
+
+    try {
+      await this.benefitRepository.update(benefit.id, {
+        nombre: body.nombre,
+        intencidad: body.intencidad,
+        idTipoBeneficio2: { id: body.idTipoBeneficio }
+      });
+
       return { success: 'OK' }
     } catch (error) {
       return { error }
@@ -296,26 +332,24 @@ export class ProducersService {
 
   async updateProducerBeneficiary(body: UpdateProducerBeneficiaryDto) {
     const producer = await this._ProducersRepository.findOne({
-      select: ['id', 'nombres', 'dni'],
       where: { id: body.idProductor }
-    })
+    });
 
     const producerBeneficiary = await this.productoresBeneficioRepository.findOne({
-      select: ['id'],
       where: { id: body.id }
-    })
+    });
 
     if (!producerBeneficiary)
       return { error: 'PRODUCER_BENEFICIARY_NOT_EXIST', detail: 'El productor no tiene ningun beneficio registrado.' }
-    else if (!producer)
+    if (!producer)
       return { error: 'PRODUCER_NOT_EXIST', detail: 'El productor no se encuentra en la base de datos.' }
 
     try {
       await this.productoresBeneficioRepository.update(producerBeneficiary.id, {
         ...body,
         idProductor: { id: producer.id }, idBeneficio2: { id: body.idBeneficio2 }
+      });
 
-      })
       return { success: 'OK' }
     } catch (error) {
       return { error }
