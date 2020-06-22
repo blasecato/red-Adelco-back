@@ -50,8 +50,8 @@ export class Productores {
   @Column("varchar", { name: "telefono", nullable: true, length: 10 })
   telefono: string | null;
 
-  @Column("varchar", { nullable: false, length: '50', default: 'active' })
-  state: string;
+  @Column("varchar", { nullable: true, length: '50', default: 'active' })
+  state: string | null;
 
   @ManyToOne(() => Genero, genero => genero.productores, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_genero", referencedColumnName: "id" }])
