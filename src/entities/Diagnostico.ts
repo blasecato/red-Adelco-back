@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Cultivo } from "./Cultivo";
 import { Finca } from "./Finca";
-
+ 
 @Entity("diagnostico", { schema: "tcsp_database" })
 export class Diagnostico {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
@@ -19,7 +19,7 @@ export class Diagnostico {
   @Column("time", { name: "hora_fin", nullable: true })
   horaFin: string | null;
 
-  @Column("longtext", { name: "imagen", nullable: true })
+  @Column("varchar", { nullable: true })
   imagen: string | null;
 
   @ManyToOne(() => Cultivo, cultivo => cultivo.diagnosticos, { onDelete: "CASCADE", onUpdate: "CASCADE" })

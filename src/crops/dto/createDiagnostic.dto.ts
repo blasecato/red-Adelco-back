@@ -22,9 +22,9 @@ export class CreateDiagnosticDto {
   imagen: string;
 
   @IsNumber()
-  cultivos: number;
+  idCultivo: number;
 
   @IsNumber()
   @IsOptional()
-  fincas: number;
+  idFinca: number;
 }
