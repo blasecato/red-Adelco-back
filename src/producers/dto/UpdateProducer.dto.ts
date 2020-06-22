@@ -15,6 +15,10 @@ export class UpdateProducerDto {
 
   @IsString()
   @IsOptional()
+  entidad: string;
+
+  @IsString()
+  @IsOptional()
   apellidos: string;
 
   @IsNumber()
