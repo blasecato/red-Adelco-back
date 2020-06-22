@@ -8,6 +8,7 @@ import { CreateTypeToolDto } from './dto/createTypeTool.dto';
 import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
 import { UpdateProducerDto } from './dto/UpdateProducer.dto';
 import { UpdateAftDto } from './dto/updateAft.dto';
+import { CreateBeneficiaryDto } from './dto/createBenefit.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -43,7 +44,7 @@ export class ProducersController {
   }
 
   @Put('update')
-  async updateProducer(@Body() body:UpdateProducerDto) {
+  async updateProducer(@Body() body: UpdateProducerDto) {
     const producerUpdate = await this._ProducersService.updateProducer(body)
     return producerUpdate
   }
@@ -74,6 +75,16 @@ export class ProducersController {
     return await this._ProducersService.getProducerById(id, dni);
   }
 
+  @Post('create/beneficiary')
+  async createBeneficiary(@Body() body: CreateBeneficiaryDto) {
+    return await this._ProducersService.createBeneficiary(body);
+  }
+
+  @Put('update/beneficiary')
+  async updateBeneficiary(@Body() body: CreateBeneficiaryDto) {
+    return await this._ProducersService.updateBeneficiary(body);
+  }
+
   @Post('create-producer-beneficiary')
   async createProducerBeneficiary(@Body() body: CreateProducerBeneficiaryDto) {
     return await this._ProducersService.createProducerBeneficiary(body);
@@ -87,7 +98,7 @@ export class ProducersController {
   @Get('get/all/kit-producer')
   async getAllKitsProducer() {
     return await this._ProducersService.getAllKitsProducer();
-  } 
+  }
 
   @Get('get/kits/by/producer')
   async getKitUserId(@Query('dni') dni: number) {
@@ -102,7 +113,7 @@ export class ProducersController {
   @Get('get-type-tool')
   async getAllTypeTool() {
     return await this._ProducersService.getAllTypeTool();
-  } 
+  }
 
   @Post('create-kit-tool')
   async createKitTool(@Body() body: CreateKitDto) {
@@ -135,7 +146,7 @@ export class ProducersController {
   }
 
   @Put('update/aft')
-  async updateAft(@Body() body:UpdateAftDto) {
+  async updateAft(@Body() body: UpdateAftDto) {
     return await this._ProducersService.updateAft(body)
   }
 
