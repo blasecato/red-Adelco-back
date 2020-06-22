@@ -7,6 +7,7 @@ import { UpdateProducerBeneficiaryDto } from './dto/updateProducerBeneficiary.dt
 import { CreateTypeToolDto } from './dto/createTypeTool.dto';
 import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
 import { UpdateProducerDto } from './dto/UpdateProducer.dto';
+import { UpdateAftDto } from './dto/updateAft.dto';
 
 @Controller('producers')
 export class ProducersController {
@@ -131,6 +132,11 @@ export class ProducersController {
   @Post('create-aft')
   async createAft(@Body() body: CreateAftDto) {
     return await this._ProducersService.createAft(body);
+  }
+
+  @Put('update/aft')
+  async updateAft(@Body() body:UpdateAftDto) {
+    return await this._ProducersService.updateAft(body)
   }
 
   @Get('get-aft/organization')

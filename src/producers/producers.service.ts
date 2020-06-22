@@ -24,6 +24,7 @@ import { Aft } from '../entities/Aft';
 import { CreateTypeToolDto } from './dto/createTypeTool.dto';
 import { UpdateTypeToolDto } from './dto/updateTypeTool.dto';
 import { UpdateProducerDto } from './dto/UpdateProducer.dto';
+import { UpdateAftDto } from './dto/updateAft.dto';
 
 @Injectable()
 export class ProducersService {
@@ -94,8 +95,8 @@ export class ProducersService {
         edad: body.edad,
         telefono: body.telefono,
         state: body.state,
-        entidad:body.entidad,
-        idZona: {id:body.idZona},
+        entidad: body.entidad,
+        idZona: { id: body.idZona },
         idGenero: { id: body.idGenero },
         idProductor: { id: body.idProductor },
         idConflicto: { id: body.idConflicto },
@@ -284,7 +285,7 @@ export class ProducersService {
     try {
       await this.productoresBeneficioRepository.save({
         ...body,
-        idBeneficiary2:{id:body.idBeneficiary},
+        idBeneficiary2: { id: body.idBeneficiary },
         idProductor: { id: producer.id }
       })
       return { success: 'OK' }
@@ -448,6 +449,36 @@ export class ProducersService {
 
     try {
       await this.aftRepository.save({
+        idOrganizacion2: { id: body.idOrganizacion },
+        valorAft: body.valorAft,
+        fechaEntrega: body.fechaEntrega,
+        cuenta: body.cuenta,
+        tipoCuenta: body.tipoCuenta,
+        banco: body.banco,
+        documento: body.documento,
+        matricula: body.matricula,
+        email: body.email,
+        avances: body.avances,
+        idMunicipio2: { id: body.idMunicipio },
+        dv: body.dv,
+        nit: body.nit,
+        idProductor: { dni: body.producerDni }
+      })
+
+      return { success: 'OK' }
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async updateAft(body: UpdateAftDto) {
+    const aft = await this.aftRepository.findOne({ where: { dni: body.id } });
+
+    if (!aft)
+      return { error: 'AFT_NOT_EXIST', detail: 'El Aft no se encuentra en la base de datos.' }
+
+    try {
+      await this.aftRepository.update(aft.id, {
         idOrganizacion2: { id: body.idOrganizacion },
         valorAft: body.valorAft,
         fechaEntrega: body.fechaEntrega,
