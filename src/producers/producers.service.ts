@@ -94,6 +94,7 @@ export class ProducersService {
         edad: body.edad,
         telefono: body.telefono,
         state: body.state,
+        entidad:body.entidad,
         idZona: {id:body.idZona},
         idGenero: { id: body.idGenero },
         idProductor: { id: body.idProductor },
