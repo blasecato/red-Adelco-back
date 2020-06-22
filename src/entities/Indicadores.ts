@@ -7,8 +7,8 @@ export class Indicadores {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("longtext", { name: "descripcion" })
-  descripcion: string;
+  @Column("longtext", { name: "descripcion", nullable: true })
+  descripcion: string | null;
 
   @Column("int", { name: "meta", nullable: true })
   meta: number | null;
@@ -28,7 +28,7 @@ export class Indicadores {
   @Column("int", { name: "id_objetivo", nullable: true })
   idObjetivo: number | null;
 
-  @ManyToOne(() => Objetivo, objetivo => objetivo.indicadores,{ onDelete: "CASCADE", onUpdate: "CASCADE" })
+  @ManyToOne(() => Objetivo, objetivo => objetivo.indicadores, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_objetivo" }])
   idObjetivo2: Objetivo;
 }
