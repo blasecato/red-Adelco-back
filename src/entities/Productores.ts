@@ -32,11 +32,11 @@ export class Productores {
   @Column("varchar", { nullable: true, name: "id", length: 145 })
   id: string | null;
 
-  @Column("longtext", { name: "nombres" })
-  nombres: string;
+  @Column("longtext", { name: "nombres",nullable: true  })
+  nombres: string | null;
 
-  @Column("longtext", { name: "apellidos" })
-  apellidos: string;
+  @Column("longtext", { name: "apellidos",nullable: true  })
+  apellidos: string | null;
 
   @Column("longtext", { nullable: true })
   entidad: string | null;
