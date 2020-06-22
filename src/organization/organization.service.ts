@@ -109,7 +109,6 @@ export class organizationService {
     } catch (error) {
       return { error }
     }
-
   }
 
   async countPersonsOrganization(idOrganization: number) {
@@ -125,6 +124,7 @@ export class organizationService {
       .innerJoinAndSelect('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoinAndSelect('Productores.idGenero', 'Genero')
       .where('Organizacion.id =:idOrganization', { idOrganization })
+      .orderBy('ProductorOrganizacion.id','ASC')
       .getMany();
 
     const countWoman = await this.ProductorOrganizacionRepository.createQueryBuilder()
@@ -133,13 +133,14 @@ export class organizationService {
       .innerJoin('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoin('Productores.idGenero', 'Genero')
       .where("Genero.key='woman' AND Organizacion.id =:idOrganization", { idOrganization })
-      .getRawOne();
+      .execute();
 
     const dataWoman = await this.ProductorOrganizacionRepository.createQueryBuilder()
       .innerJoinAndSelect('ProductorOrganizacion.idOrganizacion', 'Organizacion')
       .innerJoinAndSelect('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoinAndSelect('Productores.idGenero', 'Genero')
       .where("Genero.key='woman' AND Organizacion.id =:idOrganization", { idOrganization })
+      .orderBy('ProductorOrganizacion.id','ASC')
       .getMany();
 
     const dataMan = await this.ProductorOrganizacionRepository.createQueryBuilder()
@@ -147,6 +148,7 @@ export class organizationService {
       .innerJoinAndSelect('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoinAndSelect('Productores.idGenero', 'Genero')
       .where("Genero.key='man' AND Organizacion.id =:idOrganization", { idOrganization })
+      .orderBy('ProductorOrganizacion.id','ASC')
       .getMany();
 
     const countMan = await await this.ProductorOrganizacionRepository.createQueryBuilder()
