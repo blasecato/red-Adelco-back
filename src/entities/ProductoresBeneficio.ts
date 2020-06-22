@@ -78,7 +78,7 @@ export class ProductoresBeneficio {
   @ManyToOne(
     () => Productores,
     productores => productores.productoresBeneficios,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_productor", referencedColumnName: "id" }])
   idProductor: Productores | null;
@@ -86,8 +86,8 @@ export class ProductoresBeneficio {
   @ManyToOne(
     () => Beneficio,
     beneficio => beneficio.productoresBeneficios,
-    { onDelete: "CASCADE", onUpdate: "NO ACTION" }
+    { onDelete: "CASCADE", onUpdate: "CASCADE" }
   )
   @JoinColumn([{ name: "id_beneficio", referencedColumnName: "id" }])
-  idBeneficio2: Beneficio;
+  idBeneficio2: Beneficio| null;
 }

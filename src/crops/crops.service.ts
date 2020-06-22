@@ -8,11 +8,9 @@ import { Productores } from '../entities/Productores';
 import { Cultivo } from '../entities/Cultivo';
 import { Acepta } from '../entities/Acepta';
 import { LineaProductiva } from '../entities/LineaProductiva';
-import { Finca } from '../entities/Finca';
 import { Diagnostico } from '../entities/Diagnostico';
 import { CreateAcceptDto } from './dto/createAccept.dto';
 import { CreateDiagnosticDto } from './dto/createDiagnostic.dto';
-import { Vereda } from '../entities/Vereda';
 
 @Injectable()
 export class CropsService {
@@ -22,9 +20,7 @@ export class CropsService {
     @InjectRepository(Productores) private readonly ProductoresRepository: Repository<Productores>,
     @InjectRepository(LineaProductiva) private readonly lineaProductivaRepository: Repository<LineaProductiva>,
     @InjectRepository(Municipio) private readonly municipioRepository: Repository<Municipio>,
-    @InjectRepository(Vereda) private readonly sidewalkRepository: Repository<Vereda>,
     @InjectRepository(Acepta) private readonly AceptaRepository: Repository<Acepta>,
-    @InjectRepository(Finca) private readonly farmRepository: Repository<Finca>,
     @InjectRepository(Diagnostico) private readonly diagnosticRepository: Repository<Diagnostico>
   ) { }
 
@@ -52,27 +48,6 @@ export class CropsService {
   }
 
   async createCrop(body: CreateCropDto) {
-    /*  const accept = await this.AceptaRepository.findOne({ where: { id: body.idAcepta } });
-     const productiveLine = await this.lineaProductivaRepository.findOne({ where: { id: body.idLineaProductiva } });
-     const municipality = await this.municipioRepository.findOne({ where: { id: body.idMunicipio } });
-     const sidewalk = await this.sidewalkRepository.findOne({ where: { id: body.idVereda } });
-     const productorId = await this.ProductoresRepository.findOne({ where: { id: body.codigoProductor } });
-     const productorDni = await this.ProductoresRepository.findOne({ where: { dni: body.dniProductor } });
-     
-         if (!accept)
-           return { error: 'ACCEPT_NOT_EXITS', detail: 'No existe ningun dato en la entidad acepta.' }
-         else if (!productiveLine)
-           return { error: 'PRODUCTIVE_LINE_NOT_EXITS', detail: 'No existe ningun registro de linea productiva.' }
-         else if (!municipality)
-           return { error: 'MUNICIPALITY_NOT_EXITS', detail: 'No existe ningun municipio.' }
-         else if (!sidewalk)
-           return { error: 'SIDEWALK_NOT_EXITS', detail: 'No existe ninguna vereda.' }
-         else if (!productorId)
-           return { error: 'ID_PRODUCTOR_NOT_EXITS', detail: 'No existe ningun productor con ese id.' }
-         else if (!productorDni)
-           return { error: 'DNI_PRODUCTOR_NOT_EXITS', detail: 'No existe ningun productor con ese dni.' }
-         else */
-
     try {
       await this._CropsRepository.save({
         hectareas: body.hectareas,
@@ -157,22 +132,25 @@ export class CropsService {
   }
 
   async createDiagnostic(body: CreateDiagnosticDto) {
-    const crop = await this._CropsRepository.findOne({ where: { id: body.cultivos } });
+    const crop = await this._CropsRepository.findOne({ where: { id: body.idCultivo } });
 
     if (!crop)
       return { error: 'CROP_NOT_EXIST', detail: 'El cultivo no se encuentra en la base de datos.' }
 
     try {
-      const asux = await this.diagnosticRepository.save({
+      const diagnostic = await this.diagnosticRepository.save({
         nombre: body.nombre,
         fecha: body.fecha,
         horaInicio: body.horaInicio,
         horaFin: body.horaFin,
-        imagen: body.imagen,
-        cultivos: { id: crop.id },
-        fincas: { id: body.fincas }
+        imagen: body.imagen
       });
-      console.log(asux);
+
+      await this.diagnosticRepository.update(diagnostic.id, {
+        cultivos: { id: crop.id },
+        fincas: { id: body.idFinca }
+      })
+
       return { success: 'OK' }
     } catch (error) {
       return { error }
@@ -181,7 +159,7 @@ export class CropsService {
 
   async getCropsDiagnosticAll() {
     return await this.diagnosticRepository.createQueryBuilder()
-    .innerJoinAndSelect('Diagnostico.cultivos','cultivos')
-    .getMany()
+      .innerJoinAndSelect('Diagnostico.cultivos', 'cultivos')
+      .getMany()
   }
 }

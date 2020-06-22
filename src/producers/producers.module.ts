@@ -18,13 +18,14 @@ import { Productores } from '../entities/Productores';
 import { KitHerramienta } from '../entities/KitHerramienta';
 import { ProductoresBeneficio } from '../entities/ProductoresBeneficio';
 import { Genero } from '../entities/Genero';
+import { Beneficio } from '../entities/Beneficio';
 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Parentesco, GrupoEtnico, CargoOrg, Parentesco,
       Discapacidad, Conflicto, Organizacion, Cultivo, ProductoresBeneficio, Kit, Herramienta,
-      TipoHerramienta, KitHerramienta, KitUser, Aft, Productores,Genero
+      TipoHerramienta, KitHerramienta, KitUser, Aft, Productores,Genero, Beneficio
     ]),
   ],
   controllers: [ProducersController],
