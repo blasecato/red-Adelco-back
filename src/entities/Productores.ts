@@ -38,6 +38,9 @@ export class Productores {
   @Column("longtext", { name: "apellidos" })
   apellidos: string;
 
+  @Column("longtext", { nullable: true })
+  entidad: string | null;
+
   @Column("int", { primary: true, name: "dni" })
   dni: number;
 
