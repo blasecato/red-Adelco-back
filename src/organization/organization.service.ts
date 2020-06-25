@@ -116,14 +116,14 @@ export class organizationService {
       .select('count(Productores.id)', 'countProducers')
       .innerJoin('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoin('ProductorOrganizacion.idOrganizacion', 'Organizacion')
-      .where('Organizacion.id =:idOrganization', { idOrganization })
+      .where("Organizacion.id =:idOrganization AND ProductorOrganizacion.estado='activo'", { idOrganization })
       .getRawOne();
 
     const dataProducers = await this.ProductorOrganizacionRepository.createQueryBuilder()
       .innerJoinAndSelect('ProductorOrganizacion.idOrganizacion', 'Organizacion')
       .innerJoinAndSelect('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoinAndSelect('Productores.idGenero', 'Genero')
-      .where('Organizacion.id =:idOrganization', { idOrganization })
+      .where("Organizacion.id =:idOrganization AND ProductorOrganizacion.estado='activo'", { idOrganization })
       .orderBy('ProductorOrganizacion.id','ASC')
       .getMany();
 
@@ -132,14 +132,14 @@ export class organizationService {
       .innerJoin('ProductorOrganizacion.idOrganizacion', 'Organizacion')
       .innerJoin('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoin('Productores.idGenero', 'Genero')
-      .where("Genero.key='woman' AND Organizacion.id =:idOrganization", { idOrganization })
+      .where("Genero.key='woman' AND Organizacion.id =:idOrganization AND ProductorOrganizacion.estado='activo'", { idOrganization })
       .execute();
 
     const dataWoman = await this.ProductorOrganizacionRepository.createQueryBuilder()
       .innerJoinAndSelect('ProductorOrganizacion.idOrganizacion', 'Organizacion')
       .innerJoinAndSelect('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoinAndSelect('Productores.idGenero', 'Genero')
-      .where("Genero.key='woman' AND Organizacion.id =:idOrganization", { idOrganization })
+      .where("Genero.key='woman' AND Organizacion.id =:idOrganization AND ProductorOrganizacion.estado='activo'", { idOrganization })
       .orderBy('ProductorOrganizacion.id','ASC')
       .getMany();
 
@@ -147,7 +147,7 @@ export class organizationService {
       .innerJoinAndSelect('ProductorOrganizacion.idOrganizacion', 'Organizacion')
       .innerJoinAndSelect('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoinAndSelect('Productores.idGenero', 'Genero')
-      .where("Genero.key='man' AND Organizacion.id =:idOrganization", { idOrganization })
+      .where("Genero.key='man' AND Organizacion.id =:idOrganization AND ProductorOrganizacion.estado='activo'", { idOrganization })
       .orderBy('ProductorOrganizacion.id','ASC')
       .getMany();
 
@@ -156,7 +156,7 @@ export class organizationService {
       .innerJoin('ProductorOrganizacion.idOrganizacion', 'Organizacion')
       .innerJoin('ProductorOrganizacion.dniProductor', 'Productores')
       .innerJoin('Productores.idGenero', 'Genero')
-      .where("Genero.key='man' AND Organizacion.id =:idOrganization", { idOrganization })
+      .where("Genero.key='man' AND Organizacion.id =:idOrganization AND ProductorOrganizacion.estado='activo'", { idOrganization })
       .getRawOne();
 
     return { countProducers, countWoman, countMan, dataProducers, dataWoman, dataMan }
