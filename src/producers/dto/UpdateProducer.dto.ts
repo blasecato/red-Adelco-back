@@ -153,4 +153,8 @@ export class UpdateProducerDto {
   @IsOptional()
   fitosanitarioCultivos: string;
 
+  @IsString()
+  @IsOptional()
+  tipoUsuario: string;
+
 }

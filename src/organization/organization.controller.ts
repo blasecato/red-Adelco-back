@@ -1,9 +1,10 @@
-import { Controller, Post, Body, Get, Put, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get,Param, Put, Query } from '@nestjs/common';
 import { organizationService } from './organization.service';
 import { UpdateOrganizationDto } from './dto/updateOrganization.dto';
 import { CreateOrganizationDto } from './dto/createOrganizacion.dto';
 import { RemoveOrganizationProducersDto } from './dto/removeOrganizationProducers.dto';
 import { CreateProducerOrganizationDto } from './dto/createProducerOrganization.dto';
+import { ProductorOrganizacion } from "../entities/ProductorOrganizacion";
 
 @Controller('organization')
 export class organizationController {
@@ -33,6 +34,11 @@ export class organizationController {
   @Get('getMunicipios')
   async getMunicipios() {
     return await this._organizationService.getMunicipio();
+  }
+
+  @Get('getDeleteUserOrg/:id')
+  findUsers(@Param('id') id):Promise<ProductorOrganizacion>{
+    return this._organizationService.getFindUsers(id);
   }
 
   @Get()

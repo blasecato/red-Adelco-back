@@ -37,6 +37,19 @@ export class organizationService {
     return municipios
   }
 
+  getFindUsers(id) {
+    return this.ProductorOrganizacionRepository.createQueryBuilder("productor_organizacion")
+    .select("productor_organizacion.id", "id")
+    .addSelect("estado", "estado")
+    .addSelect("fk_organizacion", "fk_organizacion")
+    .addSelect("fk_productor", "fk_productor")
+    .leftJoinAndSelect("productor_organizacion.idOrganizacion", "organizacion")
+    .where("fk_productor = :ids", { ids: id })
+    .andWhere("estado = :activo" , { activo: "activo" } )
+    .execute();
+  }
+  
+
   async getOrganizacion() {
     return await this._OrganizationRepository.createQueryBuilder("organization")
       .leftJoinAndSelect("organization.idVereda2", "vereda")

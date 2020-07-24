@@ -56,7 +56,7 @@ export class ProducersService {
   async createProducers(body) {
 
     const { id, nombres, apellidos, dni, idGenero, telefono, edad, idParentesco,
-      idConflicto, idEtnia } = body
+      idConflicto, idEtnia, tipoUsuario ,entidad} = body
 
     const producerExists = await this._ProducersRepository.findOne({
       where: { dni },
@@ -75,6 +75,8 @@ export class ProducersService {
     producer.idParentesco = idParentesco;
     producer.idConflicto = idConflicto;
     producer.idEtnia = idEtnia;
+    producer.tipoUsuario = tipoUsuario;
+    producer.entidad = entidad;
 
     return await this._ProducersRepository.save(producer)
   }
@@ -98,6 +100,7 @@ export class ProducersService {
         edad: body.edad,
         telefono: body.telefono,
         state: body.state,
+        tipoUsuario: body.tipoUsuario,
         entidad: body.entidad,
         fechaInicio: body.fechaInicio,
         fechaFin: body.fechaFin,

@@ -116,6 +116,9 @@ export class Productores {
   @Column("varchar", { name: "fitosanitario_cultivos", nullable: true, length: 50 })
   fitosanitarioCultivos: string | null;
 
+  @Column("varchar", { name: "tipo_usuario", nullable: true, length: 50 })
+  tipoUsuario: string | null;
+
   @ManyToOne(() => Genero, genero => genero.productores, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "id_genero", referencedColumnName: "id" }])
   idGenero: Genero | null;
